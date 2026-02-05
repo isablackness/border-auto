@@ -1,31 +1,21 @@
-async function loadCars() {
-  const res = await fetch("/api/cars");
-  const cars = await res.json();
-  renderCars(cars);
-}
+fetch("/api/cars")
+  .then(res => res.json())
+  .then(cars => {
+    const grid = document.getElementById("catalog");
+    grid.innerHTML = "";
 
-function renderCars(list) {
-  const container = document.getElementById("cars");
-  container.innerHTML = "";
+    cars.forEach(car => {
+      const img = car.images?.[0] || "/images/no-photo.jpg";
 
-  if (list.length === 0) {
-    container.innerHTML = "<p>Автомобили не найдены</p>";
-    return;
-  }
-
-  list.forEach(car => {
-    container.innerHTML += `
-      <div class="card">
-        <div class="card-image"></div>
-        <div class="card-content">
-          <h3>${car.brand} ${car.model}</h3>
-          <p>${car.year} • ${car.mileage} км</p>
-          <p><strong>${car.price} €</strong></p>
-          <a href="car.html?id=${car.id}">Подробнее</a>
+      grid.innerHTML += `
+        <div class="car-card">
+          <img src="${img}" />
+          <div class="info">
+            <h3>${car.brand} ${car.model}</h3>
+            <p>${car.year} · ${car.mileage} км</p>
+            <strong>${car.price} €</strong>
+          </div>
         </div>
-      </div>
-    `;
+      `;
+    });
   });
-}
-
-loadCars();
