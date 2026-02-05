@@ -1,22 +1,25 @@
 const catalog = document.getElementById("catalog");
+let allCars = [];
+
+// заполняем годы
+const yearSelect = document.getElementById("filter-year");
+for (let y = 2025; y >= 2000; y--) {
+  yearSelect.innerHTML += `<option value="${y}">${y}</option>`;
+}
 
 async function loadCars() {
-  try {
-    const res = await fetch("/api/cars");
-    const cars = await res.json();
-    renderCatalog(cars);
-  } catch (e) {
-    catalog.innerHTML = "<p>Ошибка загрузки автомобилей</p>";
-  }
+  const res = await fetch("/api/cars");
+  allCars = await res.json();
+  renderCatalog(allCars);
 }
 
 function renderCatalog(cars) {
+  catalog.innerHTML = "";
+
   if (!cars.length) {
     catalog.innerHTML = "<p>Автомобили не найдены</p>";
     return;
   }
-
-  catalog.innerHTML = "";
 
   cars.forEach(car => {
     const preview =
@@ -28,7 +31,9 @@ function renderCatalog(cars) {
     card.className = "car-card";
 
     card.innerHTML = `
-      <img src="${preview}" alt="">
+      <a class="car-image-link" href="/car.html?id=${car.id}">
+        <img src="${preview}" alt="">
+      </a>
 
       <div class="car-cta">
         <a class="instagram" target="_blank"
@@ -40,13 +45,30 @@ function renderCatalog(cars) {
       <div class="info">
         <strong>${car.brand} ${car.model}</strong><br>
         ${car.year} · ${car.mileage} км<br>
-        <b>${car.price} €</b><br>
-        <a class="details-link" href="/car.html?id=${car.id}">Подробнее</a>
+        <b>${car.price} €</b>
       </div>
     `;
 
     catalog.appendChild(card);
   });
+}
+
+function applyFilters() {
+  const brand = document.getElementById("filter-brand").value.toLowerCase();
+  const model = document.getElementById("filter-model").value.toLowerCase();
+  const year = document.getElementById("filter-year").value;
+  const price = document.getElementById("filter-price").value;
+  const mileage = document.getElementById("filter-mileage").value;
+
+  const filtered = allCars.filter(car =>
+    (!brand || car.brand.toLowerCase().includes(brand)) &&
+    (!model || car.model.toLowerCase().includes(model)) &&
+    (!year || car.year == year) &&
+    (!price || car.price <= price) &&
+    (!mileage || car.mileage <= mileage)
+  );
+
+  renderCatalog(filtered);
 }
 
 loadCars();
