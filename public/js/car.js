@@ -1,58 +1,56 @@
-const container = document.getElementById("car-container");
-
-// получаем id из URL
 const params = new URLSearchParams(window.location.search);
 const carId = params.get("id");
 
-if (!carId) {
-  container.innerHTML = "<p>Автомобиль не найден</p>";
-  throw new Error("No car ID in URL");
-}
+let images = [];
+let currentIndex = 0;
 
 async function loadCar() {
-  try {
-    const res = await fetch(`/api/cars/${carId}`);
-    if (!res.ok) throw new Error("Car not found");
+  const res = await fetch(`/api/cars/${carId}`);
+  const car = await res.json();
 
-    const car = await res.json();
-    renderCar(car);
-  } catch (err) {
-    container.innerHTML = "<p>Ошибка загрузки автомобиля</p>";
-    console.error(err);
+  document.getElementById("carTitle").textContent =
+    `${car.brand} ${car.model}`;
+  document.getElementById("carYear").textContent = car.year;
+  document.getElementById("carMileage").textContent = car.mileage;
+  document.getElementById("carPrice").textContent = car.price;
+  document.getElementById("carDescription").textContent = car.description;
+
+  images = car.images || [];
+
+  if (images.length > 0) {
+    setMainImage(0);
+    renderThumbs();
   }
 }
 
-function renderCar(car) {
-  const images = car.images && car.images.length
-    ? car.images.map(img => `<img src="${img}" />`).join("")
-    : `<img src="/images/no-photo.jpg" />`;
+function setMainImage(index) {
+  currentIndex = index;
+  document.getElementById("mainImage").src = images[index];
 
-  container.innerHTML = `
-    <div class="car-detail">
-      <div class="car-gallery">
-        ${images}
-      </div>
-
-      <div class="car-info">
-        <h1>${car.brand} ${car.model}</h1>
-        <p><b>Год:</b> ${car.year}</p>
-        <p><b>Пробег:</b> ${car.mileage} км</p>
-        <p><b>Цена:</b> ${car.price} €</p>
-
-        <p class="car-description">${car.description || ""}</p>
-
-        <div class="car-buttons">
-          <a class="instagram" target="_blank"
-             href="https://www.instagram.com/border.auto/">Instagram</a>
-
-          <a class="whatsapp" target="_blank"
-             href="https://api.whatsapp.com/send?phone=48668989731">
-             WhatsApp
-          </a>
-        </div>
-      </div>
-    </div>
-  `;
+  document.querySelectorAll(".gallery-thumbs img").forEach((img, i) => {
+    img.classList.toggle("active", i === index);
+  });
 }
+
+function renderThumbs() {
+  const container = document.getElementById("thumbnails");
+  container.innerHTML = "";
+
+  images.forEach((src, index) => {
+    const img = document.createElement("img");
+    img.src = src;
+    img.onclick = () => setMainImage(index);
+    if (index === 0) img.classList.add("active");
+    container.appendChild(img);
+  });
+}
+
+document.getElementById("prevBtn").onclick = () => {
+  setMainImage((currentIndex - 1 + images.length) % images.length);
+};
+
+document.getElementById("nextBtn").onclick = () => {
+  setMainImage((currentIndex + 1) % images.length);
+};
 
 loadCar();
