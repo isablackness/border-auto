@@ -1,270 +1,45 @@
-/* ===== RESET ===== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
-  font-family: "Segoe UI", Tahoma, sans-serif;
-  background: #0b0b0b;
-  color: #f5f5f5;
-  min-height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #000;
+  color: #fff;
 }
 
-/* ===== LINKS ===== */
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* ===== HEADER ===== */
 header {
-  background: linear-gradient(90deg, #000, #111);
-  padding: 20px 40px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid #222;
+  padding: 20px;
+  background: #000;
 }
 
 header img {
-  height: 48px;
+  height: 50px;
+  margin-right: 40px;
 }
 
 nav a {
-  margin-left: 30px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  position: relative;
+  color: white;
+  margin-right: 20px;
+  text-decoration: none;
 }
 
-nav a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-  width: 0;
-  height: 2px;
-  background: #d60000;
-  transition: 0.3s;
-}
-
-nav a:hover::after {
-  width: 100%;
-}
-
-/* ===== MAIN ===== */
 main {
   padding: 40px;
 }
 
-/* ===== TITLES ===== */
-h1 {
-  font-size: 36px;
-  margin-bottom: 20px;
-}
-
-h2 {
-  font-size: 28px;
-  margin-bottom: 16px;
-}
-
-/* ===== CATALOG GRID ===== */
-#catalog {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-}
-
-/* ===== CAR CARD ===== */
-.car-card {
-  background: #111;
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid #222;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.car-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-}
-
-/* IMAGE 4:5 */
-.car-card img {
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  display: block;
-}
-
-/* INFO */
-.car-card .info {
-  padding: 14px;
-}
-
-.car-card h3 {
-  font-size: 18px;
-  margin-bottom: 6px;
-}
-
-.car-card p {
-  font-size: 14px;
-  color: #bbb;
-  margin-bottom: 8px;
-}
-
-.car-card strong {
-  font-size: 18px;
-  color: #d60000;
-}
-
-/* ===== BUTTONS ===== */
-button {
-  background: linear-gradient(135deg, #d60000, #a80000);
-  color: #fff;
-  border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.25s;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
-/* ===== FORMS ===== */
-form {
-  max-width: 500px;
-  background: #111;
-  padding: 24px;
-  border-radius: 14px;
-  border: 1px solid #222;
-}
-
-input,
-textarea {
-  width: 100%;
-  background: #0b0b0b;
-  border: 1px solid #333;
-  color: #fff;
-  padding: 10px 12px;
-  border-radius: 8px;
-  margin-bottom: 14px;
-  font-size: 14px;
-}
-
-input::placeholder,
-textarea::placeholder {
-  color: #777;
-}
-
-input[type="file"] {
-  padding: 6px;
-}
-
-textarea {
-  resize: vertical;
-  min-height: 80px;
-}
-
-/* ===== ADMIN PAGE ===== */
-body.dark {
-  background: #0b0b0b;
-}
-
-body.dark h1 {
-  margin-bottom: 20px;
-}
-
-/* ===== FOOTER ===== */
 footer {
-  margin-top: 60px;
   padding: 20px;
   text-align: center;
-  color: #666;
-  font-size: 14px;
-  border-top: 1px solid #222;
+  opacity: 0.5;
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 1100px) {
-  #catalog {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 700px) {
-  header {
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  nav a {
-    margin-left: 16px;
-    margin-right: 16px;
-  }
-
-  #catalog {
-    grid-template-columns: 1fr;
-  }
-
-  main {
-    padding: 20px;
-  }
-}
-/* ===== Catalog layout ===== */
-
-.catalog-layout {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 32px;
-  align-items: start;
-}
-
-/* ===== Filters ===== */
-
-.filters {
-  background: #0e0e0e;
-  border-radius: 12px;
-  padding: 20px;
-  position: sticky;
-  top: 20px;
-}
-
-.filters h2 {
-  margin-bottom: 16px;
-}
-
-.filters label {
-  display: block;
-  margin-bottom: 14px;
-  font-size: 14px;
-}
-
-.filters input {
-  width: 100%;
-  margin-top: 4px;
-}
-
-.filters button {
-  width: 100%;
-  margin-top: 10px;
-}
-
-/* ===== Catalog grid ===== */
+/* ===== Catalog ===== */
 
 #catalog {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
-
-/* ===== Smaller car cards ===== */
 
 .car-card {
   background: #111;
@@ -284,7 +59,7 @@ footer {
 
 .car-card h3 {
   font-size: 15px;
-  margin-bottom: 4px;
+  margin: 0 0 4px;
 }
 
 .car-card p {
@@ -296,3 +71,43 @@ footer {
   font-size: 14px;
 }
 
+/* ===== Car page ===== */
+
+.car-page {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 40px;
+}
+
+.gallery {
+  position: relative;
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.gallery img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+.gallery button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.6);
+  border: none;
+  color: white;
+  font-size: 30px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+#prev { left: 10px; }
+#next { right: 10px; }
+
+.details h2 {
+  color: #e60000;
+  margin: 20px 0;
+}

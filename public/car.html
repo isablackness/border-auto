@@ -1,24 +1,43 @@
-async function loadCar() {
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Автомобиль — Border Auto</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
 
-  const res = await fetch("/api/cars/" + id);
-  const car = await res.json();
+<body>
 
-  const container = document.getElementById("car");
+<header>
+  <img src="/images/logo.png" alt="Border Auto">
+  <nav>
+    <a href="/">Главная</a>
+    <a href="/catalog.html">Каталог</a>
+    <a href="/contacts.html">Контакты</a>
+  </nav>
+</header>
 
-  if (!car) {
-    container.innerHTML = "<p>Автомобиль не найден</p>";
-    return;
-  }
+<main class="car-page">
 
-  container.innerHTML = `
-    <h1>${car.brand} ${car.model}</h1>
-    <p><strong>Год:</strong> ${car.year}</p>
-    <p><strong>Пробег:</strong> ${car.mileage} км</p>
-    <p><strong>Цена:</strong> ${car.price} €</p>
-    <p>${car.description}</p>
-  `;
-}
+  <section class="gallery">
+    <button id="prev">‹</button>
+    <img id="mainImage" src="">
+    <button id="next">›</button>
+  </section>
 
-loadCar();
+  <section class="details">
+    <h1 id="title"></h1>
+    <p id="meta"></p>
+    <h2 id="price"></h2>
+    <p id="description"></p>
+  </section>
+
+</main>
+
+<footer>
+  © Border Auto
+</footer>
+
+<script src="/js/car.js"></script>
+</body>
+</html>

@@ -1,8 +1,9 @@
-async function loadCatalog() {
+const container = document.getElementById("catalog");
+
+async function loadCars() {
   const res = await fetch("/api/cars");
   const cars = await res.json();
 
-  const container = document.getElementById("catalog");
   container.innerHTML = "";
 
   if (!cars.length) {
@@ -11,11 +12,11 @@ async function loadCatalog() {
   }
 
   cars.forEach(car => {
-    const image = car.images?.[0] || "/images/no-photo.jpg";
-
     container.innerHTML += `
       <div class="car-card">
-        <img src="${image}" alt="${car.brand} ${car.model}" />
+        <a href="/car.html?id=${car.id}">
+          <img src="${car.images?.[0] || '/images/no-photo.jpg'}" alt="">
+        </a>
         <div class="info">
           <h3>${car.brand} ${car.model}</h3>
           <p>${car.year} · ${car.mileage} км</p>
@@ -26,4 +27,4 @@ async function loadCatalog() {
   });
 }
 
-loadCatalog();
+loadCars();

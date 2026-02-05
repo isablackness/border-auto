@@ -1,17 +1,37 @@
 const params = new URLSearchParams(window.location.search);
-const id = Number(params.get("id"));
+const id = params.get("id");
 
-const car = cars.find(c => c.id === id);
-const container = document.getElementById("car");
+let images = [];
+let current = 0;
 
-if (!car) {
-  container.innerHTML = "<p>Автомобиль не найден</p>";
-} else {
-  container.innerHTML = `
-    <h2>${car.brand} ${car.model}</h2>
-    <p>Год: ${car.year}</p>
-    <p>Пробег: ${car.mileage} км</p>
-    <p>Цена: ${car.price} $</p>
-    <p>${car.description}</p>
-  `;
+async function loadCar() {
+  const res = await fetch(`/api/cars/${id}`);
+  const car = await res.json();
+
+  images = car.images || [];
+
+  document.getElementById("title").textContent =
+    `${car.brand} ${car.model}`;
+
+  document.getElementById("meta").textContent =
+    `${car.year} · ${car.mileage} км`;
+
+  document.getElementById("price").textContent =
+    `${car.price} €`;
+
+  document.getElementById("description").textContent =
+    car.description || "";
+
+  showImage(0);
 }
+
+function showImage(index) {
+  if (!images.length) return;
+  current = (index + images.length) % images.length;
+  document.getElementById("mainImage").src = images[current];
+}
+
+document.getElementById("prev").onclick = () => showImage(current - 1);
+document.getElementById("next").onclick = () => showImage(current + 1);
+
+loadCar();
