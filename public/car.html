@@ -1,0 +1,24 @@
+async function loadCar() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  const res = await fetch("/api/cars/" + id);
+  const car = await res.json();
+
+  const container = document.getElementById("car");
+
+  if (!car) {
+    container.innerHTML = "<p>Автомобиль не найден</p>";
+    return;
+  }
+
+  container.innerHTML = `
+    <h1>${car.brand} ${car.model}</h1>
+    <p><strong>Год:</strong> ${car.year}</p>
+    <p><strong>Пробег:</strong> ${car.mileage} км</p>
+    <p><strong>Цена:</strong> ${car.price} €</p>
+    <p>${car.description}</p>
+  `;
+}
+
+loadCar();

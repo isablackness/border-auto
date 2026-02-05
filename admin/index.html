@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin — Cars</title>
+</head>
+<body>
+<h1>Админка</h1>
+
+<form id="carForm">
+  <input placeholder="Марка" id="brand" required><br><br>
+  <input placeholder="Модель" id="model" required><br><br>
+  <input placeholder="Год" id="year" type="number"><br><br>
+  <input placeholder="Цена" id="price" type="number"><br><br>
+  <input placeholder="Пробег" id="mileage" type="number"><br><br>
+  <textarea placeholder="Описание" id="description"></textarea><br><br>
+  <button>Добавить</button>
+</form>
+
+<hr>
+<div id="list"></div>
+
+<script>
+async function load() {
+  const res = await fetch("/api/cars");
+  const cars = await res.json();
+  list.innerHTML = cars.map(c =>
+    `<div>
+      ${c.brand} ${c.model}
+      <button onclick="del(${c.id})">Удалить</button>
+    </div>`
+  ).join("");
+}
+
+carForm.onsubmit = async e => {
+  e.preventDefault();
+  await fetch("/api/cars", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      brand: brand.value,
+      model: model.value,
+      year: year.value,
+      price: price.value,
+      mileage: mileage.value,
+      description: description.value
+    })
+  });
+  carForm.reset();
+  load();
+};
+
+async function del(id) {
+  await fetch("/api/cars/" + id, { method: "DELETE" });
+  load();
+}
+
+load();
+</script>
+</body>
+</html>
