@@ -4,6 +4,45 @@
   <meta charset="UTF-8" />
   <title>Админка — Border Auto</title>
   <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .preview-item {
+      background: #111;
+      border-radius: 10px;
+      padding: 6px;
+      cursor: grab;
+      border: 2px solid transparent;
+    }
+
+    .preview-item.dragging {
+      opacity: 0.4;
+    }
+
+    .preview-item.over {
+      border-color: #d00;
+    }
+
+    .preview-item img {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      border-radius: 6px;
+      pointer-events: none;
+    }
+
+    .preview-label {
+      text-align: center;
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 4px;
+    }
+  </style>
 </head>
 
 <body class="dark">
@@ -29,24 +68,12 @@
     <textarea name="description" placeholder="Описание"></textarea>
 
     <label style="margin:14px 0;display:block;">
-      Фото автомобиля (до 10):
+      Фото автомобиля (до 10, перетащи чтобы изменить порядок):
     </label>
 
-    <!-- ❗ СКРЫТЫЙ INPUT -->
-    <input
-      id="imagesInput"
-      type="file"
-      accept="image/*"
-      multiple
-      style="display:none;"
-    />
+    <input id="imagesInput" type="file" accept="image/*" multiple />
 
-    <button type="button" onclick="imagesInput.click()">
-      Выбрать фотографии
-    </button>
-
-    <!-- ПРЕВЬЮ -->
-    <div id="preview" style="margin-top:20px;"></div>
+    <div id="preview" class="preview-grid"></div>
 
     <button type="submit" style="margin-top:20px;">
       Добавить автомобиль
@@ -57,52 +84,65 @@
 <footer>© Border Auto</footer>
 
 <script>
-const imagesInput = document.getElementById("imagesInput");
+const input = document.getElementById("imagesInput");
 const preview = document.getElementById("preview");
 const form = document.getElementById("carForm");
 
 let files = [];
+let draggedIndex = null;
 
-imagesInput.addEventListener("change", () => {
-  files = Array.from(imagesInput.files).slice(0, 10);
-  renderPreview();
+input.addEventListener("change", () => {
+  files = Array.from(input.files).slice(0, 10);
+  render();
 });
 
-function renderPreview() {
+function render() {
   preview.innerHTML = "";
 
   files.forEach((file, index) => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      preview.innerHTML += `
-        <div style="
-          display:flex;
-          align-items:center;
-          gap:12px;
-          margin-bottom:12px;
-          background:#111;
-          padding:10px;
-          border-radius:8px;
-        ">
-          <img src="${e.target.result}"
-               style="width:80px;height:100px;object-fit:cover;border-radius:6px;">
-          <div>
-            <div style="font-size:14px;margin-bottom:4px;">
-              ${file.name}
-            </div>
-            <label>
-              Порядок:
-              <input type="number"
-                     min="1"
-                     value="${index + 1}"
-                     data-index="${index}"
-                     style="width:60px;">
-            </label>
-          </div>
-        </div>
-      `;
-    };
-    reader.readAsDataURL(file);
+    const div = document.createElement("div");
+    div.className = "preview-item";
+    div.draggable = true;
+    div.dataset.index = index;
+
+    div.innerHTML = `
+      <img src="${URL.createObjectURL(file)}">
+      <div class="preview-label">
+        ${index === 0 ? "Главное фото" : `Фото ${index + 1}`}
+      </div>
+    `;
+
+    div.addEventListener("dragstart", () => {
+      draggedIndex = index;
+      div.classList.add("dragging");
+    });
+
+    div.addEventListener("dragend", () => {
+      div.classList.remove("dragging");
+      draggedIndex = null;
+      render();
+    });
+
+    div.addEventListener("dragover", e => {
+      e.preventDefault();
+      div.classList.add("over");
+    });
+
+    div.addEventListener("dragleave", () => {
+      div.classList.remove("over");
+    });
+
+    div.addEventListener("drop", () => {
+      div.classList.remove("over");
+      const targetIndex = index;
+
+      if (draggedIndex === null || draggedIndex === targetIndex) return;
+
+      const moved = files.splice(draggedIndex, 1)[0];
+      files.splice(targetIndex, 0, moved);
+    });
+
+    preview.appendChild(div);
   });
 }
 
@@ -110,17 +150,7 @@ form.addEventListener("submit", async e => {
   e.preventDefault();
 
   const data = new FormData(form);
-
-  const orderInputs = preview.querySelectorAll("input[type=number]");
-  const orderedFiles = files
-    .map((file, i) => ({
-      file,
-      order: parseInt(orderInputs[i].value, 10) || 999
-    }))
-    .sort((a, b) => a.order - b.order)
-    .map(x => x.file);
-
-  orderedFiles.forEach(file => data.append("images", file));
+  files.forEach(file => data.append("images", file));
 
   const res = await fetch("/api/cars", {
     method: "POST",
