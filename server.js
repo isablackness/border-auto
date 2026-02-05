@@ -1,5 +1,6 @@
 const express = require("express");
 const { Pool } = require("pg");
+const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,6 +12,12 @@ const pool = new Pool({
 
 app.use(express.json());
 app.use(express.static("public"));
+
+/* ===== ROOT → CATALOG ===== */
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "catalog.html"));
+});
 
 /* ===== API: CARS WITH FILTERS ===== */
 
@@ -85,6 +92,8 @@ const adminAuth = (req, res, next) => {
 
 app.use("/admin", adminAuth, express.static("admin"));
 
+/* ===== START ===== */
+
 app.listen(PORT, () => {
-  console.log("Server running on port", PORT);
+  console.log("🚀 Server running on port", PORT);
 });
