@@ -1,7 +1,12 @@
 const container = document.getElementById("catalog");
-const yearSelect = document.getElementById("filter-year");
 
-// Заполняем годы
+const brandInput = document.getElementById("filter-brand");
+const yearSelect = document.getElementById("filter-year");
+const priceInput = document.getElementById("filter-price");
+const mileageInput = document.getElementById("filter-mileage");
+const applyBtn = document.getElementById("applyFilters");
+
+// Годы 2000–2025
 for (let y = 2025; y >= 2000; y--) {
   const opt = document.createElement("option");
   opt.value = y;
@@ -9,8 +14,9 @@ for (let y = 2025; y >= 2000; y--) {
   yearSelect.appendChild(opt);
 }
 
-async function loadCars() {
-  const res = await fetch("/api/cars");
+async function loadCars(filters = {}) {
+  const params = new URLSearchParams(filters);
+  const res = await fetch(`/api/cars?${params.toString()}`);
   const cars = await res.json();
 
   container.innerHTML = "";
@@ -36,4 +42,16 @@ async function loadCars() {
   });
 }
 
+applyBtn.addEventListener("click", () => {
+  const filters = {};
+
+  if (brandInput.value) filters.brand = brandInput.value;
+  if (yearSelect.value) filters.year = yearSelect.value;
+  if (priceInput.value) filters.price = priceInput.value;
+  if (mileageInput.value) filters.mileage = mileageInput.value;
+
+  loadCars(filters);
+});
+
+// первая загрузка
 loadCars();

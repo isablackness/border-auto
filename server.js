@@ -1,6 +1,5 @@
 const express = require("express");
 const { Pool } = require("pg");
-const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,23 +12,58 @@ const pool = new Pool({
 app.use(express.json());
 app.use(express.static("public"));
 
-/* ===== API ===== */
+/* ===== API: CARS WITH FILTERS ===== */
 
 app.get("/api/cars", async (req, res) => {
-  const result = await pool.query("SELECT * FROM cars ORDER BY id DESC");
+  const { brand, year, price, mileage } = req.query;
+
+  let conditions = [];
+  let values = [];
+  let i = 1;
+
+  if (brand) {
+    conditions.push(`brand ILIKE $${i++}`);
+    values.push(`%${brand}%`);
+  }
+
+  if (year) {
+    conditions.push(`year >= $${i++}`);
+    values.push(year);
+  }
+
+  if (price) {
+    conditions.push(`price <= $${i++}`);
+    values.push(price);
+  }
+
+  if (mileage) {
+    conditions.push(`mileage <= $${i++}`);
+    values.push(mileage);
+  }
+
+  const where = conditions.length
+    ? `WHERE ${conditions.join(" AND ")}`
+    : "";
+
+  const query = `
+    SELECT * FROM cars
+    ${where}
+    ORDER BY id DESC
+  `;
+
+  const result = await pool.query(query, values);
   res.json(result.rows);
 });
 
 app.get("/api/cars/:id", async (req, res) => {
-  const { id } = req.params;
   const result = await pool.query(
     "SELECT * FROM cars WHERE id = $1",
-    [id]
+    [req.params.id]
   );
   res.json(result.rows[0]);
 });
 
-/* ===== Admin auth ===== */
+/* ===== ADMIN AUTH ===== */
 
 const adminAuth = (req, res, next) => {
   const auth = req.headers.authorization;
@@ -43,9 +77,7 @@ const adminAuth = (req, res, next) => {
     .toString()
     .split(":");
 
-  if (login === "admin" && password === "admin123") {
-    return next();
-  }
+  if (login === "admin" && password === "admin123") return next();
 
   res.setHeader("WWW-Authenticate", "Basic");
   res.status(401).end();
@@ -53,8 +85,6 @@ const adminAuth = (req, res, next) => {
 
 app.use("/admin", adminAuth, express.static("admin"));
 
-/* ===== Start ===== */
-
 app.listen(PORT, () => {
-  console.log("🚀 Server running on port", PORT);
+  console.log("Server running on port", PORT);
 });
