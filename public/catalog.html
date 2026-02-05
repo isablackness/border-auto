@@ -1,38 +1,36 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Каталог — Border Auto</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <title>Каталог автомобилей — Border Auto</title>
+  <link rel="stylesheet" href="/css/style.css" />
 </head>
+
 <body>
 
-<header class="header">
-  <div class="header-inner">
-    <div class="logo">
-      <img src="images/logo.png" alt="Border Auto">
-    </div>
-
-    <nav class="nav">
-      <a href="index.html" class="nav-link">Главная</a>
-      <a href="catalog.html" class="nav-link active">Каталог</a>
-      <a href="contacts.html" class="nav-link">Контакты</a>
+  <!-- HEADER -->
+  <header>
+    <img src="/images/logo.png" alt="Border Auto" />
+    <nav>
+      <a href="/">Главная</a>
+      <a href="/catalog.html">Каталог</a>
+      <a href="/contacts.html">Контакты</a>
     </nav>
-  </div>
-</header>
+  </header>
 
-<main class="container">
+  <!-- MAIN -->
+  <main>
+    <h1>Каталог автомобилей</h1>
 
-  <h1>Каталог автомобилей</h1>
+    <!-- 🔴 ВАЖНО: именно этот контейнер -->
+    <div id="catalog"></div>
+  </main>
 
-  <div id="cars" class="cars-grid">
-    <!-- СЮДА JS БУДЕТ ВСТАВЛЯТЬ КАРТОЧКИ -->
-  </div>
+  <!-- FOOTER -->
+  <footer>
+    © Border Auto
+  </footer>
 
-</main>
-
-<!-- 🔴 ВАЖНО: JS ПОДКЛЮЧАЕТСЯ ТОЛЬКО ТАК -->
-<script src="js/catalog.js"></script>
-
+  <script src="/js/catalog.js"></script>
 </body>
 </html>
