@@ -217,3 +217,82 @@ footer {
     padding: 20px;
   }
 }
+/* ===== Catalog layout ===== */
+
+.catalog-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+/* ===== Filters ===== */
+
+.filters {
+  background: #0e0e0e;
+  border-radius: 12px;
+  padding: 20px;
+  position: sticky;
+  top: 20px;
+}
+
+.filters h2 {
+  margin-bottom: 16px;
+}
+
+.filters label {
+  display: block;
+  margin-bottom: 14px;
+  font-size: 14px;
+}
+
+.filters input {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.filters button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* ===== Catalog grid ===== */
+
+#catalog {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* ===== Smaller car cards ===== */
+
+.car-card {
+  background: #111;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.car-card img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+.car-card .info {
+  padding: 10px;
+}
+
+.car-card h3 {
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.car-card p {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.car-card strong {
+  font-size: 14px;
+}
+

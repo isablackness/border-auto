@@ -8,29 +8,56 @@
 
 <body>
 
-  <!-- HEADER -->
-  <header>
-    <img src="/images/logo.png" alt="Border Auto" />
-    <nav>
-      <a href="/">Главная</a>
-      <a href="/catalog.html">Каталог</a>
-      <a href="/contacts.html">Контакты</a>
-    </nav>
-  </header>
+<header>
+  <img src="/images/logo.png" alt="Border Auto" />
+  <nav>
+    <a href="/">Главная</a>
+    <a href="/catalog.html">Каталог</a>
+    <a href="/contacts.html">Контакты</a>
+  </nav>
+</header>
 
-  <!-- MAIN -->
-  <main>
+<main class="catalog-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="filters">
+    <h2>Фильтры</h2>
+
+    <label>
+      Марка
+      <input type="text" placeholder="BMW, Audi…" />
+    </label>
+
+    <label>
+      Год от
+      <input type="number" />
+    </label>
+
+    <label>
+      Цена до (€)
+      <input type="number" />
+    </label>
+
+    <label>
+      Пробег до (км)
+      <input type="number" />
+    </label>
+
+    <button>Применить</button>
+  </aside>
+
+  <!-- CATALOG -->
+  <section>
     <h1>Каталог автомобилей</h1>
-
-    <!-- 🔴 ВАЖНО: именно этот контейнер -->
     <div id="catalog"></div>
-  </main>
+  </section>
 
-  <!-- FOOTER -->
-  <footer>
-    © Border Auto
-  </footer>
+</main>
 
-  <script src="/js/catalog.js"></script>
+<footer>
+  © Border Auto
+</footer>
+
+<script src="/js/catalog.js"></script>
 </body>
 </html>
