@@ -63,12 +63,14 @@ app.get("/api/cars", async (req, res) => {
 });
 
 app.get("/api/cars/:id", async (req, res) => {
+  const { id } = req.params;
   const result = await pool.query(
     "SELECT * FROM cars WHERE id = $1",
-    [req.params.id]
+    [id]
   );
   res.json(result.rows[0]);
 });
+
 
 /* ===== ADMIN AUTH ===== */
 

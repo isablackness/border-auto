@@ -1,37 +1,58 @@
-const params = new URLSearchParams(window.location.search);
-const id = params.get("id");
+const container = document.getElementById("car-container");
 
-let images = [];
-let current = 0;
+// получаем id из URL
+const params = new URLSearchParams(window.location.search);
+const carId = params.get("id");
+
+if (!carId) {
+  container.innerHTML = "<p>Автомобиль не найден</p>";
+  throw new Error("No car ID in URL");
+}
 
 async function loadCar() {
-  const res = await fetch(`/api/cars/${id}`);
-  const car = await res.json();
+  try {
+    const res = await fetch(`/api/cars/${carId}`);
+    if (!res.ok) throw new Error("Car not found");
 
-  images = car.images || [];
-
-  document.getElementById("title").textContent =
-    `${car.brand} ${car.model}`;
-
-  document.getElementById("meta").textContent =
-    `${car.year} · ${car.mileage} км`;
-
-  document.getElementById("price").textContent =
-    `${car.price} €`;
-
-  document.getElementById("description").textContent =
-    car.description || "";
-
-  showImage(0);
+    const car = await res.json();
+    renderCar(car);
+  } catch (err) {
+    container.innerHTML = "<p>Ошибка загрузки автомобиля</p>";
+    console.error(err);
+  }
 }
 
-function showImage(index) {
-  if (!images.length) return;
-  current = (index + images.length) % images.length;
-  document.getElementById("mainImage").src = images[current];
-}
+function renderCar(car) {
+  const images = car.images && car.images.length
+    ? car.images.map(img => `<img src="${img}" />`).join("")
+    : `<img src="/images/no-photo.jpg" />`;
 
-document.getElementById("prev").onclick = () => showImage(current - 1);
-document.getElementById("next").onclick = () => showImage(current + 1);
+  container.innerHTML = `
+    <div class="car-detail">
+      <div class="car-gallery">
+        ${images}
+      </div>
+
+      <div class="car-info">
+        <h1>${car.brand} ${car.model}</h1>
+        <p><b>Год:</b> ${car.year}</p>
+        <p><b>Пробег:</b> ${car.mileage} км</p>
+        <p><b>Цена:</b> ${car.price} €</p>
+
+        <p class="car-description">${car.description || ""}</p>
+
+        <div class="car-buttons">
+          <a class="instagram" target="_blank"
+             href="https://www.instagram.com/border.auto/">Instagram</a>
+
+          <a class="whatsapp" target="_blank"
+             href="https://api.whatsapp.com/send?phone=48668989731">
+             WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+}
 
 loadCar();
