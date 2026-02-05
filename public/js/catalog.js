@@ -1,57 +1,52 @@
-const container = document.getElementById("catalog");
+const catalog = document.getElementById("catalog");
 
-const brandInput = document.getElementById("filter-brand");
-const yearSelect = document.getElementById("filter-year");
-const priceInput = document.getElementById("filter-price");
-const mileageInput = document.getElementById("filter-mileage");
-const applyBtn = document.getElementById("applyFilters");
-
-// Годы 2000–2025
-for (let y = 2025; y >= 2000; y--) {
-  const opt = document.createElement("option");
-  opt.value = y;
-  opt.textContent = y;
-  yearSelect.appendChild(opt);
+async function loadCars() {
+  try {
+    const res = await fetch("/api/cars");
+    const cars = await res.json();
+    renderCatalog(cars);
+  } catch (e) {
+    catalog.innerHTML = "<p>Ошибка загрузки автомобилей</p>";
+  }
 }
 
-async function loadCars(filters = {}) {
-  const params = new URLSearchParams(filters);
-  const res = await fetch(`/api/cars?${params.toString()}`);
-  const cars = await res.json();
-
-  container.innerHTML = "";
-
+function renderCatalog(cars) {
   if (!cars.length) {
-    container.innerHTML = "<p>Автомобили не найдены</p>";
+    catalog.innerHTML = "<p>Автомобили не найдены</p>";
     return;
   }
 
+  catalog.innerHTML = "";
+
   cars.forEach(car => {
-    container.innerHTML += `
-      <div class="car-card">
-        <a href="/car.html?id=${car.id}">
-          <img src="${car.images?.[0] || '/images/no-photo.jpg'}">
-        </a>
-        <div class="info">
-          <h3>${car.brand} ${car.model}</h3>
-          <p>${car.year} · ${car.mileage} км</p>
-          <strong>${car.price} €</strong>
-        </div>
+    const preview =
+      car.images && car.images.length
+        ? car.images[0]
+        : "/images/no-photo.jpg";
+
+    const card = document.createElement("div");
+    card.className = "car-card";
+
+    card.innerHTML = `
+      <img src="${preview}" alt="">
+
+      <div class="car-actions">
+        <a class="instagram" target="_blank"
+           href="https://www.instagram.com/border.auto/">Instagram</a>
+        <a class="whatsapp" target="_blank"
+           href="https://api.whatsapp.com/send?phone=48668989731">WhatsApp</a>
+      </div>
+
+      <div class="info">
+        <strong>${car.brand} ${car.model}</strong><br>
+        ${car.year} · ${car.mileage} км<br>
+        <b>${car.price} €</b><br>
+        <a href="/car.html?id=${car.id}">Подробнее</a>
       </div>
     `;
+
+    catalog.appendChild(card);
   });
 }
 
-applyBtn.addEventListener("click", () => {
-  const filters = {};
-
-  if (brandInput.value) filters.brand = brandInput.value;
-  if (yearSelect.value) filters.year = yearSelect.value;
-  if (priceInput.value) filters.price = priceInput.value;
-  if (mileageInput.value) filters.mileage = mileageInput.value;
-
-  loadCars(filters);
-});
-
-// первая загрузка
 loadCars();
