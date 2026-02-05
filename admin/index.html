@@ -8,63 +8,102 @@
 
 <body class="dark">
 
-  <!-- HEADER -->
-  <header>
-    <img src="/images/logo.png" alt="Border Auto" />
-    <nav>
-      <a href="/">Главная</a>
-      <a href="/catalog.html">Каталог</a>
-      <a href="/contacts.html">Контакты</a>
-    </nav>
-  </header>
+<header>
+  <img src="/images/logo.png" alt="Border Auto" />
+  <nav>
+    <a href="/">Главная</a>
+    <a href="/catalog.html">Каталог</a>
+    <a href="/contacts.html">Контакты</a>
+  </nav>
+</header>
 
-  <!-- MAIN -->
-  <main>
-    <h1>Админка</h1>
+<main>
+  <h1>Добавить автомобиль</h1>
 
-    <form id="carForm">
-      <input name="brand" placeholder="Марка" required />
-      <input name="model" placeholder="Модель" required />
-      <input name="year" type="number" placeholder="Год" />
-      <input name="price" type="number" placeholder="Цена (€)" />
-      <input name="mileage" type="number" placeholder="Пробег (км)" />
-      <textarea name="description" placeholder="Описание"></textarea>
+  <form id="carForm">
+    <input name="brand" placeholder="Марка" required />
+    <input name="model" placeholder="Модель" required />
+    <input name="year" type="number" placeholder="Год" />
+    <input name="price" type="number" placeholder="Цена (€)" />
+    <input name="mileage" type="number" placeholder="Пробег (км)" />
+    <textarea name="description" placeholder="Описание"></textarea>
 
-      <label style="margin: 10px 0; display: block; color: #bbb;">
-        Фото автомобиля (до 10):
-      </label>
-      <input type="file" name="images" multiple accept="image/*" />
+    <label style="margin:12px 0;display:block;">
+      Фото (до 10, первое — главное):
+    </label>
 
-      <button type="submit">Добавить автомобиль</button>
-    </form>
-  </main>
+    <input id="imagesInput" type="file" accept="image/*" multiple />
 
-  <!-- FOOTER -->
-  <footer>
-    © Border Auto
-  </footer>
+    <div id="preview" style="margin:16px 0;"></div>
 
-  <script>
-    const form = document.getElementById("carForm");
+    <button type="submit">Сохранить автомобиль</button>
+  </form>
+</main>
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
+<footer>© Border Auto</footer>
 
-      const data = new FormData(form);
+<script>
+const input = document.getElementById("imagesInput");
+const preview = document.getElementById("preview");
+const form = document.getElementById("carForm");
 
-      const res = await fetch("/api/cars", {
-        method: "POST",
-        body: data
-      });
+let files = [];
 
-      if (res.ok) {
-        alert("Автомобиль добавлен");
-        form.reset();
-      } else {
-        alert("Ошибка при добавлении");
-      }
-    });
-  </script>
+input.addEventListener("change", () => {
+  files = Array.from(input.files).slice(0, 10);
+  renderPreview();
+});
+
+function renderPreview() {
+  preview.innerHTML = "";
+
+  files.forEach((file, index) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      preview.innerHTML += `
+        <div style="display:flex;align-items:center;margin-bottom:10px;">
+          <img src="${e.target.result}" style="width:80px;height:100px;object-fit:cover;border-radius:6px;margin-right:10px;">
+          <label>
+            Порядок:
+            <input type="number" min="1" value="${index + 1}" data-index="${index}" style="width:60px;">
+          </label>
+        </div>
+      `;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const data = new FormData(form);
+
+  const orderInputs = preview.querySelectorAll("input[type=number]");
+  const ordered = files
+    .map((file, i) => ({
+      file,
+      order: parseInt(orderInputs[i].value, 10) || 999
+    }))
+    .sort((a, b) => a.order - b.order)
+    .map(x => x.file);
+
+  ordered.forEach(file => data.append("images", file));
+
+  const res = await fetch("/api/cars", {
+    method: "POST",
+    body: data
+  });
+
+  if (res.ok) {
+    alert("Автомобиль добавлен");
+    form.reset();
+    preview.innerHTML = "";
+  } else {
+    alert("Ошибка сохранения");
+  }
+});
+</script>
 
 </body>
 </html>
