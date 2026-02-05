@@ -9,7 +9,7 @@
 <body>
 
 <header>
-  <img src="/images/logo.png" alt="Border Auto" />
+  <img src="/images/logo.png" alt="Border Auto">
   <nav>
     <a href="/">Главная</a>
     <a href="/catalog.html">Каталог</a>
@@ -19,35 +19,37 @@
 
 <main class="catalog-layout">
 
-  <!-- SIDEBAR -->
+  <!-- ЛЕВАЯ КОЛОНКА -->
   <aside class="filters">
     <h2>Фильтры</h2>
 
     <label>
       Марка
-      <input type="text" placeholder="BMW, Audi…" />
+      <input type="text" id="filter-brand" placeholder="BMW, Audi">
     </label>
 
     <label>
-      Год от
-      <input type="number" />
+      Год
+      <select id="filter-year">
+        <option value="">Любой</option>
+      </select>
     </label>
 
     <label>
       Цена до (€)
-      <input type="number" />
+      <input type="number" id="filter-price">
     </label>
 
     <label>
       Пробег до (км)
-      <input type="number" />
+      <input type="number" id="filter-mileage">
     </label>
 
-    <button>Применить</button>
+    <button id="applyFilters">Применить</button>
   </aside>
 
-  <!-- CATALOG -->
-  <section>
+  <!-- ПРАВАЯ КОЛОНКА -->
+  <section class="catalog-content">
     <h1>Каталог автомобилей</h1>
     <div id="catalog"></div>
   </section>

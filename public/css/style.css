@@ -8,17 +8,17 @@ body {
 header {
   display: flex;
   align-items: center;
-  padding: 20px;
+  padding: 20px 40px;
   background: #000;
 }
 
 header img {
-  height: 50px;
+  height: 48px;
   margin-right: 40px;
 }
 
 nav a {
-  color: white;
+  color: #fff;
   margin-right: 20px;
   text-decoration: none;
 }
@@ -33,7 +33,58 @@ footer {
   opacity: 0.5;
 }
 
-/* ===== Catalog ===== */
+/* ===== LAYOUT ===== */
+
+.catalog-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* ===== FILTERS ===== */
+
+.filters {
+  background: #111;
+  border-radius: 12px;
+  padding: 20px;
+  position: sticky;
+  top: 20px;
+}
+
+.filters h2 {
+  margin-bottom: 16px;
+}
+
+.filters label {
+  display: block;
+  margin-bottom: 14px;
+  font-size: 14px;
+}
+
+.filters input,
+.filters select {
+  width: 100%;
+  margin-top: 4px;
+  padding: 6px;
+  background: #000;
+  border: 1px solid #333;
+  color: #fff;
+  border-radius: 6px;
+}
+
+.filters button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background: #e60000;
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* ===== CATALOG ===== */
 
 #catalog {
   display: grid;
@@ -69,45 +120,4 @@ footer {
 
 .car-card strong {
   font-size: 14px;
-}
-
-/* ===== Car page ===== */
-
-.car-page {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 40px;
-}
-
-.gallery {
-  position: relative;
-  background: #000;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.gallery img {
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-}
-
-.gallery button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0,0,0,0.6);
-  border: none;
-  color: white;
-  font-size: 30px;
-  padding: 10px;
-  cursor: pointer;
-}
-
-#prev { left: 10px; }
-#next { right: 10px; }
-
-.details h2 {
-  color: #e60000;
-  margin: 20px 0;
 }
