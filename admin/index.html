@@ -28,29 +28,43 @@
     <input name="mileage" type="number" placeholder="Пробег (км)" />
     <textarea name="description" placeholder="Описание"></textarea>
 
-    <label style="margin:12px 0;display:block;">
-      Фото (до 10, первое — главное):
+    <label style="margin:14px 0;display:block;">
+      Фото автомобиля (до 10):
     </label>
 
-    <input id="imagesInput" type="file" accept="image/*" multiple />
+    <!-- ❗ СКРЫТЫЙ INPUT -->
+    <input
+      id="imagesInput"
+      type="file"
+      accept="image/*"
+      multiple
+      style="display:none;"
+    />
 
-    <div id="preview" style="margin:16px 0;"></div>
+    <button type="button" onclick="imagesInput.click()">
+      Выбрать фотографии
+    </button>
 
-    <button type="submit">Сохранить автомобиль</button>
+    <!-- ПРЕВЬЮ -->
+    <div id="preview" style="margin-top:20px;"></div>
+
+    <button type="submit" style="margin-top:20px;">
+      Добавить автомобиль
+    </button>
   </form>
 </main>
 
 <footer>© Border Auto</footer>
 
 <script>
-const input = document.getElementById("imagesInput");
+const imagesInput = document.getElementById("imagesInput");
 const preview = document.getElementById("preview");
 const form = document.getElementById("carForm");
 
 let files = [];
 
-input.addEventListener("change", () => {
-  files = Array.from(input.files).slice(0, 10);
+imagesInput.addEventListener("change", () => {
+  files = Array.from(imagesInput.files).slice(0, 10);
   renderPreview();
 });
 
@@ -61,12 +75,30 @@ function renderPreview() {
     const reader = new FileReader();
     reader.onload = e => {
       preview.innerHTML += `
-        <div style="display:flex;align-items:center;margin-bottom:10px;">
-          <img src="${e.target.result}" style="width:80px;height:100px;object-fit:cover;border-radius:6px;margin-right:10px;">
-          <label>
-            Порядок:
-            <input type="number" min="1" value="${index + 1}" data-index="${index}" style="width:60px;">
-          </label>
+        <div style="
+          display:flex;
+          align-items:center;
+          gap:12px;
+          margin-bottom:12px;
+          background:#111;
+          padding:10px;
+          border-radius:8px;
+        ">
+          <img src="${e.target.result}"
+               style="width:80px;height:100px;object-fit:cover;border-radius:6px;">
+          <div>
+            <div style="font-size:14px;margin-bottom:4px;">
+              ${file.name}
+            </div>
+            <label>
+              Порядок:
+              <input type="number"
+                     min="1"
+                     value="${index + 1}"
+                     data-index="${index}"
+                     style="width:60px;">
+            </label>
+          </div>
         </div>
       `;
     };
@@ -80,7 +112,7 @@ form.addEventListener("submit", async e => {
   const data = new FormData(form);
 
   const orderInputs = preview.querySelectorAll("input[type=number]");
-  const ordered = files
+  const orderedFiles = files
     .map((file, i) => ({
       file,
       order: parseInt(orderInputs[i].value, 10) || 999
@@ -88,7 +120,7 @@ form.addEventListener("submit", async e => {
     .sort((a, b) => a.order - b.order)
     .map(x => x.file);
 
-  ordered.forEach(file => data.append("images", file));
+  orderedFiles.forEach(file => data.append("images", file));
 
   const res = await fetch("/api/cars", {
     method: "POST",
@@ -99,8 +131,9 @@ form.addEventListener("submit", async e => {
     alert("Автомобиль добавлен");
     form.reset();
     preview.innerHTML = "";
+    files = [];
   } else {
-    alert("Ошибка сохранения");
+    alert("Ошибка при сохранении");
   }
 });
 </script>
