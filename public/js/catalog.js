@@ -30,7 +30,7 @@ function renderCatalog(cars) {
     card.innerHTML = `
       <img src="${preview}" alt="">
 
-      <div class="car-actions">
+      <div class="car-cta">
         <a class="instagram" target="_blank"
            href="https://www.instagram.com/border.auto/">Instagram</a>
         <a class="whatsapp" target="_blank"
@@ -41,7 +41,7 @@ function renderCatalog(cars) {
         <strong>${car.brand} ${car.model}</strong><br>
         ${car.year} · ${car.mileage} км<br>
         <b>${car.price} €</b><br>
-        <a href="/car.html?id=${car.id}">Подробнее</a>
+        <a class="details-link" href="/car.html?id=${car.id}">Подробнее</a>
       </div>
     `;
 

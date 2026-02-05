@@ -1,177 +1,24 @@
-/* ===== BASE ===== */
-
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #000;
-  color: #fff;
+/* =========================
+   BASE
+========================= */
+* {
+  box-sizing: border-box;
 }
 
-main {
-  padding: 40px;
-}
-
-footer {
-  padding: 20px;
-  text-align: center;
-  opacity: 0.5;
-}
-
-/* ===== HEADER ===== */
-.site-header {
-  background: radial-gradient(circle at top, #111 0%, #000 70%);
-  padding: 20px 40px 28px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* LOGO */
-.logo-wrapper {
-  margin-bottom: 18px;
-}
-
-.logo-wrapper img {
-  max-width: 440px;   /* ← ОПТИМАЛЬНО */
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* NAVIGATION */
-.main-nav {
-  display: flex;
-  gap: 28px;
-}
-
-.main-nav a {
-  color: #fff;
-  text-decoration: none;
-  font-size: 18px;
-  font-weight: 600;
-  padding: 10px 22px;
-  border-radius: 30px;
-  background: linear-gradient(135deg, #1a1a1a, #000);
-  border: 1px solid #222;
-  transition: all 0.25s ease;
-}
-
-.main-nav a:hover {
-  background: linear-gradient(135deg, #c30000, #ff0000);
-  border-color: #ff2b2b;
-}
-
-
-.nav-btn.active {
-  background: #e60000;
-  border-color: #e60000;
-}
-
-/* ===== LAYOUT ===== */
-
-.catalog-layout {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 40px;
-  align-items: start;
-}
-
-/* ===== FILTERS ===== */
-
-.filters {
-  background: #111;
-  border-radius: 14px;
-  padding: 20px;
-  position: sticky;
-  top: 20px;
-}
-
-.filters h2 {
-  margin-bottom: 16px;
-}
-
-.filters label {
-  display: block;
-  margin-bottom: 14px;
-  font-size: 14px;
-}
-
-.filters input,
-.filters select {
-  width: 100%;
-  margin-top: 4px;
-  padding: 8px;
-  background: #000;
-  border: 1px solid #333;
-  color: #fff;
-  border-radius: 8px;
-}
-
-.filters button {
-  width: 100%;
-  margin-top: 10px;
-  padding: 12px;
-  background: #e60000;
-  border: none;
-  color: #fff;
-  border-radius: 10px;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-/* ===== CATALOG ===== */
-
-#catalog {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
-}
-
-.car-card {
-  background: #111;
-  border-radius: 14px;
-  overflow: hidden;
-  transition: transform 0.15s ease;
-}
-
-.car-card:hover {
-  transform: translateY(-4px);
-}
-
-.car-card img {
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-}
-
-.car-card .info {
-  padding: 12px;
-}
-
-.car-card h3 {
-  font-size: 15px;
-  margin: 0 0 4px;
-}
-
-.car-card p {
-  font-size: 13px;
-  opacity: 0.8;
-}
-
-.car-card strong {
-  font-size: 14px;
-  color: #e60000;
-}
-
-/* RESET */
 body {
   margin: 0;
   background: #000;
   color: #fff;
-  font-family: Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-/* HEADER */
+a {
+  color: inherit;
+}
+
+/* =========================
+   HEADER
+========================= */
 .site-header {
   background: radial-gradient(circle at top, #111 0%, #000 70%);
   padding: 24px 40px 30px;
@@ -180,19 +27,20 @@ body {
   align-items: center;
 }
 
-/* LOGO */
 .logo-wrapper {
   margin-bottom: 18px;
 }
 
 .logo-wrapper img {
-  max-width: 420px;   /* ← КОНТРОЛЬ РАЗМЕРА */
+  max-width: 420px;
   width: 100%;
   height: auto;
   display: block;
 }
 
-/* NAV */
+/* =========================
+   NAVIGATION
+========================= */
 .main-nav {
   display: flex;
   gap: 26px;
@@ -203,7 +51,7 @@ body {
   text-decoration: none;
   font-size: 18px;
   font-weight: 600;
-  padding: 10px 24px;
+  padding: 10px 26px;
   border-radius: 30px;
   background: linear-gradient(135deg, #1a1a1a, #000);
   border: 1px solid #222;
@@ -216,98 +64,177 @@ body {
   border-color: #ff2b2b;
 }
 
-/* PAGE CONTENT */
+/* =========================
+   PAGE CONTENT
+========================= */
 .page-content {
-  max-width: 1000px;
-  margin: 60px auto;
+  max-width: 1400px;
+  margin: 50px auto;
   padding: 0 20px;
 }
 
-/* ===== HEADER (единый для всех страниц) ===== */
-.site-header {
-  background: radial-gradient(circle at top, #111 0%, #000 70%);
-  padding: 24px 40px 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.logo-wrapper img {
-  max-width: 420px;
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.main-nav {
-  display: flex;
+/* =========================
+   CATALOG GRID
+========================= */
+#catalog {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 26px;
-  margin-top: 16px;
 }
 
-.main-nav a {
-  color: #fff;
-  text-decoration: none;
-  font-size: 18px;
-  font-weight: 600;
-  padding: 10px 24px;
-  border-radius: 30px;
-  background: linear-gradient(135deg, #1a1a1a, #000);
-  border: 1px solid #222;
-  transition: all 0.25s ease;
-}
-
-.main-nav a:hover {
-  background: linear-gradient(135deg, #c30000, #ff0000);
-  border-color: #ff2b2b;
-}
-
-/* ===== КАРТОЧКА АВТО В КАТАЛОГЕ ===== */
+/* =========================
+   CAR CARD
+========================= */
 .car-card {
-  position: relative;
   background: #111;
   border-radius: 14px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
+.car-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+/* =========================
+   CAR IMAGE
+========================= */
 .car-card img {
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
+  display: block;
 }
 
-/* ===== КНОПКИ ПРИ НАВЕДЕНИИ ===== */
-.car-actions {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.75);
+/* =========================
+   CTA BUTTONS (UNDER IMAGE)
+========================= */
+.car-cta {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 14px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  gap: 10px;
+  padding: 12px;
+  background: #0b0b0b;
 }
 
-.car-card:hover .car-actions {
-  opacity: 1;
-}
-
-.car-actions a {
-  margin: 0 auto;
-  width: 70%;
+.car-cta a {
+  flex: 1;
   text-align: center;
-  padding: 12px 0;
-  border-radius: 30px;
-  text-decoration: none;
-  font-weight: 700;
+  padding: 10px 0;
+  border-radius: 24px;
   color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 14px;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.car-actions .instagram {
+.car-cta a:hover {
+  opacity: 0.9;
+  transform: scale(1.03);
+}
+
+.car-cta .instagram {
   background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
 }
 
-.car-actions .whatsapp {
+.car-cta .whatsapp {
   background: linear-gradient(135deg, #25d366, #128c7e);
+}
+
+/* =========================
+   CAR INFO
+========================= */
+.car-card .info {
+  padding: 14px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.car-card .info strong {
+  font-size: 16px;
+}
+
+.details-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: #ff3b3b;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+/* =========================
+   CAR PAGE (DETAIL)
+========================= */
+.car-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.car-gallery img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.car-info h1 {
+  margin-top: 0;
+}
+
+.car-description {
+  margin-top: 20px;
+  line-height: 1.6;
+}
+
+.car-buttons {
+  margin-top: 24px;
+  display: flex;
+  gap: 16px;
+}
+
+.car-buttons a {
+  padding: 14px 28px;
+  border-radius: 30px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.car-buttons .instagram {
+  background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+}
+
+.car-buttons .whatsapp {
+  background: linear-gradient(135deg, #25d366, #128c7e);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 1024px) {
+  #catalog {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .car-detail {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  #catalog {
+    grid-template-columns: 1fr;
+  }
+
+  .logo-wrapper img {
+    max-width: 320px;
+  }
+
+  .main-nav a {
+    font-size: 16px;
+    padding: 8px 20px;
+  }
 }
