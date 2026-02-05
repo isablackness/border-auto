@@ -2,36 +2,69 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Admin – Border Auto</title>
+  <title>Админка — Border Auto</title>
   <link rel="stylesheet" href="/css/style.css" />
 </head>
+
 <body class="dark">
-  <h1>Добавить автомобиль</h1>
 
-  <form id="carForm" enctype="multipart/form-data">
-    <input name="brand" placeholder="Марка" required />
-    <input name="model" placeholder="Модель" required />
-    <input name="year" type="number" placeholder="Год" />
-    <input name="price" type="number" placeholder="Цена €" />
-    <input name="mileage" type="number" placeholder="Пробег км" />
-    <textarea name="description" placeholder="Описание"></textarea>
+  <!-- HEADER -->
+  <header>
+    <img src="/images/logo.png" alt="Border Auto" />
+    <nav>
+      <a href="/">Главная</a>
+      <a href="/catalog.html">Каталог</a>
+      <a href="/contacts.html">Контакты</a>
+    </nav>
+  </header>
 
-    <input type="file" name="images" multiple accept="image/*" />
+  <!-- MAIN -->
+  <main>
+    <h1>Админка</h1>
 
-    <button>Сохранить</button>
-  </form>
+    <form id="carForm">
+      <input name="brand" placeholder="Марка" required />
+      <input name="model" placeholder="Модель" required />
+      <input name="year" type="number" placeholder="Год" />
+      <input name="price" type="number" placeholder="Цена (€)" />
+      <input name="mileage" type="number" placeholder="Пробег (км)" />
+      <textarea name="description" placeholder="Описание"></textarea>
+
+      <label style="margin: 10px 0; display: block; color: #bbb;">
+        Фото автомобиля (до 10):
+      </label>
+      <input type="file" name="images" multiple accept="image/*" />
+
+      <button type="submit">Добавить автомобиль</button>
+    </form>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    © Border Auto
+  </footer>
 
   <script>
     const form = document.getElementById("carForm");
 
-    form.onsubmit = async e => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
+
       const data = new FormData(form);
 
-      await fetch("/api/cars", { method: "POST", body: data });
-      alert("Авто добавлено");
-      form.reset();
-    };
+      const res = await fetch("/api/cars", {
+        method: "POST",
+        body: data
+      });
+
+      if (res.ok) {
+        alert("Автомобиль добавлен");
+        form.reset();
+      } else {
+        alert("Ошибка при добавлении");
+      }
+    });
   </script>
+
 </body>
 </html>
