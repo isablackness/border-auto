@@ -18,43 +18,49 @@ footer {
 }
 
 /* ===== HEADER ===== */
-
 .site-header {
-  background: radial-gradient(circle at top, #111, #000);
-  padding: 30px 20px 20px;
-  text-align: center;
+  background: radial-gradient(circle at top, #111 0%, #000 70%);
+  padding: 20px 40px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* LOGO */
+.logo-wrapper {
+  margin-bottom: 18px;
 }
 
 .logo-wrapper img {
-  max-width: 280px;
+  max-width: 440px;   /* ← ОПТИМАЛЬНО */
   width: 100%;
   height: auto;
+  display: block;
 }
 
-/* ===== NAV ===== */
-
+/* NAVIGATION */
 .main-nav {
-  margin-top: 20px;
   display: flex;
-  justify-content: center;
-  gap: 16px;
+  gap: 28px;
 }
 
-.nav-btn {
-  padding: 12px 28px;
-  border-radius: 30px;
-  background: #111;
+.main-nav a {
   color: #fff;
   text-decoration: none;
-  font-size: 15px;
-  border: 1px solid #333;
-  transition: all 0.2s ease;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #1a1a1a, #000);
+  border: 1px solid #222;
+  transition: all 0.25s ease;
 }
 
-.nav-btn:hover {
-  background: #e60000;
-  border-color: #e60000;
+.main-nav a:hover {
+  background: linear-gradient(135deg, #c30000, #ff0000);
+  border-color: #ff2b2b;
 }
+
 
 .nav-btn.active {
   background: #e60000;
