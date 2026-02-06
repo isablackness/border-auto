@@ -12,15 +12,7 @@ async function loadCar() {
     `${car.brand} ${car.model}`;
 
   document.getElementById("carPrice").textContent = car.price;
-  document.getElementById("carYear").textContent = car.year;
-  document.getElementById("carMileage").textContent = car.mileage;
-
-  // 👉 ПРОСТО ТЕКСТ, ЕСЛИ НЕТ — СТАВИМ ТИРЕ
-  document.getElementById("carEngine").textContent =
-    car.engine || "—";
-
-  document.getElementById("carGearbox").textContent =
-    car.gearbox || "—";
+ 
 
   // 🔥 ГЛАВНОЕ: описание с переносами
   document.getElementById("carDescription").innerHTML =
