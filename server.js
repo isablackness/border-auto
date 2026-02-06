@@ -1,10 +1,3 @@
-console.log("ENV CHECK:", {
-  ADMIN_LOGIN: process.env.ADMIN_LOGIN,
-  ADMIN_PASSWORD: process.env.ADMIN_PASSWORD
-});
-
-
-
 const express = require("express");
 const { Pool } = require("pg");
 const path = require("path");
@@ -13,7 +6,6 @@ const session = require("express-session");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-/* ===== DB ===== */
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
@@ -27,13 +19,9 @@ app.use(express.static("public"));
 app.use(
   session({
     name: "border-auto-admin",
-    secret: process.env.SESSION_SECRET || "super-secret-key",
+    secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      sameSite: "lax"
-    }
+    saveUninitialized: false
   })
 );
 
@@ -42,15 +30,17 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "catalog.html"));
 });
 
-/* ===== API ===== */
+/* ===== API (PUBLIC) ===== */
 app.get("/api/cars", async (req, res) => {
-  const result = await pool.query("SELECT * FROM cars ORDER BY id DESC");
+  const result = await pool.query(
+    "SELECT * FROM cars ORDER BY position ASC"
+  );
   res.json(result.rows);
 });
 
 app.get("/api/cars/:id", async (req, res) => {
   const result = await pool.query(
-    "SELECT * FROM cars WHERE id = $1",
+    "SELECT * FROM cars WHERE id=$1",
     [req.params.id]
   );
   res.json(result.rows[0]);
@@ -59,55 +49,69 @@ app.get("/api/cars/:id", async (req, res) => {
 /* ===== ADMIN AUTH ===== */
 const requireAdmin = (req, res, next) => {
   if (req.session.isAdmin) return next();
-  res.redirect("/admin/login.html");
+  res.status(401).json({ error: "unauthorized" });
 };
 
-/* ===== ADMIN LOGIN PAGE (PUBLIC) ===== */
-app.get("/admin/login.html", (req, res) => {
-  res.sendFile(path.join(__dirname, "admin", "login.html"));
-});
+/* ===== ADMIN CRUD ===== */
 
-/* ===== LOGIN HANDLER ===== */
-app.post("/admin/login", (req, res) => {
-  const { login, password } = req.body;
-
-  if (
-    login === process.env.ADMIN_LOGIN &&
-    password === process.env.ADMIN_PASSWORD
-  ) {
-    req.session.isAdmin = true;
-    return res.redirect("/admin/");
-  }
-
-  res.redirect("/admin/login.html?error=1");
-});
-
-/* ===== LOGOUT ===== */
-app.post("/admin/logout", (req, res) => {
-  req.session.destroy(() => {
-    res.redirect("/admin/login.html");
-  });
-});
-
-/* ===== PROTECTED ADMIN STATIC ===== */
-app.use("/admin", requireAdmin, express.static("admin"));
-
-
+// CREATE
 app.post("/api/admin/cars", requireAdmin, async (req, res) => {
+  const { brand, model, year, price, mileage, description, images } = req.body;
+
+  const result = await pool.query(
+    `
+    INSERT INTO cars
+    (brand, model, year, price, mileage, description, images, position)
+    VALUES ($1,$2,$3,$4,$5,$6,$7,
+      (SELECT COALESCE(MAX(position),0)+1 FROM cars)
+    )
+    RETURNING id
+    `,
+    [brand, model, year, price, mileage, description, images]
+  );
+
+  res.json({ id: result.rows[0].id });
+});
+
+// UPDATE
+app.put("/api/admin/cars/:id", requireAdmin, async (req, res) => {
   const { brand, model, year, price, mileage, description, images } = req.body;
 
   await pool.query(
     `
-    INSERT INTO cars
-    (brand, model, year, price, mileage, description, images)
-    VALUES ($1,$2,$3,$4,$5,$6,$7)
+    UPDATE cars SET
+      brand=$1, model=$2, year=$3, price=$4,
+      mileage=$5, description=$6, images=$7
+    WHERE id=$8
     `,
-    [brand, model, year, price, mileage, description, images]
+    [brand, model, year, price, mileage, description, images, req.params.id]
   );
 
   res.json({ success: true });
 });
 
+// DELETE
+app.delete("/api/admin/cars/:id", requireAdmin, async (req, res) => {
+  await pool.query("DELETE FROM cars WHERE id=$1", [req.params.id]);
+  res.json({ success: true });
+});
+
+// UPDATE ORDER
+app.post("/api/admin/cars/reorder", requireAdmin, async (req, res) => {
+  const { order } = req.body;
+
+  for (let i = 0; i < order.length; i++) {
+    await pool.query(
+      "UPDATE cars SET position=$1 WHERE id=$2",
+      [i + 1, order[i]]
+    );
+  }
+
+  res.json({ success: true });
+});
+
+/* ===== ADMIN STATIC ===== */
+app.use("/admin", express.static("admin"));
 
 /* ===== START ===== */
 app.listen(PORT, () => {

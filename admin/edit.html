@@ -2,49 +2,29 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Добавить автомобиль — Admin</title>
+  <title>Авто — Admin</title>
   <link rel="stylesheet" href="/css/base.css">
   <link rel="stylesheet" href="/admin/admin.css">
 </head>
 <body>
 
 <header class="site-header">
-  <div class="logo-wrapper">
-    <img src="/images/logo1.png" alt="Border Auto">
-  </div>
   <nav class="main-nav">
     <a href="/admin/">← Назад</a>
   </nav>
 </header>
 
 <main class="page-content admin-page">
-
-  <h1>Добавить автомобиль</h1>
-
   <form id="carForm" class="admin-card form-card">
-
     <input name="brand" placeholder="Марка" required>
     <input name="model" placeholder="Модель" required>
-
-    <div class="row">
-      <input name="year" type="number" placeholder="Год" required>
-      <input name="price" type="number" placeholder="Цена (€)" required>
-    </div>
-
-    <input name="mileage" type="number" placeholder="Пробег (км)" required>
-
-    <textarea name="description" placeholder="Описание" rows="5"></textarea>
-
-    <textarea
-      name="images"
-      placeholder="Ссылки на фото (каждая с новой строки)"
-      rows="4"
-    ></textarea>
-
-    <button type="submit" class="save-btn">💾 Сохранить</button>
-
+    <input name="year" type="number" placeholder="Год" required>
+    <input name="price" type="number" placeholder="Цена" required>
+    <input name="mileage" type="number" placeholder="Пробег" required>
+    <textarea name="description" placeholder="Описание"></textarea>
+    <textarea name="images" placeholder="Ссылки на фото (каждая с новой строки)"></textarea>
+    <button type="submit">Сохранить</button>
   </form>
-
 </main>
 
 <script src="/admin/admin.js"></script>
