@@ -1,6 +1,6 @@
 let cars = [];
 let currentSort = 'position';
-let sortDir = 'desc'; // asc | desc
+let sortDir = 'desc';
 
 async function loadCars() {
   const res = await fetch('/api/cars');
@@ -9,11 +9,11 @@ async function loadCars() {
 }
 
 function sortAndRender(list = cars) {
-  let sorted = [...list];
+  const sorted = [...list];
 
   sorted.sort((a, b) => {
-    let valA = a[currentSort] || 0;
-    let valB = b[currentSort] || 0;
+    let valA = a[currentSort] ?? 0;
+    let valB = b[currentSort] ?? 0;
 
     if (currentSort === 'position') {
       valA = a.position;
@@ -43,17 +43,23 @@ function renderCars(list) {
 
     card.innerHTML = `
       <div class="image-wrapper">
-        <img src="${img}" alt="">
+        <img src="${img}" alt="${car.brand} ${car.model}">
+        <div class="price-badge">${car.price} €</div>
+
         <div class="card-overlay">
           <span>Подробнее</span>
         </div>
+
         <a class="card-link" href="/car.html?id=${car.id}"></a>
       </div>
 
       <div class="info">
         <h3>${car.brand} ${car.model}</h3>
-        <p>${car.year} · ${car.mileage} км</p>
-        <p><strong>${car.price} €</strong></p>
+
+        <div class="meta">
+          <div class="meta-item year">${car.year}</div>
+          <div class="meta-item mileage">${car.mileage} км</div>
+        </div>
       </div>
     `;
 
@@ -63,7 +69,7 @@ function renderCars(list) {
 
 /* ===== SORT HANDLER ===== */
 document.addEventListener('click', e => {
-  const btn = e.target.closest('button[data-sort]');
+  const btn = e.target.closest('.sort-bar button');
   if (!btn) return;
 
   const sortKey = btn.dataset.sort;
@@ -76,15 +82,14 @@ document.addEventListener('click', e => {
   }
 
   document.querySelectorAll('.sort-bar button').forEach(b => {
-    b.classList.remove('active', 'asc');
-    b.querySelector('.arrow').textContent = '↓';
+    b.classList.remove('active');
+    const arrow = b.querySelector('.arrow');
+    if (arrow) arrow.textContent = '↓';
   });
 
   btn.classList.add('active');
-  if (sortDir === 'asc') {
-    btn.classList.add('asc');
-    btn.querySelector('.arrow').textContent = '↑';
-  }
+  const arrow = btn.querySelector('.arrow');
+  if (arrow && sortDir === 'asc') arrow.textContent = '↑';
 
   sortAndRender();
 });
