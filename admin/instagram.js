@@ -16,9 +16,14 @@
     return;
   }
 
-  // ✅ разрешаем ?img_index и любые query
+  // ✅ ПРИНИМАЕТ:
+  // /p/XXXX
+  // /username/p/XXXX
+  // с query (?img_index=1)
   function isValidInstagramPost(url) {
-    return /^https?:\/\/(www\.)?instagram\.com\/p\/[A-Za-z0-9_-]+\/?(\?.*)?$/.test(url);
+    return /^https?:\/\/(www\.)?instagram\.com\/.+\/p\/[A-Za-z0-9_-]+\/?(\?.*)?$/.test(
+      url.trim()
+    );
   }
 
   importBtn.onclick = async () => {
