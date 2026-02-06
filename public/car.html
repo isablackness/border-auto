@@ -20,7 +20,6 @@
 </header>
 
 <main class="page-content">
-
   <div class="car-page">
 
     <!-- ГАЛЕРЕЯ -->
@@ -30,7 +29,6 @@
         <img id="mainImage" src="" alt="Фото авто">
         <button class="gallery-btn right" id="nextBtn">›</button>
       </div>
-
       <div class="gallery-thumbs" id="thumbnails"></div>
     </div>
 
@@ -43,16 +41,16 @@
         <span id="carPrice"></span> €
       </div>
 
-      <!-- ХАРАКТЕРИСТИКИ -->
-      <ul class="car-specs">
-        <li><span>Год:</span> <span id="carYear"></span></li>
-        <li><span>Пробег:</span> <span id="carMileage"></span> км</li>
-        <li><span>Мотор:</span> <span id="carEngine"></span></li>
-        <li><span>КПП:</span> <span id="carGearbox"></span></li>
-      </ul>
+      <!-- ПРОСТЫЕ ХАРАКТЕРИСТИКИ -->
+      <div class="car-basic">
+        <div>Год: <span id="carYear"></span></div>
+        <div>Пробег: <span id="carMileage"></span> км</div>
+        <div>Мотор: <span id="carEngine"></span></div>
+        <div>КПП: <span id="carGearbox"></span></div>
+      </div>
 
-      <!-- ОПЦИИ -->
-      <div class="car-features" id="carFeatures"></div>
+      <!-- ОПИСАНИЕ (С ПЕРЕНОСАМИ) -->
+      <div class="car-description" id="carDescription"></div>
 
       <div class="car-contacts">
         <a class="instagram" href="https://www.instagram.com/border.auto/" target="_blank">Instagram</a>
@@ -60,9 +58,7 @@
       </div>
 
     </div>
-
   </div>
-
 </main>
 
 <script src="/js/car.js"></script>
