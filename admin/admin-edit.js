@@ -1,8 +1,6 @@
 (async () => {
   const r = await fetch("/api/admin/check");
-  if (!r.ok) {
-    location.href = "/admin/login.html";
-  }
+  if (!r.ok) location.href = "/admin/login.html";
 })();
 
 const form = document.getElementById("carForm");
@@ -12,27 +10,27 @@ const imageList = document.getElementById("imageList");
 
 const params = new URLSearchParams(location.search);
 const editId = params.get("id");
+const mode = params.get("mode") || "car";
 
 let images = [];
 
-/* ===== AUTH CHECK ===== */
-(async () => {
-  const r = await fetch("/api/admin/check");
-  if (!r.ok) location.href = "/admin/login.html";
-})();
-
-/* ===== LOAD FOR EDIT ===== */
+/* ===== LOAD ===== */
 if (editId) {
-  fetch(`/api/cars/${editId}`)
+  const url =
+    mode === "draft"
+      ? `/api/admin/instagram/draft/${editId}`
+      : `/api/cars/${editId}`;
+
+  fetch(url)
     .then(r => r.json())
-    .then(car => {
-      form.brand.value = car.brand;
-      form.model.value = car.model;
-      form.year.value = car.year;
-      form.price.value = car.price;
-      form.mileage.value = car.mileage;
-      form.description.value = car.description || "";
-      images = car.images || [];
+    .then(data => {
+      form.brand.value = data.brand || "";
+      form.model.value = data.model || "";
+      form.year.value = data.year || "";
+      form.price.value = data.price || "";
+      form.mileage.value = data.mileage || "";
+      form.description.value = data.description || "";
+      images = data.images || [];
       renderImages();
     });
 }
@@ -58,7 +56,7 @@ function renderImages() {
   });
 }
 
-/* ===== COMMON UPLOAD HANDLER ===== */
+/* ===== UPLOAD ===== */
 async function uploadFiles(files) {
   const base64 = await Promise.all(
     [...files].map(
@@ -82,34 +80,17 @@ async function uploadFiles(files) {
   renderImages();
 }
 
-/* ===== CLICK TO SELECT ===== */
-dropZone.addEventListener("click", () => imageInput.click());
-
-imageInput.addEventListener("change", () => {
+dropZone.onclick = () => imageInput.click();
+imageInput.onchange = () => {
   uploadFiles(imageInput.files);
   imageInput.value = "";
-});
+};
 
-/* ===== DRAG & DROP ===== */
-["dragenter", "dragover"].forEach(event => {
-  dropZone.addEventListener(event, e => {
-    e.preventDefault();
-    e.stopPropagation();
-    dropZone.classList.add("drag");
-  });
-});
-
-["dragleave", "drop"].forEach(event => {
-  dropZone.addEventListener(event, e => {
-    e.preventDefault();
-    e.stopPropagation();
-    dropZone.classList.remove("drag");
-  });
-});
-
-dropZone.addEventListener("drop", e => {
+dropZone.ondragover = e => e.preventDefault();
+dropZone.ondrop = e => {
+  e.preventDefault();
   uploadFiles(e.dataTransfer.files);
-});
+};
 
 /* ===== SAVE ===== */
 form.onsubmit = async e => {
@@ -125,8 +106,17 @@ form.onsubmit = async e => {
     images
   };
 
-  const method = editId ? "PUT" : "POST";
-  const url = editId ? `/api/admin/cars/${editId}` : "/api/admin/cars";
+  let url, method;
+
+  if (mode === "draft") {
+    url = `/api/admin/instagram/draft/${editId}`;
+    method = "PUT";
+  } else {
+    url = editId
+      ? `/api/admin/cars/${editId}`
+      : "/api/admin/cars";
+    method = editId ? "PUT" : "POST";
+  }
 
   await fetch(url, {
     method,
@@ -134,5 +124,12 @@ form.onsubmit = async e => {
     body: JSON.stringify(payload)
   });
 
-  location.href = "/admin/";
+  if (mode === "draft") {
+    await fetch(`/api/admin/instagram/publish/${editId}`, {
+      method: "POST"
+    });
+    location.href = "/admin/instagram.html";
+  } else {
+    location.href = "/admin/";
+  }
 };
