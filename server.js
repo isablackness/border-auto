@@ -25,7 +25,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: "lax"
     }
   })
 );
@@ -55,7 +55,12 @@ const requireAdmin = (req, res, next) => {
   res.redirect("/admin/login.html");
 };
 
-/* ===== LOGIN ===== */
+/* ===== ADMIN LOGIN PAGE (PUBLIC) ===== */
+app.get("/admin/login.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "admin", "login.html"));
+});
+
+/* ===== LOGIN HANDLER ===== */
 app.post("/admin/login", (req, res) => {
   const { login, password } = req.body;
 
@@ -77,7 +82,7 @@ app.post("/admin/logout", (req, res) => {
   });
 });
 
-/* ===== ADMIN STATIC ===== */
+/* ===== PROTECTED ADMIN STATIC ===== */
 app.use("/admin", requireAdmin, express.static("admin"));
 
 /* ===== START ===== */
