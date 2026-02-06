@@ -15,7 +15,13 @@ const editId = params.get("id");
 
 let images = [];
 
-/* ===== LOAD DATA FOR EDIT ===== */
+/* ===== AUTH CHECK ===== */
+(async () => {
+  const r = await fetch("/api/admin/check");
+  if (!r.ok) location.href = "/admin/login.html";
+})();
+
+/* ===== LOAD FOR EDIT ===== */
 if (editId) {
   fetch(`/api/cars/${editId}`)
     .then(r => r.json())
@@ -52,14 +58,10 @@ function renderImages() {
   });
 }
 
-/* ===== UPLOAD TO CLOUDINARY ===== */
-dropZone.onclick = () => imageInput.click();
-
-imageInput.onchange = async () => {
-  const files = [...imageInput.files];
-
+/* ===== COMMON UPLOAD HANDLER ===== */
+async function uploadFiles(files) {
   const base64 = await Promise.all(
-    files.map(
+    [...files].map(
       f =>
         new Promise(res => {
           const reader = new FileReader();
@@ -78,7 +80,36 @@ imageInput.onchange = async () => {
   const uploaded = await r.json();
   images.push(...uploaded);
   renderImages();
-};
+}
+
+/* ===== CLICK TO SELECT ===== */
+dropZone.addEventListener("click", () => imageInput.click());
+
+imageInput.addEventListener("change", () => {
+  uploadFiles(imageInput.files);
+  imageInput.value = "";
+});
+
+/* ===== DRAG & DROP ===== */
+["dragenter", "dragover"].forEach(event => {
+  dropZone.addEventListener(event, e => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropZone.classList.add("drag");
+  });
+});
+
+["dragleave", "drop"].forEach(event => {
+  dropZone.addEventListener(event, e => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropZone.classList.remove("drag");
+  });
+});
+
+dropZone.addEventListener("drop", e => {
+  uploadFiles(e.dataTransfer.files);
+});
 
 /* ===== SAVE ===== */
 form.onsubmit = async e => {
