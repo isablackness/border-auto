@@ -1,24 +1,26 @@
-(async () => {
-  const r = await fetch("/api/admin/check");
-  if (!r.ok) {
-    location.href = "/admin/login.html";
-  }
-})();
-
-
 const catalog = document.getElementById("adminCatalog");
 const addBtn = document.querySelector(".add-btn");
 
+let draggedId = null;
+
+/* ===== AUTH CHECK ===== */
+(async () => {
+  const r = await fetch("/api/admin/check");
+  if (!r.ok) location.href = "/admin/login.html";
+})();
+
+/* ===== LOAD ===== */
 async function loadCars() {
   const res = await fetch("/api/cars");
-  if (!res.ok) return;
-
   const cars = await res.json();
+
   catalog.innerHTML = "";
 
   cars.forEach(car => {
     const card = document.createElement("div");
     card.className = "admin-card";
+    card.draggable = true;
+    card.dataset.id = car.id;
 
     card.innerHTML = `
       <img src="${car.images?.[0] || "/images/no-image.png"}">
@@ -36,6 +38,42 @@ async function loadCars() {
       </div>
     `;
 
+    card.addEventListener("dragstart", () => {
+      draggedId = car.id;
+      card.classList.add("dragging");
+    });
+
+    card.addEventListener("dragend", () => {
+      draggedId = null;
+      card.classList.remove("dragging");
+    });
+
+    card.addEventListener("dragover", e => {
+      e.preventDefault();
+    });
+
+    card.addEventListener("drop", async () => {
+      const nodes = [...catalog.children];
+      const from = nodes.findIndex(n => n.dataset.id == draggedId);
+      const to = nodes.findIndex(n => n === card);
+
+      if (from === to) return;
+
+      const moved = nodes[from];
+      nodes.splice(from, 1);
+      nodes.splice(to, 0, moved);
+
+      nodes.forEach(n => catalog.appendChild(n));
+
+      const order = nodes.map(n => Number(n.dataset.id));
+
+      await fetch("/api/admin/cars/sort", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ order })
+      });
+    });
+
     catalog.appendChild(card);
   });
 }
@@ -43,11 +81,8 @@ async function loadCars() {
 async function deleteCar(id) {
   if (!confirm("Удалить автомобиль?")) return;
 
-  const res = await fetch(`/api/admin/cars/${id}`, {
-    method: "DELETE"
-  });
-
-  if (res.ok) loadCars();
+  await fetch(`/api/admin/cars/${id}`, { method: "DELETE" });
+  loadCars();
 }
 
 addBtn.onclick = () => {

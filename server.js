@@ -117,6 +117,33 @@ app.delete("/api/admin/cars/:id", requireAdmin, async (req, res) => {
   await pool.query("DELETE FROM cars WHERE id=$1", [req.params.id]);
   res.json({ ok: true });
 });
+
+/* ===== SORT CARS ===== */
+app.post("/api/admin/cars/sort", requireAdmin, async (req, res) => {
+  const { order } = req.body;
+
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
+
+    for (let i = 0; i < order.length; i++) {
+      await client.query(
+        "UPDATE cars SET position = $1 WHERE id = $2",
+        [i, order[i]]
+      );
+    }
+
+    await client.query("COMMIT");
+    res.json({ ok: true });
+  } catch (e) {
+    await client.query("ROLLBACK");
+    res.status(500).json({ error: "sort failed" });
+  } finally {
+    client.release();
+  }
+});
+
+
 /* ===== ADMIN LOGIN ===== */
 app.post("/admin/login", (req, res) => {
   const { login, password } = req.body;
