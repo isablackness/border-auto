@@ -1,3 +1,10 @@
+console.log("ENV CHECK:", {
+  ADMIN_LOGIN: process.env.ADMIN_LOGIN,
+  ADMIN_PASSWORD: process.env.ADMIN_PASSWORD
+});
+
+
+
 const express = require("express");
 const { Pool } = require("pg");
 const path = require("path");
