@@ -22,6 +22,22 @@
   cursor: pointer;
 }
 
+/* ===== BASE INPUTS (ВАЖНО!) ===== */
+input,
+textarea {
+  background: #0f0f0f;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  color: #fff;
+  outline: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #777;
+}
+
 /* ===== CATALOG GRID ===== */
 .admin-catalog {
   display: grid;
@@ -57,7 +73,6 @@
 .form-card input,
 .form-card textarea {
   background: #0f0f0f;
-  border: none;
   border-radius: 10px;
   padding: 12px;
   color: #fff;
