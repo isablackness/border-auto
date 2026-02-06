@@ -92,6 +92,23 @@ app.post("/admin/logout", (req, res) => {
 /* ===== PROTECTED ADMIN STATIC ===== */
 app.use("/admin", requireAdmin, express.static("admin"));
 
+
+app.post("/api/admin/cars", requireAdmin, async (req, res) => {
+  const { brand, model, year, price, mileage, description, images } = req.body;
+
+  await pool.query(
+    `
+    INSERT INTO cars
+    (brand, model, year, price, mileage, description, images)
+    VALUES ($1,$2,$3,$4,$5,$6,$7)
+    `,
+    [brand, model, year, price, mileage, description, images]
+  );
+
+  res.json({ success: true });
+});
+
+
 /* ===== START ===== */
 app.listen(PORT, () => {
   console.log("🚀 Server running on port", PORT);
