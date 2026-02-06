@@ -3,56 +3,31 @@
   if (!r.ok) location.href = "/admin/login.html";
 })();
 
-const list = document.getElementById("draftList");
 const importBtn = document.getElementById("importBtn");
-
-async function loadDrafts() {
-  const r = await fetch("/api/admin/instagram/drafts");
-  const drafts = await r.json();
-
-  list.innerHTML = "";
-
-  if (!drafts.length) {
-    list.innerHTML = "<p>Черновиков пока нет</p>";
-    return;
-  }
-
-  drafts.forEach(d => {
-    const card = document.createElement("div");
-    card.className = "admin-card";
-
-    card.innerHTML = `
-      <img src="${d.images?.[0] || "/images/no-image.png"}">
-      <div class="info">
-        <h3>${d.brand || "Без названия"} ${d.model || ""}</h3>
-        <div class="price">${d.price ? d.price + " €" : ""}</div>
-        <div class="actions">
-          <button onclick="location.href='/admin/edit.html?mode=draft&id=${d.id}'">
-            ✏️ Редактировать
-          </button>
-        </div>
-      </div>
-    `;
-
-    list.appendChild(card);
-  });
-}
+const input = document.getElementById("instagramUrl");
 
 importBtn.onclick = async () => {
+  const url = input.value.trim();
+  if (!url) return alert("Вставь ссылку на пост");
+
   importBtn.disabled = true;
   importBtn.textContent = "Импортируем...";
 
   try {
-    await fetch("/api/admin/instagram/import", {
-      method: "POST"
+    const r = await fetch("/api/admin/instagram/import", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ url })
     });
-    await loadDrafts();
-  } catch (e) {
+
+    if (!r.ok) throw new Error();
+
+    alert("Импортировано как черновик");
+    input.value = "";
+  } catch {
     alert("Ошибка импорта");
   } finally {
     importBtn.disabled = false;
-    importBtn.textContent = "⬇️ Импортировать из Instagram";
+    importBtn.textContent = "⬇️ Импортировать";
   }
 };
-
-loadDrafts();
