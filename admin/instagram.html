@@ -2,41 +2,29 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Instagram импорт</title>
+  <title>Импорт из Instagram</title>
   <link rel="stylesheet" href="admin.css" />
 </head>
-<body>
+<body class="admin-page">
 
-<h2>Импорт из Instagram</h2>
+  <div class="admin-top">
+    <h1>Импорт из Instagram</h1>
+  </div>
 
-<div class="import-box">
-  <p>
-    Вставь ссылку на <b>один публичный пост Instagram</b>.
-    Пост будет импортирован как <b>черновик</b>.
-  </p>
+  <div class="form-card">
+    <input
+      id="instagramUrl"
+      type="text"
+      placeholder="Вставь ссылку на пост Instagram"
+    />
+    <button id="importBtn" class="save-btn">
+      Получить данные
+    </button>
+  </div>
 
-  <input
-    id="instagramUrl"
-    type="text"
-    placeholder="https://www.instagram.com/p/XXXXXXXXX/"
-    style="width: 100%; padding: 8px; margin-bottom: 10px;"
-  />
+  <!-- скрытый iframe для парсинга -->
+  <iframe id="igFrame" style="display:none;"></iframe>
 
-  <button
-    id="importBtn"
-    style="padding: 10px 16px; cursor: pointer;"
-  >
-    ⬇️ Импортировать
-  </button>
-</div>
-
-<hr>
-
-<h3>Черновики</h3>
-<div id="draftList">
-  <p>Черновики появятся здесь после импорта</p>
-</div>
-
-<script src="instagram.js"></script>
+  <script src="instagram.js"></script>
 </body>
 </html>

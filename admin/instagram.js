@@ -1,67 +1,57 @@
 (() => {
-  (async () => {
-    try {
-      const r = await fetch("/api/admin/check");
-      if (!r.ok) location.href = "/admin/login.html";
-    } catch {
-      location.href = "/admin/login.html";
-    }
-  })();
-
-  const importBtn = document.getElementById("importBtn");
+  const btn = document.getElementById("importBtn");
   const input = document.getElementById("instagramUrl");
+  const frame = document.getElementById("igFrame");
 
-  if (!importBtn || !input) {
-    console.error("Instagram import: элементы формы не найдены");
-    return;
+  function normalizeUrl(url) {
+    const m = url.match(/instagram\.com\/(?:[^/]+\/)?p\/([A-Za-z0-9_-]+)/);
+    return m ? `https://www.instagram.com/p/${m[1]}/` : null;
   }
 
-  // ✅ ПРИНИМАЕТ:
-  // /p/XXXX
-  // /username/p/XXXX
-  // с query (?img_index=1)
-  function isValidInstagramPost(url) {
-    return /^https?:\/\/(www\.)?instagram\.com\/.+\/p\/[A-Za-z0-9_-]+\/?(\?.*)?$/.test(
-      url.trim()
-    );
-  }
-
-  importBtn.onclick = async () => {
-    const url = input.value.trim();
+  btn.onclick = () => {
+    const rawUrl = input.value.trim();
+    const url = normalizeUrl(rawUrl);
 
     if (!url) {
-      alert("Вставь ссылку на пост Instagram");
+      alert("Неверная ссылка Instagram");
       return;
     }
 
-    if (!isValidInstagramPost(url)) {
-      alert("Это не ссылка на пост Instagram");
-      return;
-    }
+    btn.disabled = true;
+    btn.textContent = "Получаем данные…";
 
-    importBtn.disabled = true;
-    const originalText = importBtn.textContent;
-    importBtn.textContent = "Импортируем…";
+    frame.src = url;
 
-    try {
-      const r = await fetch("/api/admin/instagram/import", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url })
-      });
+    frame.onload = () => {
+      try {
+        const doc = frame.contentDocument;
 
-      if (!r.ok) {
-        const err = await r.json().catch(() => ({}));
-        throw new Error(err.error || "Ошибка сервера");
+        // 1️⃣ описание
+        let caption = "";
+        const meta = doc.querySelector('meta[property="og:description"]');
+        if (meta) caption = meta.content;
+
+        // 2️⃣ изображения
+        const images = [];
+        doc.querySelectorAll('meta[property="og:image"]').forEach(m => {
+          images.push(m.content);
+        });
+
+        if (!caption && images.length === 0) {
+          throw new Error("Не удалось получить данные. Убедись, что ты залогинен в Instagram.");
+        }
+
+        sessionStorage.setItem(
+          "ig_import",
+          JSON.stringify({ caption, images })
+        );
+
+        location.href = "/admin/edit.html";
+      } catch (e) {
+        alert(e.message);
+        btn.disabled = false;
+        btn.textContent = "Получить данные";
       }
-
-      alert("Пост импортирован как черновик");
-      input.value = "";
-    } catch (e) {
-      alert("Ошибка импорта: " + e.message);
-    } finally {
-      importBtn.disabled = false;
-      importBtn.textContent = originalText;
-    }
+    };
   };
 })();

@@ -32,6 +32,32 @@
 </main>
 
 <script src="/admin/admin-edit.js"></script>
+<script>
+  (() => {
+    const data = sessionStorage.getItem("ig_import");
+    if (!data) return;
+
+    const { caption, images } = JSON.parse(data);
+
+    const desc = document.querySelector("textarea");
+    if (desc && caption) {
+      desc.value = caption;
+    }
+
+    const dropZone = document.querySelector(".drop-zone");
+    if (dropZone && images.length) {
+      images.forEach(url => {
+        const img = document.createElement("img");
+        img.src = url;
+        img.style.width = "100px";
+        img.style.marginRight = "10px";
+        dropZone.appendChild(img);
+      });
+    }
+
+    sessionStorage.removeItem("ig_import");
+  })();
+</script>
 
 </body>
 </html>
