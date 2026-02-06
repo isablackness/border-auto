@@ -1,45 +1,50 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Каталог — Border Auto</title>
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/style.css" />
 </head>
 <body>
 
 <header class="site-header">
   <div class="logo-wrapper">
-    <img src="/images/logo1.png" alt="Border Auto logo">
+    <img src="/images/logo1.png" alt="Border Auto">
   </div>
-
   <nav class="main-nav">
     <a href="/catalog.html">Каталог</a>
     <a href="/contacts.html">Контакты</a>
   </nav>
 </header>
 
+<main class="page-content">
 
-<main class="page-content catalog-layout">
+  <div class="catalog-layout">
 
-  <!-- ФИЛЬТР СЛЕВА -->
-  <aside class="filters">
-    <h3>Фильтр</h3>
+    <!-- ФИЛЬТР -->
+    <aside class="filter-panel">
+      <h3>Фильтр</h3>
+      <input type="text" id="brand" placeholder="Марка">
+      <input type="text" id="model" placeholder="Модель">
 
-    <input type="text" id="filter-brand" placeholder="Марка">
-    <input type="text" id="filter-model" placeholder="Модель">
+      <select id="year">
+        <option value="">Год</option>
+        <script>
+          for (let y = 2025; y >= 2000; y--) {
+            document.write(`<option value="${y}">${y}</option>`);
+          }
+        </script>
+      </select>
 
-    <select id="filter-year">
-      <option value="">Год</option>
-    </select>
+      <input type="number" id="price" placeholder="Цена до (€)">
+      <input type="number" id="mileage" placeholder="Пробег до (км)">
+      <button onclick="applyFilters()">Применить</button>
+    </aside>
 
-    <input type="number" id="filter-price" placeholder="Цена до (€)">
-    <input type="number" id="filter-mileage" placeholder="Пробег до (км)">
+    <!-- КАТАЛОГ -->
+    <section id="catalog"></section>
 
-    <button onclick="applyFilters()">Применить</button>
-  </aside>
-
-  <!-- КАТАЛОГ СПРАВА -->
-  <section id="catalog"></section>
+  </div>
 
 </main>
 
