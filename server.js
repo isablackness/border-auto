@@ -1,101 +1,86 @@
 const express = require("express");
 const { Pool } = require("pg");
 const path = require("path");
+const session = require("express-session");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+/* ===== DB ===== */
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
 });
 
+/* ===== MIDDLEWARE ===== */
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-/* ===== ROOT → CATALOG ===== */
+app.use(
+  session({
+    name: "border-auto-admin",
+    secret: process.env.SESSION_SECRET || "super-secret-key",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+    }
+  })
+);
 
+/* ===== ROOT ===== */
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "catalog.html"));
 });
 
-/* ===== API: CARS WITH FILTERS ===== */
-
+/* ===== API ===== */
 app.get("/api/cars", async (req, res) => {
-  const { brand, year, price, mileage } = req.query;
-
-  let conditions = [];
-  let values = [];
-  let i = 1;
-
-  if (brand) {
-    conditions.push(`brand ILIKE $${i++}`);
-    values.push(`%${brand}%`);
-  }
-
-  if (year) {
-    conditions.push(`year >= $${i++}`);
-    values.push(year);
-  }
-
-  if (price) {
-    conditions.push(`price <= $${i++}`);
-    values.push(price);
-  }
-
-  if (mileage) {
-    conditions.push(`mileage <= $${i++}`);
-    values.push(mileage);
-  }
-
-  const where = conditions.length
-    ? `WHERE ${conditions.join(" AND ")}`
-    : "";
-
-  const query = `
-    SELECT * FROM cars
-    ${where}
-    ORDER BY id DESC
-  `;
-
-  const result = await pool.query(query, values);
+  const result = await pool.query("SELECT * FROM cars ORDER BY id DESC");
   res.json(result.rows);
 });
 
 app.get("/api/cars/:id", async (req, res) => {
-  const { id } = req.params;
   const result = await pool.query(
     "SELECT * FROM cars WHERE id = $1",
-    [id]
+    [req.params.id]
   );
   res.json(result.rows[0]);
 });
 
-
 /* ===== ADMIN AUTH ===== */
-
-const adminAuth = (req, res, next) => {
-  const auth = req.headers.authorization;
-  if (!auth) {
-    res.setHeader("WWW-Authenticate", "Basic");
-    return res.status(401).end();
-  }
-
-  const [login, password] = Buffer
-    .from(auth.split(" ")[1], "base64")
-    .toString()
-    .split(":");
-
-  if (login === "admin" && password === "admin123") return next();
-
-  res.setHeader("WWW-Authenticate", "Basic");
-  res.status(401).end();
+const requireAdmin = (req, res, next) => {
+  if (req.session.isAdmin) return next();
+  res.redirect("/admin/login.html");
 };
 
-app.use("/admin", adminAuth, express.static("admin"));
+/* ===== LOGIN ===== */
+app.post("/admin/login", (req, res) => {
+  const { login, password } = req.body;
+
+  if (
+    login === process.env.ADMIN_LOGIN &&
+    password === process.env.ADMIN_PASSWORD
+  ) {
+    req.session.isAdmin = true;
+    return res.redirect("/admin/");
+  }
+
+  res.redirect("/admin/login.html?error=1");
+});
+
+/* ===== LOGOUT ===== */
+app.post("/admin/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/admin/login.html");
+  });
+});
+
+/* ===== ADMIN STATIC ===== */
+app.use("/admin", requireAdmin, express.static("admin"));
 
 /* ===== START ===== */
-
 app.listen(PORT, () => {
   console.log("🚀 Server running on port", PORT);
 });
