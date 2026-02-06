@@ -117,6 +117,27 @@ app.delete("/api/admin/cars/:id", requireAdmin, async (req, res) => {
   await pool.query("DELETE FROM cars WHERE id=$1", [req.params.id]);
   res.json({ ok: true });
 });
+/* ===== ADMIN LOGIN ===== */
+app.post("/admin/login", (req, res) => {
+  const { login, password } = req.body;
+
+  if (
+    login === process.env.ADMIN_LOGIN &&
+    password === process.env.ADMIN_PASSWORD
+  ) {
+    req.session.isAdmin = true;
+    return res.redirect("/admin/");
+  }
+
+  res.status(401).send("Неверный логин или пароль");
+});
+
+/* ===== ADMIN LOGOUT ===== */
+app.post("/admin/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/admin/login.html");
+  });
+});
 
 /* ===== ADMIN STATIC ===== */
 app.use("/admin", express.static(path.join(__dirname, "admin")));
