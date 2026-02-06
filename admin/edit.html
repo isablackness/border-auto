@@ -58,6 +58,37 @@
     sessionStorage.removeItem("ig_import");
   })();
 </script>
+<script>
+  (() => {
+    const params = new URLSearchParams(location.search);
+    const ig = params.get("ig");
+    if (!ig) return;
+
+    try {
+      const { caption, images, source } = JSON.parse(decodeURIComponent(ig));
+
+      const textarea = document.querySelector("textarea");
+      if (textarea && caption) {
+        textarea.value = caption;
+      }
+
+      const dropZone = document.querySelector(".drop-zone");
+      if (dropZone && images.length) {
+        images.forEach(url => {
+          const img = document.createElement("img");
+          img.src = url;
+          img.style.width = "100px";
+          img.style.margin = "5px";
+          dropZone.appendChild(img);
+        });
+      }
+
+      history.replaceState({}, document.title, location.pathname);
+    } catch (e) {
+      console.error("IG import failed", e);
+    }
+  })();
+</script>
 
 </body>
 </html>
