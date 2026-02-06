@@ -189,3 +189,52 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* ===== CAR INFO RESET ===== */
+.car-info {
+  white-space: normal !important;
+}
+
+/* ===== SPECS ===== */
+.car-specs {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0;
+  display: grid;
+  row-gap: 6px;
+  font-size: 15px;
+}
+
+.car-specs li {
+  display: block;
+}
+
+.car-specs span {
+  color: #ff3b3b;
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+/* ===== FEATURES ===== */
+.car-features {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px 10px;
+  margin-top: 14px;
+}
+
+.feature {
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* ===== FORCE FIX FOR OLD CHECKBOX STYLES ===== */
+.car-features label,
+.car-features span {
+  display: inline-flex;
+  align-items: center;
+}
