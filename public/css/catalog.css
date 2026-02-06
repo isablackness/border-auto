@@ -12,10 +12,6 @@
   border-radius: 14px;
 }
 
-.filter-panel h3 {
-  margin-top: 0;
-}
-
 .filter-panel input,
 .filter-panel select {
   width: 100%;
@@ -36,7 +32,7 @@
   cursor: pointer;
 }
 
-/* ===== CATALOG GRID ===== */
+/* ===== GRID ===== */
 #catalog {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -56,18 +52,70 @@
   box-shadow: 0 20px 50px rgba(255, 0, 0, 0.25);
 }
 
-.car-card img {
+/* ===== IMAGE + OVERLAY ===== */
+.image-wrapper {
+  position: relative;
+}
+
+.image-wrapper img {
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
   display: block;
 }
 
+/* затемнение */
+.image-wrapper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.car-card:hover .image-wrapper::after {
+  opacity: 1;
+}
+
+/* overlay */
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: 0.3s;
+  z-index: 2;
+}
+
+.card-overlay span {
+  padding: 14px 28px;
+  border-radius: 14px;
+  border: 2px solid #bbb;
+  color: #fff;
+  font-weight: 700;
+  background: rgba(255,255,255,0.1);
+}
+
+.car-card:hover .card-overlay {
+  opacity: 1;
+}
+
+/* кликабельная зона */
+.card-link {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+/* ===== INFO ===== */
 .car-card .info {
   padding: 14px;
 }
 
-/* ===== CARD ACTIONS ===== */
+/* ===== ACTIONS ===== */
 .card-actions {
   display: flex;
   gap: 10px;
@@ -84,21 +132,14 @@
   pointer-events: auto;
 }
 
-.card-actions a {
-  flex: 1;
-  text-align: center;
-  padding: 10px;
-  border-radius: 20px;
-  font-size: 14px;
-  text-decoration: none;
-  color: #fff;
-  font-weight: 600;
-}
-
 /* ===== MOBILE ===== */
 @media (max-width: 900px) {
   .catalog-layout {
     grid-template-columns: 1fr;
+  }
+
+  .card-overlay {
+    display: none;
   }
 
   .card-actions {

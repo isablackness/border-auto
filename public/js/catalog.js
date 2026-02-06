@@ -22,9 +22,13 @@ function renderCars(list) {
     card.className = 'car-card';
 
     card.innerHTML = `
-      <a href="/car.html?id=${car.id}">
+      <div class="image-wrapper">
         <img src="${img}" alt="">
-      </a>
+        <div class="card-overlay">
+          <span>Подробнее</span>
+        </div>
+        <a class="card-link" href="/car.html?id=${car.id}"></a>
+      </div>
 
       <div class="info">
         <h3>${car.brand} ${car.model}</h3>
