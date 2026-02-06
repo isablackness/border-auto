@@ -146,3 +146,7 @@ app.use("/admin", express.static(path.join(__dirname, "admin")));
 app.listen(PORT, () => {
   console.log("🚀 Server running on port", PORT);
 });
+
+app.get("/api/admin/check", requireAdmin, (req, res) => {
+  res.json({ ok: true });
+});

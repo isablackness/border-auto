@@ -1,3 +1,10 @@
+(async () => {
+  const r = await fetch("/api/admin/check");
+  if (!r.ok) {
+    location.href = "/admin/login.html";
+  }
+})();
+
 const form = document.getElementById("carForm");
 const dropZone = document.getElementById("dropZone");
 const imageInput = document.getElementById("imageInput");

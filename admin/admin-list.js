@@ -1,3 +1,11 @@
+(async () => {
+  const r = await fetch("/api/admin/check");
+  if (!r.ok) {
+    location.href = "/admin/login.html";
+  }
+})();
+
+
 const catalog = document.getElementById("adminCatalog");
 const addBtn = document.querySelector(".add-btn");
 
