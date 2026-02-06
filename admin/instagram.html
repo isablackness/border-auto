@@ -1,36 +1,42 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Instagram — Admin</title>
-  <link rel="stylesheet" href="/css/base.css">
-  <link rel="stylesheet" href="/admin/admin.css">
+  <meta charset="UTF-8" />
+  <title>Instagram импорт</title>
+  <link rel="stylesheet" href="admin.css" />
 </head>
 <body>
 
-<header class="site-header">
-  <div class="logo-wrapper">
-    <img src="/images/logo1.png" alt="Border Auto">
-  </div>
-  <nav class="main-nav">
-    <a href="/admin/index.html">Автомобили</a>
-    <a href="/admin/instagram.html">Импорт из Instagram</a>
-    <a href="/catalog.html" target="_blank">Сайт</a>
-    <form method="POST" action="/admin/logout">
-      <button class="logout-btn">Выйти</button>
-    </form>
-  </nav>
-</header>
+<h2>Импорт из Instagram</h2>
 
-<main class="admin-page">
-  <div class="admin-top">
-    <h1>Импорт из Instagram</h1>
-    <button id="importBtn" class="add-btn">⬇️ Импортировать из Instagram</button>
-  </div>
+<div class="import-box">
+  <p>
+    Вставь ссылку на <b>один публичный пост Instagram</b>.
+    Пост будет импортирован как <b>черновик</b>.
+  </p>
 
-  <section id="draftList" class="admin-catalog"></section>
-</main>
+  <input
+    id="instagramUrl"
+    type="text"
+    placeholder="https://www.instagram.com/p/XXXXXXXXX/"
+    style="width: 100%; padding: 8px; margin-bottom: 10px;"
+  />
 
-<script src="/admin/instagram.js"></script>
+  <button
+    id="importBtn"
+    style="padding: 10px 16px; cursor: pointer;"
+  >
+    ⬇️ Импортировать
+  </button>
+</div>
+
+<hr>
+
+<h3>Черновики</h3>
+<div id="draftList">
+  <p>Черновики появятся здесь после импорта</p>
+</div>
+
+<script src="instagram.js"></script>
 </body>
 </html>

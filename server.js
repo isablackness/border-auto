@@ -41,6 +41,11 @@ const requireAdmin = (req, res, next) => {
   res.status(401).json({ error: "unauthorized" });
 };
 
+/* ===== ADMIN CHECK (КРИТИЧЕСКИ ВАЖНО) ===== */
+app.get("/api/admin/check", requireAdmin, (req, res) => {
+  res.json({ ok: true });
+});
+
 /* ================= INSTAGRAM MANUAL IMPORT ================= */
 
 async function importInstagramPost(url) {
