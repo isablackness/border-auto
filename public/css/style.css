@@ -123,11 +123,22 @@ body {
   padding: 14px;
 }
 
-/* ===== SOCIAL BUTTONS ===== */
+/* ===== SOCIAL BUTTONS (HOVER) ===== */
 .card-actions {
   display: flex;
   gap: 10px;
   margin-top: 12px;
+
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.car-card:hover .card-actions {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .card-actions a {
@@ -144,10 +155,10 @@ body {
 
 .card-actions a:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* 🔥 INSTAGRAM — фирменный градиент */
+/* INSTAGRAM */
 .card-actions .instagram {
   background: linear-gradient(
     45deg,
@@ -168,5 +179,11 @@ body {
 @media (max-width: 900px) {
   .catalog-layout {
     grid-template-columns: 1fr;
+  }
+
+  .card-actions {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
   }
 }
