@@ -34,11 +34,6 @@ function renderCars(list) {
         <h3>${car.brand} ${car.model}</h3>
         <p>${car.year} · ${car.mileage} км</p>
         <p><strong>${car.price} €</strong></p>
-
-        <div class="card-actions">
-          <a class="instagram" href="https://www.instagram.com/border.auto/" target="_blank">Instagram</a>
-          <a class="whatsapp" href="https://api.whatsapp.com/send?phone=48668989731" target="_blank">WhatsApp</a>
-        </div>
       </div>
     `;
 
