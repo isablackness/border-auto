@@ -1,0 +1,111 @@
+.car-page {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* ===== GALLERY ===== */
+.car-gallery {
+  background: #0f0f0f;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.gallery-main {
+  position: relative;
+}
+
+.gallery-main img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.gallery-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.6);
+  border: none;
+  color: #fff;
+  font-size: 28px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.gallery-btn.left { left: 10px; }
+.gallery-btn.right { right: 10px; }
+
+/* ===== THUMBS ===== */
+.gallery-thumbs {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  overflow-x: auto;
+}
+
+.gallery-thumbs img {
+  width: 70px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+  opacity: 0.6;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.gallery-thumbs img.active {
+  opacity: 1;
+  border-color: #ff0000;
+}
+
+/* ===== INFO ===== */
+.car-info {
+  background: #0f0f0f;
+  padding: 26px;
+  border-radius: 20px;
+  position: sticky;
+  top: 30px;
+}
+
+.car-price {
+  display: inline-block;
+  margin: 16px 0 20px;
+  padding: 12px 22px;
+  background: linear-gradient(135deg, #c30000, #ff0000);
+  border-radius: 20px;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+/* ===== CONTACTS ===== */
+.car-contacts {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.car-contacts a {
+  flex: 1;
+  text-align: center;
+  padding: 12px;
+  border-radius: 20px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 900px) {
+  .car-page {
+    grid-template-columns: 1fr;
+  }
+
+  .car-info {
+    position: static;
+  }
+}

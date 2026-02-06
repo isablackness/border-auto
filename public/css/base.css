@@ -1,0 +1,72 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #000;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+/* ===== HEADER ===== */
+.site-header {
+  background: radial-gradient(circle at top, #111, #000);
+  padding: 30px 20px 20px;
+  text-align: center;
+}
+
+.logo-wrapper {
+  margin-bottom: 20px;
+}
+
+.logo-wrapper img {
+  max-width: 420px;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+/* ===== NAV ===== */
+.main-nav {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.main-nav a {
+  padding: 10px 26px;
+  border-radius: 30px;
+  background: #111;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  border: 1px solid #222;
+  transition: 0.3s;
+}
+
+.main-nav a:hover {
+  background: linear-gradient(135deg, #c30000, #ff0000);
+}
+
+/* ===== PAGE ===== */
+.page-content {
+  padding: 30px;
+}
+
+/* ===== COMMON SOCIAL BUTTONS ===== */
+.instagram {
+  background: linear-gradient(
+    45deg,
+    #feda75,
+    #fa7e1e,
+    #d62976,
+    #962fbf,
+    #4f5bd5
+  );
+}
+
+.whatsapp {
+  background: linear-gradient(135deg, #1ebd5a, #25d366);
+}
