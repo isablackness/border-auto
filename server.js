@@ -79,21 +79,89 @@ app.get("/api/cars/:id", async (req, res) => {
 /* ============== INSTAGRAM MANUAL IMPORT =========== */
 /* ================================================= */
 
-async function importInstagramPost(url) {
-  const html = await fetch(url, {
-    headers: { "User-Agent": "Mozilla/5.0" }
-  }).then(r => r.text());
+/**
+ * Приводим URL к каноническому виду /p/{code}/
+ */
+function normalizeInstagramUrl(url) {
+  const m = url.match(/instagram\.com\/(?:[^/]+\/)?p\/([A-Za-z0-9_-]+)/);
+  if (!m) return null;
+  return `https://www.instagram.com/p/${m[1]}/`;
+}
 
-  const jsonMatch = html.match(
+/**
+ * Парсер Instagram с fallback
+ */
+async function importInstagramPost(url) {
+  const normalizedUrl = normalizeInstagramUrl(url);
+  if (!normalizedUrl) {
+    throw new Error("Неверный формат ссылки Instagram");
+  }
+
+  const response = await fetch(normalizedUrl, {
+    headers: { "User-Agent": "Mozilla/5.0" },
+    redirect: "follow"
+  });
+
+  const html = await response.text();
+
+  /* ===== 1. Пытаемся ld+json ===== */
+  const ldMatch = html.match(
     /<script type="application\/ld\+json">(.*?)<\/script>/s
   );
-  if (!jsonMatch) throw new Error("Не удалось найти данные поста");
 
-  const data = JSON.parse(jsonMatch[1]);
+  if (ldMatch) {
+    const data = JSON.parse(ldMatch[1]);
 
-  const caption = data.caption || "";
-  const images = Array.isArray(data.image) ? data.image : [data.image];
+    const caption = data.caption || "";
+    const images = Array.isArray(data.image)
+      ? data.image
+      : [data.image];
 
+    return await uploadImages(caption, images);
+  }
+
+  /* ===== 2. Fallback: window._sharedData ===== */
+  const sharedMatch = html.match(
+    /window\._sharedData\s*=\s*(\{.*?\});<\/script>/s
+  );
+
+  if (sharedMatch) {
+    const sharedData = JSON.parse(sharedMatch[1]);
+
+    const media =
+      sharedData?.entry_data?.PostPage?.[0]?.graphql?.shortcode_media;
+
+    if (!media) {
+      throw new Error("Не удалось извлечь данные из sharedData");
+    }
+
+    const caption =
+      media.edge_media_to_caption?.edges?.[0]?.node?.text || "";
+
+    const images = [];
+
+    if (media.edge_sidecar_to_children) {
+      media.edge_sidecar_to_children.edges.forEach(e => {
+        images.push(e.node.display_url);
+      });
+    } else if (media.display_url) {
+      images.push(media.display_url);
+    }
+
+    return await uploadImages(caption, images);
+  }
+
+  /* ===== 3. Ничего не нашли — логируем ===== */
+  console.error("Instagram HTML length:", html.length);
+  console.error("Instagram HTML preview:", html.slice(0, 300));
+
+  throw new Error("Не удалось распарсить страницу Instagram");
+}
+
+/**
+ * Загрузка изображений в Cloudinary
+ */
+async function uploadImages(caption, images) {
   const uploadedImages = [];
 
   for (const img of images) {
@@ -109,8 +177,8 @@ async function importInstagramPost(url) {
 app.post("/api/admin/instagram/import", requireAdmin, async (req, res) => {
   try {
     const { url } = req.body;
-    if (!url || !url.includes("instagram.com/p/")) {
-      return res.status(400).json({ error: "Неверная ссылка" });
+    if (!url) {
+      return res.status(400).json({ error: "Нет ссылки" });
     }
 
     const post = await importInstagramPost(url);
@@ -126,7 +194,7 @@ app.post("/api/admin/instagram/import", requireAdmin, async (req, res) => {
     res.json({ ok: true });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ error: "Ошибка импорта" });
+    res.status(500).json({ error: e.message });
   }
 });
 
