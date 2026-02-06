@@ -55,135 +55,137 @@ body {
   padding: 30px;
 }
 
-/* ===== LAYOUT ===== */
-.catalog-layout {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 30px;
-}
-
-/* ===== FILTER ===== */
-.filter-panel {
-  background: #0f0f0f;
-  padding: 20px;
-  border-radius: 14px;
-}
-
-.filter-panel h3 {
-  margin-top: 0;
-}
-
-.filter-panel input,
-.filter-panel select {
-  width: 100%;
-  margin-bottom: 12px;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-}
-
-.filter-panel button {
-  width: 100%;
-  padding: 12px;
-  border-radius: 20px;
-  border: none;
-  background: linear-gradient(135deg, #c30000, #ff0000);
-  color: #fff;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-/* ===== CATALOG ===== */
+/* ===== CATALOG (БЕЗ ИЗМЕНЕНИЙ) ===== */
 #catalog {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 25px;
 }
 
-.car-card {
-  background: #111;
-  border-radius: 18px;
-  overflow: hidden;
-  transition: transform 0.3s, box-shadow 0.3s;
+/* ===== CAR PAGE ===== */
+.car-page {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 40px;
+  align-items: start;
 }
 
-.car-card:hover {
-  transform: scale(1.04);
-  box-shadow: 0 20px 50px rgba(255, 0, 0, 0.25);
+/* ===== GALLERY ===== */
+.car-gallery {
+  background: #0f0f0f;
+  padding: 20px;
+  border-radius: 20px;
 }
 
-.car-card img {
+.gallery-main {
+  position: relative;
+}
+
+.gallery-main img {
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  display: block;
+  border-radius: 16px;
 }
 
-.car-card .info {
-  padding: 14px;
+.gallery-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.6);
+  border: none;
+  color: #fff;
+  font-size: 28px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
-/* ===== SOCIAL BUTTONS (HOVER) ===== */
-.card-actions {
+.gallery-btn.left {
+  left: 10px;
+}
+
+.gallery-btn.right {
+  right: 10px;
+}
+
+/* ===== THUMBNAILS ===== */
+.gallery-thumbs {
   display: flex;
   gap: 10px;
-  margin-top: 12px;
-
-  opacity: 0;
-  transform: translateY(10px);
-  pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  margin-top: 14px;
+  overflow-x: auto;
 }
 
-.car-card:hover .card-actions {
+.gallery-thumbs img {
+  width: 70px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+  opacity: 0.6;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.gallery-thumbs img.active {
   opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
+  border-color: #ff0000;
 }
 
-.card-actions a {
+/* ===== INFO ===== */
+.car-info {
+  background: #0f0f0f;
+  padding: 26px;
+  border-radius: 20px;
+}
+
+.car-info h1 {
+  margin-top: 0;
+}
+
+/* ===== PRICE (АКЦЕНТ) ===== */
+.car-price {
+  display: inline-block;
+  margin: 16px 0 20px;
+  padding: 12px 22px;
+  background: linear-gradient(135deg, #c30000, #ff0000);
+  border-radius: 20px;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+/* ===== SPECS ===== */
+.car-specs {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+}
+
+.car-specs li {
+  margin-bottom: 8px;
+}
+
+/* ===== CONTACTS ===== */
+.car-contacts {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.car-contacts a {
   flex: 1;
   text-align: center;
-  padding: 10px;
+  padding: 12px;
   border-radius: 20px;
-  font-size: 14px;
   text-decoration: none;
   color: #fff;
   font-weight: 600;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.card-actions a:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-}
-
-/* INSTAGRAM */
-.card-actions .instagram {
-  background: linear-gradient(
-    45deg,
-    #feda75,
-    #fa7e1e,
-    #d62976,
-    #962fbf,
-    #4f5bd5
-  );
-}
-
-/* WHATSAPP */
-.card-actions .whatsapp {
-  background: linear-gradient(135deg, #1ebd5a, #25d366);
 }
 
 /* ===== MOBILE ===== */
 @media (max-width: 900px) {
-  .catalog-layout {
+  .car-page {
     grid-template-columns: 1fr;
-  }
-
-  .card-actions {
-    opacity: 1;
-    transform: none;
-    pointer-events: auto;
   }
 }
