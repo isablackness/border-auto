@@ -3,6 +3,7 @@ const { Pool } = require("pg");
 const path = require("path");
 const session = require("express-session");
 const cloudinary = require("cloudinary").v2;
+const fetch = require("node-fetch");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -171,140 +172,67 @@ app.get("/api/admin/check", requireAdmin, (req, res) => {
   res.json({ ok: true });
 });
 
-/* ========================================================= */
-/* ========== INSTAGRAM DRAFTS (НОВЫЙ БЛОК) ================= */
-/* ========================================================= */
+/* ================================================= */
+/* ========== INSTAGRAM IMPORT BLOCK ================ */
+/* ================================================= */
 
-/* GET all drafts */
-app.get("/api/admin/instagram/drafts", requireAdmin, async (req, res) => {
-  const r = await pool.query(
-    "SELECT * FROM instagram_drafts ORDER BY created_at DESC"
-  );
-  res.json(r.rows);
-});
+async function fetchInstagramPosts() {
+  const url =
+    `https://graph.instagram.com/${process.env.INSTAGRAM_USER_ID}/media` +
+    `?fields=id,caption,media_url,media_type` +
+    `&access_token=${process.env.INSTAGRAM_ACCESS_TOKEN}`;
 
-/* GET single draft */
-app.get("/api/admin/instagram/draft/:id", requireAdmin, async (req, res) => {
-  const r = await pool.query(
-    "SELECT * FROM instagram_drafts WHERE id=$1",
-    [req.params.id]
-  );
-  res.json(r.rows[0]);
-});
+  const r = await fetch(url);
+  const data = await r.json();
+  return data.data || [];
+}
 
-/* CREATE draft (пока вручную, Instagram API добавим следующим шагом) */
-app.post("/api/admin/instagram/draft", requireAdmin, async (req, res) => {
-  const {
-    instagram_post_id,
-    brand,
-    model,
-    year,
-    price,
-    mileage,
-    description,
-    images
-  } = req.body;
+function parseCaption(caption = "") {
+  const lines = caption.split("\n").map(l => l.trim()).filter(Boolean);
 
-  await pool.query(
-    `
-    INSERT INTO instagram_drafts
-    (instagram_post_id, brand, model, year, price, mileage, description, images)
-    VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
-    ON CONFLICT (instagram_post_id) DO NOTHING
-    `,
-    [
-      instagram_post_id,
-      brand,
-      model,
-      year,
-      price,
-      mileage,
-      description,
-      images
-    ]
-  );
+  return {
+    brand: lines[0] || "",
+    model: lines[1] || "",
+    year: Number(lines[2]) || null,
+    price: Number(
+      lines.find(l => l.includes("€"))?.replace(/\D/g, "")
+    ) || null,
+    mileage: Number(
+      lines.find(l => l.toLowerCase().includes("km"))?.replace(/\D/g, "")
+    ) || null,
+    description: caption
+  };
+}
 
-  res.json({ ok: true });
-});
+app.post("/api/admin/instagram/import", requireAdmin, async (req, res) => {
+  const posts = await fetchInstagramPosts();
 
-/* UPDATE draft */
-app.put("/api/admin/instagram/draft/:id", requireAdmin, async (req, res) => {
-  const { brand, model, year, price, mileage, description, images } = req.body;
+  for (const post of posts) {
+    if (post.media_type !== "IMAGE") continue;
 
-  await pool.query(
-    `
-    UPDATE instagram_drafts SET
-      brand=$1,
-      model=$2,
-      year=$3,
-      price=$4,
-      mileage=$5,
-      description=$6,
-      images=$7
-    WHERE id=$8
-    `,
-    [
-      brand,
-      model,
-      year,
-      price,
-      mileage,
-      description,
-      images,
-      req.params.id
-    ]
-  );
+    const parsed = parseCaption(post.caption);
 
-  res.json({ ok: true });
-});
-
-/* PUBLISH draft → cars */
-app.post("/api/admin/instagram/publish/:id", requireAdmin, async (req, res) => {
-  const client = await pool.connect();
-
-  try {
-    await client.query("BEGIN");
-
-    const r = await client.query(
-      "SELECT * FROM instagram_drafts WHERE id=$1",
-      [req.params.id]
-    );
-
-    const d = r.rows[0];
-    if (!d) throw new Error("Draft not found");
-
-    await client.query(
+    await pool.query(
       `
-      INSERT INTO cars
-      (brand, model, year, price, mileage, description, images, position)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,
-        (SELECT COALESCE(MAX(position),0)+1 FROM cars)
-      )
+      INSERT INTO instagram_drafts
+      (instagram_post_id, brand, model, year, price, mileage, description, images)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+      ON CONFLICT (instagram_post_id) DO NOTHING
       `,
       [
-        d.brand,
-        d.model,
-        d.year,
-        d.price,
-        d.mileage,
-        d.description,
-        d.images
+        post.id,
+        parsed.brand,
+        parsed.model,
+        parsed.year,
+        parsed.price,
+        parsed.mileage,
+        parsed.description,
+        [post.media_url]
       ]
     );
-
-    await client.query(
-      "DELETE FROM instagram_drafts WHERE id=$1",
-      [req.params.id]
-    );
-
-    await client.query("COMMIT");
-    res.json({ ok: true });
-  } catch (e) {
-    await client.query("ROLLBACK");
-    res.status(500).json({ error: e.message });
-  } finally {
-    client.release();
   }
+
+  res.json({ ok: true });
 });
 
 /* ===== ADMIN STATIC ===== */
