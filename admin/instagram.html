@@ -10,11 +10,12 @@
 
 <header class="site-header">
   <div class="logo-wrapper">
-    <img src="/images/logo1.png">
+    <img src="/images/logo1.png" alt="Border Auto">
   </div>
   <nav class="main-nav">
     <a href="/admin/index.html">Автомобили</a>
     <a href="/admin/instagram.html">Импорт из Instagram</a>
+    <a href="/catalog.html" target="_blank">Сайт</a>
     <form method="POST" action="/admin/logout">
       <button class="logout-btn">Выйти</button>
     </form>
@@ -22,7 +23,11 @@
 </header>
 
 <main class="admin-page">
-  <h1>Instagram — черновики</h1>
+  <div class="admin-top">
+    <h1>Импорт из Instagram</h1>
+    <button id="importBtn" class="add-btn">⬇️ Импортировать из Instagram</button>
+  </div>
+
   <section id="draftList" class="admin-catalog"></section>
 </main>
 
