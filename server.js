@@ -41,12 +41,43 @@ const requireAdmin = (req, res, next) => {
   res.status(401).json({ error: "unauthorized" });
 };
 
-/* ===== ADMIN CHECK (КРИТИЧЕСКИ ВАЖНО) ===== */
+/* ===== ADMIN CHECK ===== */
 app.get("/api/admin/check", requireAdmin, (req, res) => {
   res.json({ ok: true });
 });
 
-/* ================= INSTAGRAM MANUAL IMPORT ================= */
+/* ================================================= */
+/* ================== PUBLIC CARS API ============== */
+/* ================================================= */
+
+app.get("/api/cars", async (req, res) => {
+  try {
+    const r = await pool.query(
+      "SELECT * FROM cars ORDER BY position DESC"
+    );
+    res.json(r.rows);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "cars load failed" });
+  }
+});
+
+app.get("/api/cars/:id", async (req, res) => {
+  try {
+    const r = await pool.query(
+      "SELECT * FROM cars WHERE id=$1",
+      [req.params.id]
+    );
+    res.json(r.rows[0]);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "car load failed" });
+  }
+});
+
+/* ================================================= */
+/* ============== INSTAGRAM MANUAL IMPORT =========== */
+/* ================================================= */
 
 async function importInstagramPost(url) {
   const html = await fetch(url, {

@@ -1,5 +1,4 @@
 (() => {
-  // Проверка авторизации
   (async () => {
     try {
       const r = await fetch("/api/admin/check");
@@ -17,8 +16,9 @@
     return;
   }
 
+  // ✅ разрешаем ?img_index и любые query
   function isValidInstagramPost(url) {
-    return /^https?:\/\/(www\.)?instagram\.com\/p\/[A-Za-z0-9_-]+\/?$/.test(url);
+    return /^https?:\/\/(www\.)?instagram\.com\/p\/[A-Za-z0-9_-]+\/?(\?.*)?$/.test(url);
   }
 
   importBtn.onclick = async () => {
