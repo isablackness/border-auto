@@ -1,50 +1,57 @@
-const params = new URLSearchParams(location.search);
-const editId = params.get("id");
+/* ===== LOAD ADMIN CARS ===== */
+async function loadAdminCars() {
+  const container = document.getElementById("adminCatalog");
+  if (!container) return;
 
-/* ===== LOAD FOR EDIT ===== */
-const form = document.getElementById("carForm");
+  const res = await fetch("/api/cars"); // ⬅️ ОБЯЗАТЕЛЬНО с /
+  const cars = await res.json();
 
-if (form && editId) {
-  fetch(`/api/cars/${editId}`)
-    .then(res => res.json())
-    .then(car => {
-      form.brand.value = car.brand;
-      form.model.value = car.model;
-      form.year.value = car.year;
-      form.price.value = car.price;
-      form.mileage.value = car.mileage;
-      form.description.value = car.description;
-      form.images.value = (car.images || []).join("\n");
-    });
+  container.innerHTML = "";
+
+  cars.forEach(car => {
+    const img = car.images?.[0] || "/images/no-image.png";
+
+    const card = document.createElement("div");
+    card.className = "admin-card";
+
+    card.innerHTML = `
+      <img src="${img}">
+      <div class="info">
+        <h3>${car.brand} ${car.model}</h3>
+        <div class="price">${car.price} €</div>
+        <div class="admin-actions">
+          <button onclick="location.href='/admin/edit.html?id=${car.id}'">
+            ✏️ Редактировать
+          </button>
+          <button onclick="deleteCar(${car.id})">
+            🗑 Удалить
+          </button>
+        </div>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
 }
 
-/* ===== SAVE ===== */
-if (form) {
-  form.addEventListener("submit", async e => {
-    e.preventDefault();
+loadAdminCars();
 
-    const payload = {
-      brand: form.brand.value,
-      model: form.model.value,
-      year: Number(form.year.value),
-      price: Number(form.price.value),
-      mileage: Number(form.mileage.value),
-      description: form.description.value,
-      images: form.images.value.split("\n").map(s => s.trim()).filter(Boolean)
-    };
-
-    const method = editId ? "PUT" : "POST";
-    const url = editId
-      ? `/api/admin/cars/${editId}`
-      : "/api/admin/cars";
-
-    const res = await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-
-    if (res.ok) location.href = "/admin/";
-    else alert("Ошибка сохранения");
+/* ===== ADD BUTTON ===== */
+const addBtn = document.querySelector(".add-btn");
+if (addBtn) {
+  addBtn.addEventListener("click", () => {
+    location.href = "/admin/edit.html";
   });
+}
+
+/* ===== DELETE ===== */
+async function deleteCar(id) {
+  if (!confirm("Удалить автомобиль?")) return;
+
+  const res = await fetch(`/api/admin/cars/${id}`, {
+    method: "DELETE"
+  });
+
+  if (res.ok) loadAdminCars();
+  else alert("Ошибка удаления");
 }
