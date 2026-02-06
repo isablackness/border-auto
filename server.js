@@ -6,16 +6,20 @@ const session = require("express-session");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+/* ===== DB ===== */
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
 });
 
-/* ===== MIDDLEWARE ===== */
+/* ===== MIDDLEWARE (ORDER IS CRITICAL) ===== */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
 
+/* ===== PUBLIC STATIC ===== */
+app.use(express.static(path.join(__dirname, "public")));
+
+/* ===== SESSION ===== */
 app.use(
   session({
     name: "border-auto-admin",
@@ -33,7 +37,7 @@ app.get("/", (req, res) => {
 /* ===== API (PUBLIC) ===== */
 app.get("/api/cars", async (req, res) => {
   const result = await pool.query(
-    "SELECT * FROM cars ORDER BY position ASC"
+    "SELECT * FROM cars ORDER BY position ASC NULLS LAST"
   );
   res.json(result.rows);
 });
@@ -52,9 +56,7 @@ const requireAdmin = (req, res, next) => {
   res.status(401).json({ error: "unauthorized" });
 };
 
-/* ===== ADMIN CRUD ===== */
-
-// CREATE
+/* ===== ADMIN API ===== */
 app.post("/api/admin/cars", requireAdmin, async (req, res) => {
   const { brand, model, year, price, mileage, description, images } = req.body;
 
@@ -73,7 +75,6 @@ app.post("/api/admin/cars", requireAdmin, async (req, res) => {
   res.json({ id: result.rows[0].id });
 });
 
-// UPDATE
 app.put("/api/admin/cars/:id", requireAdmin, async (req, res) => {
   const { brand, model, year, price, mileage, description, images } = req.body;
 
@@ -90,13 +91,11 @@ app.put("/api/admin/cars/:id", requireAdmin, async (req, res) => {
   res.json({ success: true });
 });
 
-// DELETE
 app.delete("/api/admin/cars/:id", requireAdmin, async (req, res) => {
   await pool.query("DELETE FROM cars WHERE id=$1", [req.params.id]);
   res.json({ success: true });
 });
 
-// UPDATE ORDER
 app.post("/api/admin/cars/reorder", requireAdmin, async (req, res) => {
   const { order } = req.body;
 
@@ -110,8 +109,8 @@ app.post("/api/admin/cars/reorder", requireAdmin, async (req, res) => {
   res.json({ success: true });
 });
 
-/* ===== ADMIN STATIC ===== */
-app.use("/admin", express.static("admin"));
+/* ===== ADMIN STATIC (LAST!) ===== */
+app.use("/admin", express.static(path.join(__dirname, "admin")));
 
 /* ===== START ===== */
 app.listen(PORT, () => {
