@@ -24,6 +24,7 @@ cloudinary.config({
 app.use(express.json({ limit: "20mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "catalog.html"));
 });
@@ -74,7 +75,7 @@ app.post("/api/admin/upload", requireAdmin, async (req, res) => {
   res.json(uploaded);
 });
 
-/* ===== ADMIN CRUD ===== */
+/* ===== ADMIN CARS CRUD ===== */
 app.post("/api/admin/cars", requireAdmin, async (req, res) => {
   const { brand, model, year, price, mileage, description, images } = req.body;
 
@@ -143,7 +144,6 @@ app.post("/api/admin/cars/sort", requireAdmin, async (req, res) => {
   }
 });
 
-
 /* ===== ADMIN LOGIN ===== */
 app.post("/admin/login", (req, res) => {
   const { login, password } = req.body;
@@ -166,14 +166,151 @@ app.post("/admin/logout", (req, res) => {
   });
 });
 
+/* ===== ADMIN CHECK ===== */
+app.get("/api/admin/check", requireAdmin, (req, res) => {
+  res.json({ ok: true });
+});
+
+/* ========================================================= */
+/* ========== INSTAGRAM DRAFTS (НОВЫЙ БЛОК) ================= */
+/* ========================================================= */
+
+/* GET all drafts */
+app.get("/api/admin/instagram/drafts", requireAdmin, async (req, res) => {
+  const r = await pool.query(
+    "SELECT * FROM instagram_drafts ORDER BY created_at DESC"
+  );
+  res.json(r.rows);
+});
+
+/* GET single draft */
+app.get("/api/admin/instagram/draft/:id", requireAdmin, async (req, res) => {
+  const r = await pool.query(
+    "SELECT * FROM instagram_drafts WHERE id=$1",
+    [req.params.id]
+  );
+  res.json(r.rows[0]);
+});
+
+/* CREATE draft (пока вручную, Instagram API добавим следующим шагом) */
+app.post("/api/admin/instagram/draft", requireAdmin, async (req, res) => {
+  const {
+    instagram_post_id,
+    brand,
+    model,
+    year,
+    price,
+    mileage,
+    description,
+    images
+  } = req.body;
+
+  await pool.query(
+    `
+    INSERT INTO instagram_drafts
+    (instagram_post_id, brand, model, year, price, mileage, description, images)
+    VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+    ON CONFLICT (instagram_post_id) DO NOTHING
+    `,
+    [
+      instagram_post_id,
+      brand,
+      model,
+      year,
+      price,
+      mileage,
+      description,
+      images
+    ]
+  );
+
+  res.json({ ok: true });
+});
+
+/* UPDATE draft */
+app.put("/api/admin/instagram/draft/:id", requireAdmin, async (req, res) => {
+  const { brand, model, year, price, mileage, description, images } = req.body;
+
+  await pool.query(
+    `
+    UPDATE instagram_drafts SET
+      brand=$1,
+      model=$2,
+      year=$3,
+      price=$4,
+      mileage=$5,
+      description=$6,
+      images=$7
+    WHERE id=$8
+    `,
+    [
+      brand,
+      model,
+      year,
+      price,
+      mileage,
+      description,
+      images,
+      req.params.id
+    ]
+  );
+
+  res.json({ ok: true });
+});
+
+/* PUBLISH draft → cars */
+app.post("/api/admin/instagram/publish/:id", requireAdmin, async (req, res) => {
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+
+    const r = await client.query(
+      "SELECT * FROM instagram_drafts WHERE id=$1",
+      [req.params.id]
+    );
+
+    const d = r.rows[0];
+    if (!d) throw new Error("Draft not found");
+
+    await client.query(
+      `
+      INSERT INTO cars
+      (brand, model, year, price, mileage, description, images, position)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,
+        (SELECT COALESCE(MAX(position),0)+1 FROM cars)
+      )
+      `,
+      [
+        d.brand,
+        d.model,
+        d.year,
+        d.price,
+        d.mileage,
+        d.description,
+        d.images
+      ]
+    );
+
+    await client.query(
+      "DELETE FROM instagram_drafts WHERE id=$1",
+      [req.params.id]
+    );
+
+    await client.query("COMMIT");
+    res.json({ ok: true });
+  } catch (e) {
+    await client.query("ROLLBACK");
+    res.status(500).json({ error: e.message });
+  } finally {
+    client.release();
+  }
+});
+
 /* ===== ADMIN STATIC ===== */
 app.use("/admin", express.static(path.join(__dirname, "admin")));
 
 /* ===== START ===== */
 app.listen(PORT, () => {
   console.log("🚀 Server running on port", PORT);
-});
-
-app.get("/api/admin/check", requireAdmin, (req, res) => {
-  res.json({ ok: true });
 });
