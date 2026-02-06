@@ -10,19 +10,37 @@ async function loadCar() {
 
   document.getElementById("carTitle").textContent =
     `${car.brand} ${car.model}`;
+
   document.getElementById("carYear").textContent = car.year;
   document.getElementById("carMileage").textContent = car.mileage;
   document.getElementById("carPrice").textContent = car.price;
-  document.getElementById("carDescription").textContent = car.description;
+
+  // 🔥 ВАЖНО: эти поля должны быть в БД
+  document.getElementById("carEngine").textContent = car.engine || "—";
+  document.getElementById("carGearbox").textContent = car.gearbox || "—";
+
+  renderFeatures(car.features || []);
 
   images = car.images || [];
-
-  if (images.length > 0) {
+  if (images.length) {
     setMainImage(0);
     renderThumbs();
   }
 }
 
+function renderFeatures(list) {
+  const container = document.getElementById("carFeatures");
+  container.innerHTML = "";
+
+  list.forEach(text => {
+    const span = document.createElement("span");
+    span.className = "feature";
+    span.textContent = text;
+    container.appendChild(span);
+  });
+}
+
+/* ===== GALLERY ===== */
 function setMainImage(index) {
   currentIndex = index;
   document.getElementById("mainImage").src = images[index];

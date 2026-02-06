@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <title>Автомобиль — Border Auto</title>
- <link rel="stylesheet" href="/css/base.css">
-<link rel="stylesheet" href="/css/car.css">
 
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/car.css">
 </head>
 <body>
 
@@ -22,7 +22,7 @@
 <main class="page-content">
 
   <div class="car-page">
-    
+
     <!-- ГАЛЕРЕЯ -->
     <div class="car-gallery">
       <div class="gallery-main">
@@ -36,23 +36,29 @@
 
     <!-- ИНФОРМАЦИЯ -->
     <div class="car-info">
-      <h1 id="carTitle">Загрузка...</h1>
+
+      <h1 id="carTitle"></h1>
 
       <div class="car-price">
         <span id="carPrice"></span> €
       </div>
 
+      <!-- ХАРАКТЕРИСТИКИ -->
       <ul class="car-specs">
-        <li><strong>Год:</strong> <span id="carYear"></span></li>
-        <li><strong>Пробег:</strong> <span id="carMileage"></span> км</li>
+        <li><span>Год:</span> <span id="carYear"></span></li>
+        <li><span>Пробег:</span> <span id="carMileage"></span> км</li>
+        <li><span>Мотор:</span> <span id="carEngine"></span></li>
+        <li><span>КПП:</span> <span id="carGearbox"></span></li>
       </ul>
 
-      <p id="carDescription"></p>
+      <!-- ОПЦИИ -->
+      <div class="car-features" id="carFeatures"></div>
 
       <div class="car-contacts">
         <a class="instagram" href="https://www.instagram.com/border.auto/" target="_blank">Instagram</a>
         <a class="whatsapp" href="https://api.whatsapp.com/send?phone=48668989731" target="_blank">WhatsApp</a>
       </div>
+
     </div>
 
   </div>
