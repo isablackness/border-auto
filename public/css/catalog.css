@@ -1,150 +1,48 @@
-/* ===== LAYOUT ===== */
-.catalog-layout {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 30px;
-}
-
-/* ===== FILTER ===== */
-.filter-panel {
-  background: #0f0f0f;
-  padding: 20px;
-  border-radius: 14px;
-}
-
-.filter-panel input,
-.filter-panel select {
-  width: 100%;
-  margin-bottom: 12px;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-}
-
-.filter-panel button {
-  width: 100%;
-  padding: 12px;
-  border-radius: 20px;
-  border: none;
-  background: linear-gradient(135deg, #c30000, #ff0000);
-  color: #fff;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-/* ===== GRID ===== */
-#catalog {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 25px;
-}
-
-/* ===== CARD ===== */
-.car-card {
-  background: #111;
-  border-radius: 18px;
-  overflow: hidden;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.car-card:hover {
-  transform: scale(1.04);
-  box-shadow: 0 20px 50px rgba(255, 0, 0, 0.25);
-}
-
-/* ===== IMAGE + OVERLAY ===== */
-.image-wrapper {
-  position: relative;
-}
-
-.image-wrapper img {
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  display: block;
-}
-
-/* затемнение */
-.image-wrapper::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  opacity: 0;
-  transition: 0.3s;
-}
-
-.car-card:hover .image-wrapper::after {
-  opacity: 1;
-}
-
-/* overlay */
-.card-overlay {
-  position: absolute;
-  inset: 0;
+/* ===== SORT BAR ===== */
+.sort-bar {
   display: flex;
   align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: 0.3s;
-  z-index: 2;
+  gap: 12px;
+  padding: 14px 30px;
+  background: linear-gradient(180deg, #0f0f0f, #000);
+  border-bottom: 1px solid #1a1a1a;
 }
 
-.card-overlay span {
-  padding: 14px 28px;
-  border-radius: 14px;
-  border: 2px solid #bbb;
+.sort-label {
+  font-weight: 600;
+  color: #ccc;
+  margin-right: 6px;
+}
+
+.sort-bar button {
+  padding: 8px 18px;
+  border-radius: 20px;
+  background: #111;
+  border: 1px solid #222;
   color: #fff;
-  font-weight: 700;
-  background: rgba(255,255,255,0.1);
-}
-
-.car-card:hover .card-overlay {
-  opacity: 1;
-}
-
-/* кликабельная зона */
-.card-link {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-}
-
-/* ===== INFO ===== */
-.car-card .info {
-  padding: 14px;
-}
-
-/* ===== ACTIONS ===== */
-.card-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 12px;
-  opacity: 0;
-  transform: translateY(10px);
-  pointer-events: none;
+  cursor: pointer;
+  font-weight: 600;
   transition: 0.25s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.car-card:hover .card-actions {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
+.sort-bar button:hover {
+  background: rgba(255, 0, 0, 0.15);
+  border-color: #ff0000;
 }
 
-/* ===== MOBILE ===== */
-@media (max-width: 900px) {
-  .catalog-layout {
-    grid-template-columns: 1fr;
-  }
+.sort-bar button.active {
+  background: linear-gradient(135deg, #c30000, #ff0000);
+  border-color: transparent;
+}
 
-  .card-overlay {
-    display: none;
-  }
+.sort-bar .arrow {
+  font-size: 14px;
+  transition: transform 0.25s;
+}
 
-  .card-actions {
-    opacity: 1;
-    transform: none;
-    pointer-events: auto;
-  }
+.sort-bar button.asc .arrow {
+  transform: rotate(180deg);
 }
