@@ -2,28 +2,32 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Авто — Admin</title>
+  <title>Автомобиль — Admin</title>
   <link rel="stylesheet" href="/css/base.css">
   <link rel="stylesheet" href="/admin/admin.css">
 </head>
 <body>
 
-<header class="site-header">
-  <nav class="main-nav">
-    <a href="/admin/">← Назад</a>
-  </nav>
-</header>
-
-<main class="page-content admin-page">
+<main class="admin-page">
   <form id="carForm" class="admin-card form-card">
+
     <input name="brand" placeholder="Марка" required>
     <input name="model" placeholder="Модель" required>
     <input name="year" type="number" placeholder="Год" required>
-    <input name="price" type="number" placeholder="Цена" required>
-    <input name="mileage" type="number" placeholder="Пробег" required>
+    <input name="price" type="number" placeholder="Цена (€)" required>
+    <input name="mileage" type="number" placeholder="Пробег (км)" required>
+
     <textarea name="description" placeholder="Описание"></textarea>
-    <textarea name="images" placeholder="Ссылки на фото (каждая с новой строки)"></textarea>
-    <button type="submit">Сохранить</button>
+
+    <div id="dropZone" class="drop-zone">
+      Перетащи фото сюда или кликни
+      <input id="imageInput" type="file" multiple hidden>
+    </div>
+
+    <div id="imageList" class="image-list"></div>
+
+    <button type="submit" class="save-btn">Сохранить</button>
+
   </form>
 </main>
 
