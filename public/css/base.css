@@ -42,3 +42,45 @@ body::after {
   z-index: -1;
   pointer-events: none;
 }
+/* ===============================
+   FORCED GLOBAL BACKGROUND LAYER
+   =============================== */
+
+html {
+  background: #000;
+}
+
+/* Фон под ВСЕМ сайтом */
+html::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse at top center,
+      rgba(255,255,255,0.07) 0%,
+      rgba(0,0,0,0.85) 45%,
+      #000 75%
+    ),
+    linear-gradient(
+      135deg,
+      #0b0b0b 0%,
+      #000000 100%
+    );
+  z-index: -9999;
+  pointer-events: none;
+}
+
+/* Виньетка */
+html::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0,0,0,0) 40%,
+    rgba(0,0,0,0.75) 100%
+  );
+  z-index: -9998;
+  pointer-events: none;
+}
