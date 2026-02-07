@@ -1,41 +1,42 @@
-/* === ГЛОБАЛЬНЫЙ ФОН САЙТА (СВЕТЛЕЕ) === */
+/* === МЯГКИЙ ПРЕМИАЛЬНЫЙ ФОН === */
 
+body,
 .site-header,
 main,
 .catalog-page,
-.page,
-body {
-  position: relative;
+.page {
   background: transparent !important;
+  position: relative;
 }
 
 /* Основной фон */
-.site-header::before,
-main::before {
+body::before {
   content: "";
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: -1;
 
   background:
     radial-gradient(
-      circle at top center,
-      rgba(255, 255, 255, 0.14),   /* было 0.08 → стало светлее */
-      rgba(0, 0, 0, 0.88) 65%     /* было 0.95 → мягче */
+      ellipse at top center,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0.05) 30%,
+      rgba(0, 0, 0, 0.55) 55%,
+      rgba(0, 0, 0, 0.92) 100%
     ),
     linear-gradient(
-      135deg,
-      #0e0e0e,   /* было #050505 */
-      #161616,   /* было #0b0b0b */
-      #0e0e0e
+      180deg,
+      #141414 0%,
+      #0f0f0f 45%,
+      #090909 100%
     );
 
   filter: blur(0px);
 }
 
 /* Контент поверх фона */
-.site-header > *,
-main > * {
+.site-header,
+main {
   position: relative;
   z-index: 1;
 }
