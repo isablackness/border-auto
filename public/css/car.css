@@ -1,3 +1,4 @@
+/* ================= PAGE LAYOUT ================= */
 .car-page {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
@@ -5,12 +6,25 @@
   align-items: start;
 }
 
-/* ===== GALLERY ===== */
+/* ================= ANIMATIONS ================= */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ================= GALLERY ================= */
 .car-gallery {
   background: linear-gradient(180deg, #111, #0b0b0b);
   padding: 22px;
   border-radius: 22px;
   border: 1px solid #1e1e1e;
+  animation: fadeUp 0.6s ease both;
 }
 
 .gallery-main {
@@ -22,9 +36,17 @@
   aspect-ratio: 4 / 5;
   object-fit: cover;
   border-radius: 18px;
+  transition: transform 0.5s ease;
 }
 
-/* buttons */
+/* desktop hover */
+@media (hover: hover) {
+  .gallery-main img:hover {
+    transform: scale(1.04);
+  }
+}
+
+/* gallery buttons */
 .gallery-btn {
   position: absolute;
   top: 50%;
@@ -32,7 +54,7 @@
   background: rgba(0,0,0,0.65);
   border: 1px solid rgba(255,255,255,0.15);
   color: #fff;
-  font-size: 28px;
+  font-size: 26px;
   width: 46px;
   height: 46px;
   border-radius: 50%;
@@ -40,14 +62,22 @@
   transition: 0.25s;
 }
 
-.gallery-btn:hover {
-  background: rgba(255,0,0,0.75);
+/* desktop hover */
+@media (hover: hover) {
+  .gallery-btn:hover {
+    background: rgba(255,0,0,0.75);
+  }
+}
+
+/* mobile tap-feedback */
+.gallery-btn:active {
+  transform: translateY(-50%) scale(0.92);
 }
 
 .gallery-btn.left { left: 12px; }
 .gallery-btn.right { right: 12px; }
 
-/* ===== THUMBNAILS ===== */
+/* ================= THUMBNAILS ================= */
 .gallery-thumbs {
   display: flex;
   gap: 10px;
@@ -66,16 +96,17 @@
   transition: 0.25s;
 }
 
-.gallery-thumbs img:hover {
-  opacity: 0.85;
-}
-
 .gallery-thumbs img.active {
   opacity: 1;
   border-color: #ff0000;
 }
 
-/* ===== INFO ===== */
+/* mobile tap-feedback */
+.gallery-thumbs img:active {
+  transform: scale(0.9);
+}
+
+/* ================= INFO ================= */
 .car-info {
   background: linear-gradient(180deg, #111, #0c0c0c);
   padding: 28px;
@@ -83,6 +114,8 @@
   border: 1px solid #1e1e1e;
   position: sticky;
   top: 32px;
+  animation: fadeUp 0.7s ease both;
+  animation-delay: 0.1s;
 }
 
 .car-info h1 {
@@ -92,7 +125,7 @@
   font-weight: 800;
 }
 
-/* ===== PRICE ===== */
+/* ================= PRICE ================= */
 .car-price {
   display: inline-block;
   margin: 18px 0 22px;
@@ -102,9 +135,22 @@
   font-size: 28px;
   font-weight: 800;
   box-shadow: 0 14px 36px rgba(255,0,0,0.45);
+  transition: transform 0.3s ease;
 }
 
-/* ===== SPECS ===== */
+/* desktop hover */
+@media (hover: hover) {
+  .car-price:hover {
+    transform: scale(1.05);
+  }
+}
+
+/* mobile tap */
+.car-price:active {
+  transform: scale(0.95);
+}
+
+/* ================= SPECS ================= */
 .car-specs {
   margin: 18px 0;
   display: grid;
@@ -119,7 +165,7 @@
   margin-right: 6px;
 }
 
-/* ===== FEATURES ===== */
+/* ================= FEATURES ================= */
 .car-features {
   display: flex;
   flex-wrap: wrap;
@@ -138,12 +184,20 @@
   transition: 0.25s;
 }
 
-.feature:hover {
-  background: rgba(255, 59, 59, 0.18);
-  border-color: rgba(255, 59, 59, 0.45);
+/* desktop hover */
+@media (hover: hover) {
+  .feature:hover {
+    background: rgba(255, 59, 59, 0.18);
+    border-color: rgba(255, 59, 59, 0.45);
+  }
 }
 
-/* ===== DESCRIPTION ===== */
+/* mobile tap */
+.feature:active {
+  transform: scale(0.92);
+}
+
+/* ================= DESCRIPTION ================= */
 .car-description {
   margin-top: 18px;
   line-height: 1.6;
@@ -152,7 +206,7 @@
   font-size: 15px;
 }
 
-/* ===== CONTACTS ===== */
+/* ================= CONTACTS ================= */
 .car-contacts {
   display: flex;
   gap: 12px;
@@ -171,12 +225,20 @@
   transition: 0.3s;
 }
 
-.car-contacts a:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 30px rgba(255,0,0,0.45);
+/* desktop hover */
+@media (hover: hover) {
+  .car-contacts a:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 30px rgba(255,0,0,0.45);
+  }
 }
 
-/* ===== MOBILE ===== */
+/* mobile tap */
+.car-contacts a:active {
+  transform: scale(0.94);
+}
+
+/* ================= MOBILE ================= */
 @media (max-width: 900px) {
   .car-page {
     grid-template-columns: 1fr;
