@@ -1,6 +1,5 @@
-/* === ГЛОБАЛЬНЫЙ ФОН САЙТА === */
+/* === ГЛОБАЛЬНЫЙ ФОН САЙТА (СВЕТЛЕЕ) === */
 
-/* Фон для шапки и всей страницы */
 .site-header,
 main,
 .catalog-page,
@@ -10,7 +9,7 @@ body {
   background: transparent !important;
 }
 
-/* Единый фон */
+/* Основной фон */
 .site-header::before,
 main::before {
   content: "";
@@ -21,20 +20,20 @@ main::before {
   background:
     radial-gradient(
       circle at top center,
-      rgba(255, 255, 255, 0.08),
-      rgba(0, 0, 0, 0.95) 65%
+      rgba(255, 255, 255, 0.14),   /* было 0.08 → стало светлее */
+      rgba(0, 0, 0, 0.88) 65%     /* было 0.95 → мягче */
     ),
     linear-gradient(
       135deg,
-      #050505,
-      #0b0b0b,
-      #050505
+      #0e0e0e,   /* было #050505 */
+      #161616,   /* было #0b0b0b */
+      #0e0e0e
     );
 
   filter: blur(0px);
 }
 
-/* Чтобы контент был поверх */
+/* Контент поверх фона */
 .site-header > *,
 main > * {
   position: relative;
