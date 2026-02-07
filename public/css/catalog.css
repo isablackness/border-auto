@@ -18,17 +18,18 @@
   border: 1px solid #1a1a1a;
 }
 
-.sort-bar span,
-.sort-bar label {
+.sort-bar span {
   color: #aaa;
   font-weight: 600;
 }
 
+/* базовая кнопка */
 .sort-bar button {
+  position: relative;
   background: #111;
   border: 1px solid #222;
   color: #eee;
-  padding: 8px 16px;
+  padding: 8px 16px 8px 36px;
   border-radius: 999px;
   font-weight: 600;
   cursor: pointer;
@@ -39,10 +40,37 @@
   background: #1a1a1a;
 }
 
+/* активная */
 .sort-bar button.active {
   background: linear-gradient(135deg, #c30000, #ff0000);
   color: #fff;
   border-color: transparent;
+}
+
+/* ===== ИКОНКИ ===== */
+.sort-bar button[data-sort="price"]::before {
+  content: "€";
+}
+
+.sort-bar button[data-sort="mileage"]::before {
+  content: "🛣";
+}
+
+.sort-bar button[data-sort="date"]::before {
+  content: "🕒";
+}
+
+.sort-bar button[data-sort="year"]::before {
+  content: "📅";
+}
+
+.sort-bar button::before {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  opacity: 0.85;
 }
 
 /* ================= LAYOUT ================= */
@@ -61,11 +89,6 @@
   border: 1px solid #1c1c1c;
   position: sticky;
   top: 20px;
-}
-
-.filter-panel h3 {
-  margin-top: 0;
-  margin-bottom: 14px;
 }
 
 .filter-panel input,
@@ -102,12 +125,28 @@
   height: 360px;
   background: radial-gradient(circle at center, #1a1a1a, #000);
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* обычное фото */
 .image-wrapper img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* ===== ЕСЛИ ФОТО НЕТ ===== */
+.image-wrapper.no-photo::after {
+  content: "НЕТ ФОТО";
+  font-size: 18px;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.55);
+  border: 2px dashed rgba(255,255,255,0.25);
+  padding: 22px 34px;
+  border-radius: 14px;
 }
 
 /* ================= PRICE ================= */
@@ -188,4 +227,17 @@
   .image-wrapper {
     height: 260px;
   }
+}
+
+/* ===== SORT ARROWS ===== */
+.sort-bar button.asc::after {
+  content: " ↑";
+  font-size: 12px;
+  margin-left: 6px;
+}
+
+.sort-bar button.desc::after {
+  content: " ↓";
+  font-size: 12px;
+  margin-left: 6px;
 }
