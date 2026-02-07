@@ -23,7 +23,19 @@ async function loadCars() {
     card.dataset.id = car.id;
 
     card.innerHTML = `
-      <img src="${car.images?.[0] || "/images/no-image.png"}">
+      ${
+        car.images?.[0]
+          ? `<img src="${car.images[0]}">`
+          : `
+            <div class="no-photo">
+              <svg width="40" height="40" viewBox="0 0 24 24">
+                <path fill="#777" d="M21 5h-3.2l-1.8-2H8L6.2 5H3v14h18V5zm-9 11a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm8.5-11.5L2.5 22.5l-1-1L19.5 3.5l1 1z"/>
+              </svg>
+              <span>Нет фото</span>
+            </div>
+          `
+      }
+
       <div class="info">
         <h3>${car.brand} ${car.model}</h3>
         <div class="price">${car.price} €</div>
@@ -48,9 +60,7 @@ async function loadCars() {
       card.classList.remove("dragging");
     });
 
-    card.addEventListener("dragover", e => {
-      e.preventDefault();
-    });
+    card.addEventListener("dragover", e => e.preventDefault());
 
     card.addEventListener("drop", async () => {
       const nodes = [...catalog.children];
@@ -78,10 +88,17 @@ async function loadCars() {
   });
 }
 
+/* ===== DELETE (PUBLIC API) ===== */
 async function deleteCar(id) {
   if (!confirm("Удалить автомобиль?")) return;
 
-  await fetch(`/api/admin/cars/${id}`, { method: "DELETE" });
+  const res = await fetch(`/api/cars/${id}`, { method: "DELETE" });
+
+  if (!res.ok) {
+    alert("Ошибка удаления");
+    return;
+  }
+
   loadCars();
 }
 
