@@ -36,21 +36,32 @@ function renderCars(list) {
   }
 
   list.forEach(car => {
-    const img = car.images?.[0] || '/images/no-image.png';
+    const hasImage = car.images && car.images.length > 0;
 
     const card = document.createElement('div');
     card.className = 'car-card';
 
     card.innerHTML = `
       <div class="image-wrapper">
-        <img src="${img}" alt="${car.brand} ${car.model}">
+
+        ${
+          hasImage
+            ? `<img src="${car.images[0]}" alt="${car.brand} ${car.model}">`
+            : `
+              <div class="no-photo">
+                <svg width="48" height="48" viewBox="0 0 24 24">
+                  <path fill="#999" d="M21 5h-3.2l-1.8-2H8L6.2 5H3v14h18V5zm-9 11a5 5 0 1 1 0-10 5 5 0 0 1 0 10zm8.5-11.5L2.5 22.5l-1-1L19.5 3.5l1 1z"/>
+                </svg>
+                <span>Нет фото</span>
+              </div>
+            `
+        }
+
         <div class="price-badge">${car.price} €</div>
 
-        <div class="card-overlay">
-          <span>Подробнее</span>
-        </div>
-
-        <a class="card-link" href="/car.html?id=${car.id}"></a>
+        <a class="card-overlay" href="/car.html?id=${car.id}">
+          Подробнее
+        </a>
       </div>
 
       <div class="info">
@@ -60,8 +71,26 @@ function renderCars(list) {
           <div class="meta-item year">${car.year}</div>
           <div class="meta-item mileage">${car.mileage} км</div>
         </div>
+
+        <button class="delete-btn">Удалить</button>
       </div>
     `;
+
+    // DELETE (PUBLIC)
+    card.querySelector('.delete-btn').addEventListener('click', async () => {
+      const ok = confirm('Удалить автомобиль?');
+      if (!ok) return;
+
+      const res = await fetch(`/api/cars/${car.id}`, {
+        method: 'DELETE'
+      });
+
+      if (res.ok) {
+        card.remove();
+      } else {
+        alert('Ошибка удаления');
+      }
+    });
 
     catalog.appendChild(card);
   });
