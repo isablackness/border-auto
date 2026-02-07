@@ -1,49 +1,42 @@
-/* =========================
-   GLOBAL PREMIUM BACKGROUND
-   ========================= */
+/* === ГЛОБАЛЬНЫЙ ФОН САЙТА === */
 
-/* ВАЖНО: не трогаем размеры layout */
-html, body {
-  min-height: 100%;
-}
-
-/* Базовый фон */
+/* Фон для шапки и всей страницы */
+.site-header,
+main,
+.catalog-page,
+.page,
 body {
-  background-color: #000;
   position: relative;
+  background: transparent !important;
 }
 
-/* Мягкий премиум-градиент */
-body::before {
+/* Единый фон */
+.site-header::before,
+main::before {
   content: "";
-  position: fixed;
+  position: absolute;
   inset: 0;
+  z-index: -1;
+
   background:
     radial-gradient(
-      ellipse at top center,
-      rgba(255,255,255,0.06) 0%,
-      rgba(0,0,0,0.85) 45%,
-      #000 75%
+      circle at top center,
+      rgba(255, 255, 255, 0.08),
+      rgba(0, 0, 0, 0.95) 65%
     ),
     linear-gradient(
       135deg,
-      #0b0b0b 0%,
-      #000000 100%
+      #050505,
+      #0b0b0b,
+      #050505
     );
-  z-index: -2;
-  pointer-events: none;
+
+  filter: blur(0px);
 }
 
-/* Лёгкая виньетка по краям */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0,0,0,0) 35%,
-    rgba(0,0,0,0.65) 100%
-  );
-  z-index: -1;
-  pointer-events: none;
+/* Чтобы контент был поверх */
+.site-header > *,
+main > * {
+  position: relative;
+  z-index: 1;
 }
