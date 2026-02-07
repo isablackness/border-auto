@@ -85,3 +85,8 @@ body {
 .page-content {
   padding: 30px;
 }
+
+.page-content {
+  padding-top: 140px; /* высота шапки */
+}
+

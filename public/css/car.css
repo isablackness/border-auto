@@ -1,62 +1,136 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <title>Автомобиль — Border Auto</title>
+.page-content {
+  padding-top: 140px;
+}
 
-  <link rel="stylesheet" href="/css/base.css">
-  <link rel="stylesheet" href="/css/car.css">
-</head>
-<body>
+.car-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+}
 
-<header class="site-header">
-  <div class="header-inner">
-    <img src="/images/logo1.png" alt="Border Auto">
-    <nav>
-      <a href="/catalog.html">Главная</a>
-      <a href="/contacts.html">Контакты</a>
-    </nav>
-  </div>
-</header>
+/* ===== GALLERY ===== */
+.car-gallery {
+  background: #0c0c0c;
+  border-radius: 20px;
+  padding: 18px;
+}
 
-<main class="page-content">
-  <div class="car-page">
+.gallery-main {
+  position: relative;
+  height: 420px;
+  background: #000;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    <!-- GALLERY -->
-    <div class="car-gallery">
-      <div class="gallery-main">
-        <button class="gallery-btn left" id="prevBtn">‹</button>
-        <img id="mainImage">
-        <button class="gallery-btn right" id="nextBtn">›</button>
+.gallery-main img {
+  max-width: 100%;
+  max-height: 100%;
+  cursor: zoom-in;
+}
 
-        <!-- open fullscreen -->
-        <div class="fullscreen-trigger" id="openFullscreen">
-          ⤢
-        </div>
-      </div>
+/* arrows */
+.gallery-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  border: none;
+  font-size: 26px;
+  cursor: pointer;
+}
 
-      <div class="gallery-footer">
-        <div class="gallery-thumbs" id="thumbnails"></div>
-        <div class="gallery-counter" id="galleryCounter">1 / 1</div>
-      </div>
-    </div>
+.gallery-btn.left { left: 12px; }
+.gallery-btn.right { right: 12px; }
 
-    <!-- INFO -->
-    <div class="car-info">
-      <h1 id="carTitle"></h1>
-      <div class="car-price"><span id="carPrice"></span> €</div>
-      <div class="car-description" id="carDescription"></div>
-    </div>
+/* fullscreen button */
+.fullscreen-trigger {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  background: rgba(0,0,0,0.65);
+  border-radius: 10px;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 18px;
+}
 
-  </div>
-</main>
+/* footer */
+.gallery-footer {
+  margin-top: 12px;
+}
 
-<!-- FULLSCREEN -->
-<div class="image-viewer" id="imageViewer">
-  <img id="viewerImage">
-  <div class="zoom-rect" id="zoomRect"></div>
-</div>
+.gallery-thumbs {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+}
 
-<script src="/js/car.js"></script>
-</body>
-</html>
+.gallery-thumbs img {
+  width: 90px;
+  height: 64px;
+  object-fit: cover;
+  opacity: 0.5;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.gallery-thumbs img.active {
+  opacity: 1;
+  border-color: #ff0000;
+}
+
+.gallery-counter {
+  margin-top: 6px;
+  text-align: right;
+  color: #aaa;
+}
+
+/* ===== INFO ===== */
+.car-info {
+  background: #0c0c0c;
+  border-radius: 20px;
+  padding: 26px;
+}
+
+.car-price {
+  margin: 16px 0;
+  padding: 12px 22px;
+  background: linear-gradient(135deg, #c30000, #ff0000);
+  border-radius: 999px;
+  font-size: 26px;
+  font-weight: 800;
+}
+
+/* ===== FULLSCREEN ===== */
+.image-viewer {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.image-viewer img {
+  max-width: 90%;
+  max-height: 90%;
+  cursor: zoom-in;
+}
+
+.zoom-rect {
+  position: absolute;
+  width: 180px;
+  height: 120px;
+  border: 2px solid #ff0000;
+  display: none;
+  pointer-events: none;
+}
