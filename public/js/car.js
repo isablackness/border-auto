@@ -2,6 +2,7 @@ const id = new URLSearchParams(location.search).get("id");
 
 let images = [];
 let index = 0;
+let isZoomed = false;
 
 const mainImg = document.getElementById("mainImage");
 const viewer = document.getElementById("imageViewer");
@@ -24,6 +25,11 @@ async function loadCar() {
   }
 }
 
+function resetZoom() {
+  isZoomed = false;
+  viewerImg.classList.remove("zoomed");
+}
+
 function setMain(i) {
   index = i;
   mainImg.src = images[i];
@@ -36,6 +42,7 @@ function setMain(i) {
 
 function setViewer(i) {
   index = i;
+  resetZoom(); // ⬅️ ВАЖНО
   viewerImg.src = images[i];
   document.getElementById("viewerCounter").textContent =
     `${i + 1} / ${images.length}`;
@@ -66,37 +73,54 @@ function renderViewerThumbs() {
   });
 }
 
-/* arrows */
-prevBtn.onclick = () => setMain((index - 1 + images.length) % images.length);
-nextBtn.onclick = () => setMain((index + 1) % images.length);
+/* ===== ARROWS ===== */
+prevBtn.onclick = () =>
+  setMain((index - 1 + images.length) % images.length);
 
-/* keyboard */
+nextBtn.onclick = () =>
+  setMain((index + 1) % images.length);
+
+/* ===== KEYBOARD ===== */
 document.addEventListener("keydown", e => {
-  if (e.key === "ArrowRight") setMain((index + 1) % images.length);
-  if (e.key === "ArrowLeft") setMain((index - 1 + images.length) % images.length);
-  if (e.key === "Escape") viewer.style.display = "none";
+  if (e.key === "ArrowRight")
+    setMain((index + 1) % images.length);
+
+  if (e.key === "ArrowLeft")
+    setMain((index - 1 + images.length) % images.length);
+
+  if (e.key === "Escape") closeViewer();
 });
 
-/* fullscreen */
-openFullscreen.onclick =
-mainImg.onclick = () => {
+/* ===== FULLSCREEN OPEN ===== */
+function openViewer() {
   viewer.style.display = "flex";
+  resetZoom();              // ⬅️ КЛЮЧЕВО
   setViewer(index);
-};
+}
 
-/* viewer arrows */
-viewerPrev.onclick = () => setViewer((index - 1 + images.length) % images.length);
-viewerNext.onclick = () => setViewer((index + 1) % images.length);
+openFullscreen.onclick = openViewer;
+mainImg.onclick = openViewer;
 
-/* zoom */
+/* ===== VIEWER ARROWS ===== */
+viewerPrev.onclick = () =>
+  setViewer((index - 1 + images.length) % images.length);
+
+viewerNext.onclick = () =>
+  setViewer((index + 1) % images.length);
+
+/* ===== ZOOM ===== */
 viewerImg.onclick = e => {
   e.stopPropagation();
-  viewerImg.classList.toggle("zoomed");
+  isZoomed = !isZoomed;
+  viewerImg.classList.toggle("zoomed", isZoomed);
 };
 
-viewer.onclick = () => {
+/* ===== CLOSE ===== */
+function closeViewer() {
   viewer.style.display = "none";
-  viewerImg.classList.remove("zoomed");
-};
+  resetZoom();
+}
+
+viewer.onclick = closeViewer;
 
 loadCar();
