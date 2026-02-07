@@ -2,11 +2,15 @@ const id = new URLSearchParams(location.search).get("id");
 
 let images = [];
 let index = 0;
-let zoomed = false;
+let lensEnabled = false;
 
 const mainImg = document.getElementById("mainImage");
 const viewer = document.getElementById("imageViewer");
 const viewerImg = document.getElementById("viewerImage");
+const lens = document.createElement("div");
+
+lens.className = "zoom-lens";
+document.querySelector(".viewer-image-wrapper").appendChild(lens);
 
 async function loadCar() {
   const car = await (await fetch(`/api/cars/${id}`)).json();
@@ -37,19 +41,14 @@ function setMain(i) {
 
 function setViewer(i) {
   index = i;
-  resetZoom();
+  lensEnabled = false;
+  lens.style.display = "none";
   viewerImg.src = images[i];
   document.getElementById("viewerCounter").textContent =
     `${i + 1} / ${images.length}`;
 
   document.querySelectorAll(".viewer-thumbs img")
     .forEach((img, idx) => img.classList.toggle("active", idx === i));
-}
-
-function resetZoom() {
-  zoomed = false;
-  viewerImg.style.transform = "translate(0,0) scale(1)";
-  viewerImg.classList.remove("zoomed");
 }
 
 /* thumbs */
@@ -114,28 +113,37 @@ mainImg.onclick = () => {
   setViewer(index);
 };
 
-/* zoom + pan */
+/* LENS ZOOM */
 viewerImg.onclick = e => {
   e.stopPropagation();
-  zoomed = !zoomed;
-  if (!zoomed) resetZoom();
-  else viewerImg.classList.add("zoomed");
+  lensEnabled = !lensEnabled;
+  lens.style.display = lensEnabled ? "block" : "none";
+  lens.style.backgroundImage = `url(${viewerImg.src})`;
 };
 
 viewerImg.onmousemove = e => {
-  if (!zoomed) return;
+  if (!lensEnabled) return;
 
   const rect = viewerImg.getBoundingClientRect();
-  const x = ((e.clientX - rect.left) / rect.width - 0.5) * -100;
-  const y = ((e.clientY - rect.top) / rect.height - 0.5) * -100;
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
 
-  viewerImg.style.transform =
-    `translate(${x}px, ${y}px) scale(2)`;
+  const lx = x - lens.offsetWidth / 2;
+  const ly = y - lens.offsetHeight / 2;
+
+  lens.style.left = `${lx}px`;
+  lens.style.top = `${ly}px`;
+
+  const bgX = (x / rect.width) * 100;
+  const bgY = (y / rect.height) * 100;
+
+  lens.style.backgroundPosition = `${bgX}% ${bgY}%`;
 };
 
 function closeViewer() {
   viewer.style.display = "none";
-  resetZoom();
+  lensEnabled = false;
+  lens.style.display = "none";
 }
 
 viewer.onclick = closeViewer;

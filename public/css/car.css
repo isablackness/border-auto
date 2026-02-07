@@ -120,6 +120,7 @@
 }
 
 .viewer-image-wrapper {
+  position: relative;
   width: 90vw;
   height: 90vh;
   overflow: hidden;
@@ -129,19 +130,25 @@
 }
 
 .viewer-image-wrapper img {
-  width: auto;
-  height: auto;
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  cursor: zoom-in;
-  transition: transform 0.15s ease;
 }
 
-.viewer-image-wrapper img.zoomed {
-  cursor: grab;
+/* ===== LENS ===== */
+.zoom-lens {
+  position: absolute;
+  width: 220px;
+  height: 140px;
+  border: 2px solid #ff0000;
+  background-repeat: no-repeat;
+  background-size: 200%;
+  pointer-events: none;
+  display: none;
+  box-shadow: 0 0 12px rgba(255,0,0,0.4);
 }
 
+/* arrows fullscreen */
 .viewer-btn {
   position: absolute;
   top: 50%;
