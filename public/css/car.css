@@ -75,7 +75,7 @@
   width: 90px;
   height: 64px;
   object-fit: cover;
-  opacity: 0.5;
+  opacity: 0.45;
   border-radius: 10px;
   border: 2px solid transparent;
   cursor: pointer;
@@ -83,29 +83,63 @@
 
 .gallery-thumbs img.active {
   opacity: 1;
-  border-color: #ff0000;
+  border-color: #d8d8d8;
 }
 
 .gallery-counter {
   margin-top: 6px;
   text-align: right;
-  color: #aaa;
+  color: #8c8c8c;
+  font-size: 13px;
 }
 
 /* ===== INFO ===== */
 .car-info {
   background: #0c0c0c;
   border-radius: 20px;
-  padding: 26px;
+  padding: 28px;
 }
 
+/* ===== PRICE (PREMIUM STYLE) ===== */
 .car-price {
-  margin: 16px 0;
-  padding: 12px 22px;
-  background: linear-gradient(135deg, #c30000, #ff0000);
-  border-radius: 999px;
-  font-size: 26px;
-  font-weight: 800;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+
+  padding: 14px 26px;
+  margin: 18px 0 26px;
+
+  background: linear-gradient(
+    145deg,
+    #1a1a1a,
+    #0e0e0e
+  );
+
+  border-radius: 18px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 10px 24px rgba(0,0,0,0.6);
+
+  font-weight: 700;
+  font-size: 34px;
+  letter-spacing: 0.3px;
+  color: #f2f2f2;
+}
+
+.car-price span.currency {
+  font-size: 18px;
+  font-weight: 500;
+  opacity: 0.6;
+}
+
+/* ===== DESCRIPTION ===== */
+.car-description {
+  color: #d6d6d6;
+  line-height: 1.55;
+  font-size: 15px;
 }
 
 /* ===== FULLSCREEN ===== */
@@ -135,16 +169,16 @@
   object-fit: contain;
 }
 
-/* ===== RECTANGULAR LENS (REAL ZOOM) ===== */
+/* ===== RECT ZOOM ===== */
 .zoom-lens {
   position: absolute;
   width: 240px;
   height: 160px;
-  border: 2px solid #ff0000;
+  border: 2px solid rgba(255,255,255,0.7);
   pointer-events: none;
   display: none;
   background-repeat: no-repeat;
-  box-shadow: 0 0 14px rgba(255,0,0,0.45);
+  box-shadow: 0 0 18px rgba(0,0,0,0.8);
 }
 
 /* fullscreen arrows */
@@ -179,18 +213,19 @@
   width: 80px;
   height: 60px;
   object-fit: cover;
-  opacity: 0.5;
+  opacity: 0.45;
   border: 2px solid transparent;
   cursor: pointer;
 }
 
 .viewer-thumbs img.active {
   opacity: 1;
-  border-color: #ff0000;
+  border-color: #e0e0e0;
 }
 
 .viewer-counter {
   margin-top: 6px;
   text-align: right;
-  color: #aaa;
+  color: #8c8c8c;
+  font-size: 13px;
 }
