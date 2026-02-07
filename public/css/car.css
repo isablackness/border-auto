@@ -135,20 +135,19 @@
   object-fit: contain;
 }
 
-/* ===== LENS ===== */
+/* ===== RECTANGULAR LENS (REAL ZOOM) ===== */
 .zoom-lens {
   position: absolute;
-  width: 220px;
-  height: 140px;
+  width: 240px;
+  height: 160px;
   border: 2px solid #ff0000;
-  background-repeat: no-repeat;
-  background-size: 200%;
   pointer-events: none;
   display: none;
-  box-shadow: 0 0 12px rgba(255,0,0,0.4);
+  background-repeat: no-repeat;
+  box-shadow: 0 0 14px rgba(255,0,0,0.45);
 }
 
-/* arrows fullscreen */
+/* fullscreen arrows */
 .viewer-btn {
   position: absolute;
   top: 50%;

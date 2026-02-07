@@ -3,14 +3,16 @@ const id = new URLSearchParams(location.search).get("id");
 let images = [];
 let index = 0;
 let lensEnabled = false;
+let zoom = 2.5;
 
 const mainImg = document.getElementById("mainImage");
 const viewer = document.getElementById("imageViewer");
 const viewerImg = document.getElementById("viewerImage");
-const lens = document.createElement("div");
+const wrapper = document.querySelector(".viewer-image-wrapper");
 
+const lens = document.createElement("div");
 lens.className = "zoom-lens";
-document.querySelector(".viewer-image-wrapper").appendChild(lens);
+wrapper.appendChild(lens);
 
 async function loadCar() {
   const car = await (await fetch(`/api/cars/${id}`)).json();
@@ -44,6 +46,13 @@ function setViewer(i) {
   lensEnabled = false;
   lens.style.display = "none";
   viewerImg.src = images[i];
+
+  viewerImg.onload = () => {
+    lens.style.backgroundImage = `url(${viewerImg.src})`;
+    lens.style.backgroundSize =
+      `${viewerImg.naturalWidth * zoom}px ${viewerImg.naturalHeight * zoom}px`;
+  };
+
   document.getElementById("viewerCounter").textContent =
     `${i + 1} / ${images.length}`;
 
@@ -102,7 +111,7 @@ document.addEventListener("keydown", e => {
     if (e.key === "Escape") closeViewer();
   } else {
     if (e.key === "ArrowRight") setMain((index + 1) % images.length);
-    if (e.key === "ArrowLeft") setMain((index - 1 + images.length) % images.length);
+    if (e.key === "ArrowLeft") setMain((index - 1) % images.length);
   }
 });
 
@@ -113,31 +122,32 @@ mainImg.onclick = () => {
   setViewer(index);
 };
 
-/* LENS ZOOM */
+/* REAL RECT ZOOM */
 viewerImg.onclick = e => {
   e.stopPropagation();
   lensEnabled = !lensEnabled;
   lens.style.display = lensEnabled ? "block" : "none";
-  lens.style.backgroundImage = `url(${viewerImg.src})`;
 };
 
 viewerImg.onmousemove = e => {
   if (!lensEnabled) return;
 
-  const rect = viewerImg.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+  const imgRect = viewerImg.getBoundingClientRect();
+  const wrapperRect = wrapper.getBoundingClientRect();
 
-  const lx = x - lens.offsetWidth / 2;
-  const ly = y - lens.offsetHeight / 2;
+  const x = e.clientX - imgRect.left;
+  const y = e.clientY - imgRect.top;
+
+  const lx = e.clientX - wrapperRect.left - lens.offsetWidth / 2;
+  const ly = e.clientY - wrapperRect.top - lens.offsetHeight / 2;
 
   lens.style.left = `${lx}px`;
   lens.style.top = `${ly}px`;
 
-  const bgX = (x / rect.width) * 100;
-  const bgY = (y / rect.height) * 100;
+  const bgX = (x / imgRect.width) * viewerImg.naturalWidth * zoom - lens.offsetWidth / 2;
+  const bgY = (y / imgRect.height) * viewerImg.naturalHeight * zoom - lens.offsetHeight / 2;
 
-  lens.style.backgroundPosition = `${bgX}% ${bgY}%`;
+  lens.style.backgroundPosition = `-${bgX}px -${bgY}px`;
 };
 
 function closeViewer() {
