@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Автомобиль — Border Auto</title>
 
   <link rel="stylesheet" href="/css/base.css">
@@ -11,16 +11,8 @@
 
 <header class="site-header">
   <div class="header-inner">
-    <div class="logo-wrapper">
-      <img src="/images/logo1.png" alt="Border Auto">
-    </div>
-
-    <div class="header-social">
-      <a class="instagram" href="https://www.instagram.com/border.auto/" target="_blank">Instagram</a>
-      <a class="whatsapp" href="https://api.whatsapp.com/send?phone=48668989731" target="_blank">WhatsApp</a>
-    </div>
-
-    <nav class="main-nav">
+    <img src="/images/logo1.png" alt="Border Auto">
+    <nav>
       <a href="/catalog.html">Главная</a>
       <a href="/contacts.html">Контакты</a>
     </nav>
@@ -30,29 +22,36 @@
 <main class="page-content">
   <div class="car-page">
 
+    <!-- GALLERY -->
     <div class="car-gallery">
       <div class="gallery-main">
         <button class="gallery-btn left" id="prevBtn">‹</button>
-        <img id="mainImage" src="" alt="Фото авто">
+        <img id="mainImage">
         <button class="gallery-btn right" id="nextBtn">›</button>
+
+        <!-- open fullscreen -->
+        <div class="fullscreen-trigger" id="openFullscreen">
+          ⤢
+        </div>
       </div>
-      <div class="gallery-thumbs" id="thumbnails"></div>
+
+      <div class="gallery-footer">
+        <div class="gallery-thumbs" id="thumbnails"></div>
+        <div class="gallery-counter" id="galleryCounter">1 / 1</div>
+      </div>
     </div>
 
+    <!-- INFO -->
     <div class="car-info">
       <h1 id="carTitle"></h1>
-
-      <div class="car-price">
-        <span id="carPrice"></span> €
-      </div>
-
+      <div class="car-price"><span id="carPrice"></span> €</div>
       <div class="car-description" id="carDescription"></div>
     </div>
 
   </div>
 </main>
 
-<!-- FULLSCREEN VIEWER -->
+<!-- FULLSCREEN -->
 <div class="image-viewer" id="imageViewer">
   <img id="viewerImage">
   <div class="zoom-rect" id="zoomRect"></div>

@@ -1,17 +1,16 @@
-const params = new URLSearchParams(window.location.search);
-const carId = params.get("id");
+const id = new URLSearchParams(location.search).get("id");
 
 let images = [];
-let currentIndex = 0;
-let zoomed = false;
+let index = 0;
+let zoom = false;
 
+const mainImg = document.getElementById("mainImage");
 const viewer = document.getElementById("imageViewer");
 const viewerImg = document.getElementById("viewerImage");
 const zoomRect = document.getElementById("zoomRect");
 
 async function loadCar() {
-  const res = await fetch(`/api/cars/${carId}`);
-  const car = await res.json();
+  const car = await (await fetch(`/api/cars/${id}`)).json();
 
   document.getElementById("carTitle").textContent =
     `${car.brand} ${car.model}`;
@@ -21,85 +20,69 @@ async function loadCar() {
 
   images = car.images || [];
   if (images.length) {
-    setMainImage(0);
+    setImage(0);
     renderThumbs();
   }
 }
 
-/* ===== GALLERY ===== */
-function setMainImage(index) {
-  currentIndex = index;
-  document.getElementById("mainImage").src = images[index];
+function setImage(i) {
+  index = i;
+  mainImg.src = images[i];
+  document.getElementById("galleryCounter").textContent =
+    `${i + 1} / ${images.length}`;
 
-  document.querySelectorAll(".gallery-thumbs img").forEach((img, i) => {
-    img.classList.toggle("active", i === index);
-  });
+  document.querySelectorAll(".gallery-thumbs img")
+    .forEach((el, idx) => el.classList.toggle("active", idx === i));
 }
 
 function renderThumbs() {
   const c = document.getElementById("thumbnails");
   c.innerHTML = "";
-
   images.forEach((src, i) => {
     const img = document.createElement("img");
     img.src = src;
-    img.onclick = () => setMainImage(i);
+    img.onclick = () => setImage(i);
     c.appendChild(img);
   });
 }
 
-/* ===== ARROWS ===== */
-document.getElementById("prevBtn").onclick = () =>
-  setMainImage((currentIndex - 1 + images.length) % images.length);
+/* arrows */
+prevBtn.onclick = () =>
+  setImage((index - 1 + images.length) % images.length);
+nextBtn.onclick = () =>
+  setImage((index + 1) % images.length);
 
-document.getElementById("nextBtn").onclick = () =>
-  setMainImage((currentIndex + 1) % images.length);
-
-/* ===== FULLSCREEN ===== */
-document.getElementById("mainImage").onclick = () => {
-  viewer.style.display = "flex";
-  viewerImg.src = images[currentIndex];
-};
-
-/* ===== VIEWER EVENTS ===== */
-viewer.onclick = () => {
-  viewer.style.display = "none";
-  zoomRect.style.display = "none";
-  zoomed = false;
-};
-
-/* ===== KEYBOARD ===== */
+/* keyboard ALWAYS */
 document.addEventListener("keydown", e => {
-  if (viewer.style.display !== "flex") return;
-
-  if (e.key === "ArrowRight")
-    setViewer((currentIndex + 1) % images.length);
-
-  if (e.key === "ArrowLeft")
-    setViewer((currentIndex - 1 + images.length) % images.length);
-
-  if (e.key === "Escape") viewer.click();
+  if (e.key === "ArrowRight") setImage((index + 1) % images.length);
+  if (e.key === "ArrowLeft") setImage((index - 1 + images.length) % images.length);
+  if (e.key === "Escape") viewer.style.display = "none";
 });
 
-function setViewer(index) {
-  currentIndex = index;
+/* fullscreen */
+mainImg.onclick =
+openFullscreen.onclick = () => {
+  viewer.style.display = "flex";
   viewerImg.src = images[index];
-  setMainImage(index);
-}
+};
 
-/* ===== ZOOM RECT ===== */
-viewerImg.addEventListener("mousemove", e => {
-  if (!zoomed) return;
+/* zoom */
+viewerImg.onclick = e => {
+  e.stopPropagation();
+  zoom = !zoom;
+  zoomRect.style.display = zoom ? "block" : "none";
+};
 
-  zoomRect.style.display = "block";
+viewerImg.onmousemove = e => {
+  if (!zoom) return;
   zoomRect.style.left = e.clientX - 90 + "px";
   zoomRect.style.top = e.clientY - 60 + "px";
-});
+};
 
-viewerImg.addEventListener("click", e => {
-  e.stopPropagation();
-  zoomed = !zoomed;
-  zoomRect.style.display = zoomed ? "block" : "none";
-});
+viewer.onclick = () => {
+  viewer.style.display = "none";
+  zoom = false;
+  zoomRect.style.display = "none";
+};
 
 loadCar();
