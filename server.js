@@ -26,12 +26,9 @@ app.use(
   })
 );
 
-app.get('/health', (req, res) => {
-  res.status(200).send('ok');
+app.get("/health", (req, res) => {
+  res.status(200).send("ok");
 });
-
-
-
 
 /* ===== AUTH ===== */
 const requireAdmin = (req, res, next) => {
@@ -71,10 +68,31 @@ app.get("/api/cars/:id", async (req, res) => {
       "SELECT * FROM cars WHERE id=$1",
       [req.params.id]
     );
-    res.json(r.rows[0]);
+    res.json(r.rows[0] || null);
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: "car load failed" });
+  }
+});
+
+/* ===== DELETE CAR (PUBLIC) ===== */
+app.delete("/api/cars/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const r = await pool.query(
+      "DELETE FROM cars WHERE id=$1 RETURNING id",
+      [id]
+    );
+
+    if (r.rowCount === 0) {
+      return res.status(404).json({ error: "car not found" });
+    }
+
+    res.json({ ok: true, id });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "car delete failed" });
   }
 });
 
