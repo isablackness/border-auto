@@ -1,92 +1,151 @@
+/* =========================
+   GLOBAL BASE STYLES
+   ========================= */
+
 * {
   box-sizing: border-box;
 }
 
-body {
+html, body {
   margin: 0;
-  background: #000;
-  color: #fff;
-  font-family: Arial, sans-serif;
+  padding: 0;
+  min-height: 100%;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  color: #eaeaea;
 }
 
-/* ===== HEADER ===== */
-.site-header {
-  background: radial-gradient(circle at top, #111, #000);
-  padding: 20px 30px;
+/* =========================
+   BACKGROUND (РАЗМЫТЫЙ ТЁМНЫЙ ФОН)
+   ========================= */
+
+body {
+  background:
+    radial-gradient(
+      circle at top center,
+      rgba(255,255,255,0.06) 0%,
+      rgba(0,0,0,0.85) 45%,
+      #000 80%
+    ),
+    linear-gradient(
+      135deg,
+      #0a0a0a 0%,
+      #000000 100%
+    );
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
-.header-inner {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+/* Виньетка */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255,255,255,0.04) 0%,
+    rgba(0,0,0,0.85) 70%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* =========================
+   HEADER
+   ========================= */
+
+header {
+  position: relative;
+  padding: 20px 40px;
+}
+
+/* =========================
+   SOCIAL BUTTONS (Instagram / WhatsApp)
+   ========================= */
+
+.social-links {
+  display: flex;
+  gap: 16px;
+}
+
+.social-links a {
+  display: inline-flex;
   align-items: center;
-}
-
-/* LOGO */
-.logo-wrapper img {
-  max-width: 260px;
-  height: auto;
-  display: block;
-}
-
-/* CENTER SOCIAL */
-.header-social {
-  display: flex;
   justify-content: center;
-  gap: 14px;
-}
-
-.header-social a {
   padding: 10px 22px;
-  border-radius: 30px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
   text-decoration: none;
   color: #fff;
-  font-weight: 600;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.25);
 }
 
-/* NAV */
-.main-nav {
-  display: flex;
-  gap: 14px;
-  justify-content: flex-end;
-}
-
-.main-nav a {
-  padding: 10px 24px;
-  border-radius: 30px;
-  background: #111;
-  color: #fff;
-  text-decoration: none;
-  font-weight: 600;
-  border: 1px solid #222;
-  transition: 0.3s;
-}
-
-.main-nav a:hover {
-  background: linear-gradient(135deg, #c30000, #ff0000);
-}
-
-/* ===== SOCIAL STYLES ===== */
-.instagram {
+/* Instagram */
+.social-links a.instagram {
   background: linear-gradient(
-    45deg,
-    #feda75,
-    #fa7e1e,
-    #d62976,
-    #962fbf,
-    #4f5bd5
+    135deg,
+    rgba(255, 94, 98, 0.25),
+    rgba(255, 153, 102, 0.25)
   );
 }
 
-.whatsapp {
-  background: linear-gradient(135deg, #1ebd5a, #25d366);
+.social-links a.instagram:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 94, 98, 0.45),
+    rgba(255, 153, 102, 0.45)
+  );
 }
 
-/* ===== PAGE ===== */
-.page-content {
-  padding: 30px;
+/* WhatsApp */
+.social-links a.whatsapp {
+  background: linear-gradient(
+    135deg,
+    rgba(37, 211, 102, 0.25),
+    rgba(32, 180, 85, 0.25)
+  );
 }
 
-.page-content {
-  padding-top: 140px; /* высота шапки */
+.social-links a.whatsapp:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(37, 211, 102, 0.45),
+    rgba(32, 180, 85, 0.45)
+  );
 }
 
+/* =========================
+   GENERIC CARDS
+   ========================= */
+
+.card {
+  background: rgba(20,20,20,0.65);
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+/* =========================
+   SCROLLBAR
+   ========================= */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    #333,
+    #111
+  );
+  border-radius: 10px;
+}

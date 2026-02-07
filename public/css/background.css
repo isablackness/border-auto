@@ -1,41 +1,39 @@
-/* Premium dark blurred background — SAFE VERSION */
+/* =========================
+   GLOBAL BACKGROUND
+   ========================= */
 
-html {
-  background-color: #050505;
+html, body {
+  min-height: 100%;
 }
 
+/* Основной тёмный премиум-фон */
 body {
-  position: relative;
-  background-color: transparent;
+  background:
+    radial-gradient(
+      circle at top center,
+      rgba(255,255,255,0.08) 0%,
+      rgba(0,0,0,0.85) 45%,
+      #000 80%
+    ),
+    linear-gradient(
+      135deg,
+      #0b0b0b 0%,
+      #000000 100%
+    );
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
-/* фон рисуем отдельным слоем, не влияя на layout */
+/* Виньетка по краям */
 body::before {
   content: "";
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-
-  z-index: -1;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255,255,255,0.04) 0%,
+    rgba(0,0,0,0.9) 70%
+  );
   pointer-events: none;
-
-  background:
-    radial-gradient(
-      1200px 700px at 15% 0%,
-      rgba(255,255,255,0.06),
-      transparent 60%
-    ),
-    radial-gradient(
-      900px 600px at 85% 20%,
-      rgba(255,255,255,0.05),
-      transparent 65%
-    ),
-    linear-gradient(
-      180deg,
-      #050505,
-      #0a0a0a 45%,
-      #050505
-    );
+  z-index: -1;
 }
