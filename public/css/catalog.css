@@ -145,31 +145,29 @@
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: 4;
-  pointer-events: none;
   text-decoration: none;
-}
-
-/* кнопка внутри overlay */
-.card-overlay::after {
-  content: "Подробнее";
-  padding: 14px 38px;
-  border-radius: 18px;          /* 🔥 ПРЯМОУГОЛЬНАЯ */
-  border: 2px solid rgba(255,255,255,0.9);
-  background: rgba(0,0,0,0.35);
-  color: #fff;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  transition: 0.25s;
 }
 
 .car-card:hover .card-overlay {
   opacity: 1;
-  pointer-events: auto;
 }
 
-.card-overlay:hover::after {
+/* ================= OVERLAY BUTTON ================= */
+.overlay-button {
+  padding: 14px 36px;
+  border-radius: 16px;
+  border: 2px solid rgba(255,255,255,0.85);
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  background: rgba(0,0,0,0.35);
+  transition: 0.25s;
+}
+
+.card-overlay:hover .overlay-button {
   background: rgba(255,255,255,0.08);
 }
+
 
 /* ================= INFO ================= */
 .car-card .info {
