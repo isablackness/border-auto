@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <title>Каталог — Border Auto</title>
-<link rel="stylesheet" href="/css/background.css">
+
+  <link rel="stylesheet" href="/css/background.css">
   <link rel="stylesheet" href="/css/base.css">
   <link rel="stylesheet" href="/css/catalog.css">
 </head>
@@ -16,8 +17,8 @@
     </div>
 
     <div class="header-social">
-      <a class="instagram" href="https://www.instagram.com/border.auto/" target="_blank">Instagram</a>
-      <a class="whatsapp" href="https://api.whatsapp.com/send?phone=48668989731" target="_blank">WhatsApp</a>
+      <a href="https://www.instagram.com/border.auto/" target="_blank">Instagram</a>
+      <a href="https://api.whatsapp.com/send?phone=48668989731" target="_blank">WhatsApp</a>
     </div>
 
     <nav class="main-nav">
@@ -27,25 +28,12 @@
   </div>
 </header>
 
-<!-- SORT BAR -->
 <div class="sort-bar">
   <span class="sort-label">Сортировка:</span>
-
-  <button data-sort="price">
-    По цене <span class="arrow">↓</span>
-  </button>
-
-  <button data-sort="mileage">
-    По пробегу <span class="arrow">↓</span>
-  </button>
-
-  <button data-sort="position" class="active">
-    По дате публикации <span class="arrow">↓</span>
-  </button>
-
-  <button data-sort="year">
-    По дате производства <span class="arrow">↓</span>
-  </button>
+  <button data-sort="price">По цене ↓</button>
+  <button data-sort="mileage">По пробегу ↓</button>
+  <button data-sort="position" class="active">По дате публикации ↓</button>
+  <button data-sort="year">По дате производства ↓</button>
 </div>
 
 <main class="page-content">
@@ -55,7 +43,6 @@
       <h3>Фильтр</h3>
       <input type="text" id="brand" placeholder="Марка">
       <input type="text" id="model" placeholder="Модель">
-
       <select id="year">
         <option value="">Год</option>
         <script>
@@ -64,7 +51,6 @@
           }
         </script>
       </select>
-
       <input type="number" id="price" placeholder="Цена до (€)">
       <input type="number" id="mileage" placeholder="Пробег до (км)">
       <button onclick="applyFilters()">Применить</button>

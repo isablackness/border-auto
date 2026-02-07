@@ -1,18 +1,35 @@
+/* Premium dark blurred background — SAFE VERSION */
+
+html {
+  background-color: #050505;
+}
+
+body {
+  position: relative;
+  background-color: transparent;
+}
+
+/* фон рисуем отдельным слоем, не влияя на layout */
 body::before {
   content: "";
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
   z-index: -1;
+  pointer-events: none;
 
   background:
     radial-gradient(
-      1200px 600px at 20% 0%,
-      rgba(255,255,255,0.04),
+      1200px 700px at 15% 0%,
+      rgba(255,255,255,0.06),
       transparent 60%
     ),
     radial-gradient(
-      900px 500px at 80% 15%,
-      rgba(255,255,255,0.03),
+      900px 600px at 85% 20%,
+      rgba(255,255,255,0.05),
       transparent 65%
     ),
     linear-gradient(
