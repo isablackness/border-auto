@@ -1,42 +1,31 @@
-/* === МЯГКИЙ ПРЕМИАЛЬНЫЙ ФОН === */
+/* ===== GLOBAL BACKGROUND LAYER (UNBREAKABLE) ===== */
 
-body,
-.site-header,
-main,
-.catalog-page,
-.page {
-  background: transparent !important;
-  position: relative;
-}
-
-/* Основной фон */
-body::before {
-  content: "";
+.bg-layer {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
+  pointer-events: none;
 
   background:
     radial-gradient(
       ellipse at top center,
-      rgba(255, 255, 255, 0.12) 0%,
-      rgba(255, 255, 255, 0.05) 30%,
-      rgba(0, 0, 0, 0.55) 55%,
-      rgba(0, 0, 0, 0.92) 100%
+      rgba(255,255,255,0.10) 0%,
+      rgba(255,255,255,0.05) 28%,
+      rgba(0,0,0,0.55) 55%,
+      rgba(0,0,0,0.92) 100%
     ),
     linear-gradient(
       180deg,
-      #141414 0%,
-      #0f0f0f 45%,
-      #090909 100%
+      #161616 0%,
+      #111111 45%,
+      #0b0b0b 100%
     );
-
-  filter: blur(0px);
 }
 
-/* Контент поверх фона */
+/* Весь контент поверх фона */
 .site-header,
-main {
+main,
+footer {
   position: relative;
   z-index: 1;
 }
