@@ -1,86 +1,54 @@
 /* =========================
-   GLOBAL BACKGROUND OVERRIDE
+   GLOBAL BASE STYLES
    ========================= */
 
-/* Убираем любой фон, заданный ранее */
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
-  background: transparent !important;
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
 }
 
-/* Основной премиум-фон */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
+/* ===== ГЛОБАЛЬНЫЙ ФОН САЙТА ===== */
+body {
   background:
     radial-gradient(
       ellipse at top center,
-      rgba(255,255,255,0.06) 0%,
-      rgba(0,0,0,0.85) 45%,
-      #000 75%
+      rgba(255,255,255,0.10) 0%,
+      rgba(255,255,255,0.04) 30%,
+      rgba(0,0,0,0.55) 55%,
+      rgba(0,0,0,0.92) 100%
     ),
     linear-gradient(
-      135deg,
-      #0b0b0b 0%,
-      #000000 100%
+      180deg,
+      #161616 0%,
+      #111111 50%,
+      #0b0b0b 100%
     );
-  z-index: -2;
-  pointer-events: none;
+  background-attachment: fixed;
+  color: #fff;
 }
 
-/* Виньетка */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0,0,0,0) 40%,
-    rgba(0,0,0,0.7) 100%
-  );
-  z-index: -1;
-  pointer-events: none;
-}
-/* ===============================
-   FORCED GLOBAL BACKGROUND LAYER
-   =============================== */
+/* =========================
+   COMMON LAYOUT
+   ========================= */
 
-html {
-  background: #000;
+.site-header,
+main,
+footer {
+  background: transparent;
 }
 
-/* Фон под ВСЕМ сайтом */
-html::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(
-      ellipse at top center,
-      rgba(255,255,255,0.07) 0%,
-      rgba(0,0,0,0.85) 45%,
-      #000 75%
-    ),
-    linear-gradient(
-      135deg,
-      #0b0b0b 0%,
-      #000000 100%
-    );
-  z-index: -9999;
-  pointer-events: none;
+/* ссылки */
+a {
+  color: #fff;
+  text-decoration: none;
 }
 
-/* Виньетка */
-html::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(0,0,0,0) 40%,
-    rgba(0,0,0,0.75) 100%
-  );
-  z-index: -9998;
-  pointer-events: none;
+a:hover {
+  opacity: 0.85;
 }

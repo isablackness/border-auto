@@ -1,31 +1,28 @@
-/* ===== GLOBAL BACKGROUND LAYER (UNBREAKABLE) ===== */
+/* ===== GLOBAL BACKGROUND (SAFE VERSION) ===== */
 
-.bg-layer {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
+html,
+body {
+  min-height: 100%;
+  background: none;
+}
 
+/* Фон вешаем на body */
+body {
   background:
     radial-gradient(
       ellipse at top center,
       rgba(255,255,255,0.10) 0%,
-      rgba(255,255,255,0.05) 28%,
-      rgba(0,0,0,0.55) 55%,
+      rgba(255,255,255,0.04) 35%,
+      rgba(0,0,0,0.55) 60%,
       rgba(0,0,0,0.92) 100%
     ),
     linear-gradient(
       180deg,
       #161616 0%,
-      #111111 45%,
+      #111111 50%,
       #0b0b0b 100%
     );
+  background-attachment: fixed;
 }
 
-/* Весь контент поверх фона */
-.site-header,
-main,
-footer {
-  position: relative;
-  z-index: 1;
-}
+/* НИЧЕГО больше не трогаем */
