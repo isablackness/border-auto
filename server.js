@@ -26,6 +26,13 @@ app.use(
   })
 );
 
+app.get('/health', (req, res) => {
+  res.status(200).send('ok');
+});
+
+
+
+
 /* ===== AUTH ===== */
 const requireAdmin = (req, res, next) => {
   if (req.session.isAdmin) return next();
