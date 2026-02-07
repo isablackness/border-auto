@@ -28,9 +28,11 @@
 .gallery-main img {
   max-width: 100%;
   max-height: 100%;
+  object-fit: contain;
   cursor: zoom-in;
 }
 
+/* arrows */
 .gallery-btn {
   position: absolute;
   top: 50%;
@@ -58,6 +60,7 @@
   cursor: pointer;
 }
 
+/* thumbs */
 .gallery-footer {
   margin-top: 12px;
 }
@@ -117,21 +120,26 @@
 }
 
 .viewer-image-wrapper {
-  max-width: 90%;
-  max-height: 90%;
+  width: 90vw;
+  height: 90vh;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .viewer-image-wrapper img {
+  width: auto;
+  height: auto;
   max-width: 100%;
   max-height: 100%;
+  object-fit: contain;
   cursor: zoom-in;
-  transition: transform 0.2s ease;
+  transition: transform 0.15s ease;
 }
 
 .viewer-image-wrapper img.zoomed {
-  transform: scale(2);
-  cursor: zoom-out;
+  cursor: grab;
 }
 
 .viewer-btn {
