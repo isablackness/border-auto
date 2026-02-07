@@ -1,5 +1,5 @@
 .page-content {
-  padding-top: 140px;
+  padding-top: 120px;
 }
 
 .car-page {
@@ -31,7 +31,6 @@
   cursor: zoom-in;
 }
 
-/* arrows */
 .gallery-btn {
   position: absolute;
   top: 50%;
@@ -49,19 +48,16 @@
 .gallery-btn.left { left: 12px; }
 .gallery-btn.right { right: 12px; }
 
-/* fullscreen button */
 .fullscreen-trigger {
   position: absolute;
   right: 14px;
   bottom: 14px;
-  background: rgba(0,0,0,0.65);
+  background: rgba(0,0,0,0.7);
   border-radius: 10px;
   padding: 8px 10px;
   cursor: pointer;
-  font-size: 18px;
 }
 
-/* footer */
 .gallery-footer {
   margin-top: 12px;
 }
@@ -113,24 +109,74 @@
 .image-viewer {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.95);
+  background: rgba(0,0,0,0.96);
   display: none;
   align-items: center;
   justify-content: center;
   z-index: 9999;
 }
 
-.image-viewer img {
+.viewer-image-wrapper {
   max-width: 90%;
   max-height: 90%;
-  cursor: zoom-in;
+  overflow: hidden;
 }
 
-.zoom-rect {
+.viewer-image-wrapper img {
+  max-width: 100%;
+  max-height: 100%;
+  cursor: zoom-in;
+  transition: transform 0.2s ease;
+}
+
+.viewer-image-wrapper img.zoomed {
+  transform: scale(2);
+  cursor: zoom-out;
+}
+
+.viewer-btn {
   position: absolute;
-  width: 180px;
-  height: 120px;
-  border: 2px solid #ff0000;
-  display: none;
-  pointer-events: none;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 40px;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.viewer-btn.left { left: 30px; }
+.viewer-btn.right { right: 30px; }
+
+.viewer-footer {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  padding: 0 20px;
+}
+
+.viewer-thumbs {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+}
+
+.viewer-thumbs img {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  opacity: 0.5;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.viewer-thumbs img.active {
+  opacity: 1;
+  border-color: #ff0000;
+}
+
+.viewer-counter {
+  margin-top: 6px;
+  text-align: right;
+  color: #aaa;
 }

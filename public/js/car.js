@@ -2,12 +2,10 @@ const id = new URLSearchParams(location.search).get("id");
 
 let images = [];
 let index = 0;
-let zoom = false;
 
 const mainImg = document.getElementById("mainImage");
 const viewer = document.getElementById("imageViewer");
 const viewerImg = document.getElementById("viewerImage");
-const zoomRect = document.getElementById("zoomRect");
 
 async function loadCar() {
   const car = await (await fetch(`/api/cars/${id}`)).json();
@@ -20,19 +18,30 @@ async function loadCar() {
 
   images = car.images || [];
   if (images.length) {
-    setImage(0);
+    setMain(0);
     renderThumbs();
+    renderViewerThumbs();
   }
 }
 
-function setImage(i) {
+function setMain(i) {
   index = i;
   mainImg.src = images[i];
   document.getElementById("galleryCounter").textContent =
     `${i + 1} / ${images.length}`;
 
   document.querySelectorAll(".gallery-thumbs img")
-    .forEach((el, idx) => el.classList.toggle("active", idx === i));
+    .forEach((img, idx) => img.classList.toggle("active", idx === i));
+}
+
+function setViewer(i) {
+  index = i;
+  viewerImg.src = images[i];
+  document.getElementById("viewerCounter").textContent =
+    `${i + 1} / ${images.length}`;
+
+  document.querySelectorAll(".viewer-thumbs img")
+    .forEach((img, idx) => img.classList.toggle("active", idx === i));
 }
 
 function renderThumbs() {
@@ -41,48 +50,53 @@ function renderThumbs() {
   images.forEach((src, i) => {
     const img = document.createElement("img");
     img.src = src;
-    img.onclick = () => setImage(i);
+    img.onclick = () => setMain(i);
+    c.appendChild(img);
+  });
+}
+
+function renderViewerThumbs() {
+  const c = document.getElementById("viewerThumbs");
+  c.innerHTML = "";
+  images.forEach((src, i) => {
+    const img = document.createElement("img");
+    img.src = src;
+    img.onclick = () => setViewer(i);
     c.appendChild(img);
   });
 }
 
 /* arrows */
-prevBtn.onclick = () =>
-  setImage((index - 1 + images.length) % images.length);
-nextBtn.onclick = () =>
-  setImage((index + 1) % images.length);
+prevBtn.onclick = () => setMain((index - 1 + images.length) % images.length);
+nextBtn.onclick = () => setMain((index + 1) % images.length);
 
-/* keyboard ALWAYS */
+/* keyboard */
 document.addEventListener("keydown", e => {
-  if (e.key === "ArrowRight") setImage((index + 1) % images.length);
-  if (e.key === "ArrowLeft") setImage((index - 1 + images.length) % images.length);
+  if (e.key === "ArrowRight") setMain((index + 1) % images.length);
+  if (e.key === "ArrowLeft") setMain((index - 1 + images.length) % images.length);
   if (e.key === "Escape") viewer.style.display = "none";
 });
 
 /* fullscreen */
-mainImg.onclick =
-openFullscreen.onclick = () => {
+openFullscreen.onclick =
+mainImg.onclick = () => {
   viewer.style.display = "flex";
-  viewerImg.src = images[index];
+  setViewer(index);
 };
+
+/* viewer arrows */
+viewerPrev.onclick = () => setViewer((index - 1 + images.length) % images.length);
+viewerNext.onclick = () => setViewer((index + 1) % images.length);
 
 /* zoom */
 viewerImg.onclick = e => {
   e.stopPropagation();
-  zoom = !zoom;
-  zoomRect.style.display = zoom ? "block" : "none";
-};
-
-viewerImg.onmousemove = e => {
-  if (!zoom) return;
-  zoomRect.style.left = e.clientX - 90 + "px";
-  zoomRect.style.top = e.clientY - 60 + "px";
+  viewerImg.classList.toggle("zoomed");
 };
 
 viewer.onclick = () => {
   viewer.style.display = "none";
-  zoom = false;
-  zoomRect.style.display = "none";
+  viewerImg.classList.remove("zoomed");
 };
 
 loadCar();

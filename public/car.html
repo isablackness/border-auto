@@ -11,11 +11,21 @@
 
 <header class="site-header">
   <div class="header-inner">
-    <img src="/images/logo1.png" alt="Border Auto">
-    <nav>
+
+    <div class="logo-wrapper">
+      <img src="/images/logo1.png" alt="Border Auto">
+    </div>
+
+    <div class="header-social">
+      <a class="instagram" href="https://www.instagram.com/border.auto/" target="_blank">Instagram</a>
+      <a class="whatsapp" href="https://api.whatsapp.com/send?phone=48668989731" target="_blank">WhatsApp</a>
+    </div>
+
+    <nav class="main-nav">
       <a href="/catalog.html">Главная</a>
       <a href="/contacts.html">Контакты</a>
     </nav>
+
   </div>
 </header>
 
@@ -26,13 +36,9 @@
     <div class="car-gallery">
       <div class="gallery-main">
         <button class="gallery-btn left" id="prevBtn">‹</button>
-        <img id="mainImage">
+        <img id="mainImage" alt="">
         <button class="gallery-btn right" id="nextBtn">›</button>
-
-        <!-- open fullscreen -->
-        <div class="fullscreen-trigger" id="openFullscreen">
-          ⤢
-        </div>
+        <div class="fullscreen-trigger" id="openFullscreen">⤢</div>
       </div>
 
       <div class="gallery-footer">
@@ -53,8 +59,18 @@
 
 <!-- FULLSCREEN -->
 <div class="image-viewer" id="imageViewer">
-  <img id="viewerImage">
-  <div class="zoom-rect" id="zoomRect"></div>
+  <button class="viewer-btn left" id="viewerPrev">‹</button>
+
+  <div class="viewer-image-wrapper">
+    <img id="viewerImage">
+  </div>
+
+  <button class="viewer-btn right" id="viewerNext">›</button>
+
+  <div class="viewer-footer">
+    <div class="viewer-thumbs" id="viewerThumbs"></div>
+    <div class="viewer-counter" id="viewerCounter">1 / 1</div>
+  </div>
 </div>
 
 <script src="/js/car.js"></script>
