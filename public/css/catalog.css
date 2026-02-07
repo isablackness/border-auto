@@ -59,33 +59,6 @@
 .sort-bar button[data-sort="date"]::before { content: "🕒"; }
 .sort-bar button[data-sort="year"]::before { content: "📅"; }
 
-/* ================= LAYOUT ================= */
-.catalog-layout {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 36px;
-  align-items: start;
-}
-
-/* ================= FILTER ================= */
-.filter-panel {
-  background: linear-gradient(180deg, #0f0f0f, #0a0a0a);
-  padding: 26px;
-  border-radius: 22px;
-  border: 1px solid #1c1c1c;
-  position: sticky;
-  top: 20px;
-}
-
-.filter-panel input,
-.filter-panel select,
-.filter-panel button {
-  width: 100%;
-  height: 42px;
-  margin-bottom: 12px;
-  border-radius: 10px;
-}
-
 /* ================= GRID ================= */
 #catalog {
   display: grid;
@@ -133,7 +106,6 @@
   gap: 14px;
   color: rgba(255,255,255,0.55);
   font-weight: 700;
-  letter-spacing: 1px;
 }
 
 .no-photo svg {
@@ -162,7 +134,7 @@
   z-index: 5;
 }
 
-/* ================= OVERLAY (CLICKABLE) ================= */
+/* ================= OVERLAY ================= */
 .card-overlay {
   position: absolute;
   inset: 0;
@@ -173,11 +145,21 @@
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: 4;
+  pointer-events: none;
   text-decoration: none;
 }
 
-.card-overlay {
-  pointer-events: none;
+/* кнопка внутри overlay */
+.card-overlay::after {
+  content: "Подробнее";
+  padding: 14px 38px;
+  border-radius: 18px;          /* 🔥 ПРЯМОУГОЛЬНАЯ */
+  border: 2px solid rgba(255,255,255,0.9);
+  background: rgba(0,0,0,0.35);
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  transition: 0.25s;
 }
 
 .car-card:hover .card-overlay {
@@ -185,13 +167,8 @@
   pointer-events: auto;
 }
 
-.card-overlay {
-  color: #fff;
-  font-weight: 800;
-  padding: 14px 32px;
-  border-radius: 999px;
-  border: 2px solid rgba(255,255,255,0.9);
-  background: rgba(0,0,0,0.35);
+.card-overlay:hover::after {
+  background: rgba(255,255,255,0.08);
 }
 
 /* ================= INFO ================= */
@@ -205,28 +182,7 @@
 
 /* ================= MOBILE ================= */
 @media (max-width: 900px) {
-  .catalog-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .filter-panel {
-    position: static;
-  }
-
   .image-wrapper {
     height: 260px;
   }
-}
-
-/* ===== SORT ARROWS ===== */
-.sort-bar button.asc::after {
-  content: " ↑";
-  font-size: 12px;
-  margin-left: 6px;
-}
-
-.sort-bar button.desc::after {
-  content: " ↓";
-  font-size: 12px;
-  margin-left: 6px;
 }
