@@ -1,31 +1,77 @@
 /* ================= PAGE ================= */
 .car-page {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 40px;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  align-items: start;
 }
 
 /* ================= GALLERY ================= */
 .car-gallery {
   background: linear-gradient(180deg, #111, #0b0b0b);
-  padding: 20px;
+  padding: 18px;
   border-radius: 20px;
+  border: 1px solid #1e1e1e;
 }
 
-/* ГЛАВНОЕ ИЗМЕНЕНИЕ */
-.gallery-main img {
-  width: 100%;
-  max-height: 520px;   /* КЛЮЧ */
-  object-fit: cover;
+/* ВАЖНО: ограничиваем ВЫСОТУ блока, а не фото */
+.gallery-main {
+  background: #000;
   border-radius: 16px;
+  height: 420px;               /* КЛЮЧЕВОЕ */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-/* ================= THUMBS ================= */
+.gallery-main img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;         /* ❗ НЕ cover */
+  border-radius: 14px;
+}
+
+/* ================= BUTTONS ================= */
+.gallery-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  font-size: 24px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.gallery-btn.left { left: 12px; }
+.gallery-btn.right { right: 12px; }
+
+/* ================= THUMBNAILS ================= */
+.gallery-thumbs {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+  overflow-x: auto;
+}
+
 .gallery-thumbs img {
-  width: 64px;
-  height: 80px;
+  width: 90px;                 /* УВЕЛИЧЕНО */
+  height: 64px;
   object-fit: cover;
   border-radius: 10px;
+  opacity: 0.55;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: 0.25s;
+}
+
+.gallery-thumbs img.active {
+  opacity: 1;
+  border-color: #ff0000;
 }
 
 /* ================= INFO ================= */
@@ -33,14 +79,26 @@
   background: linear-gradient(180deg, #111, #0c0c0c);
   padding: 26px;
   border-radius: 20px;
+  border: 1px solid #1e1e1e;
   position: sticky;
   top: 24px;
 }
 
+.car-info h1 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 26px;
+}
+
 /* ================= PRICE ================= */
 .car-price {
-  font-size: 26px;
+  display: inline-block;
+  margin: 14px 0 20px;
   padding: 12px 22px;
+  background: linear-gradient(135deg, #c30000, #ff0000);
+  border-radius: 999px;
+  font-size: 26px;
+  font-weight: 800;
 }
 
 /* ================= MOBILE ================= */
@@ -49,8 +107,8 @@
     grid-template-columns: 1fr;
   }
 
-  .gallery-main img {
-    max-height: 420px;
+  .gallery-main {
+    height: 320px;
   }
 
   .car-info {
