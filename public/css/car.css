@@ -12,23 +12,24 @@
   padding: 18px;
   border-radius: 20px;
   border: 1px solid #1e1e1e;
+  position: relative;
 }
 
-/* ВАЖНО: ограничиваем ВЫСОТУ блока, а не фото */
 .gallery-main {
   background: #000;
   border-radius: 16px;
-  height: 420px;               /* КЛЮЧЕВОЕ */
+  height: 420px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  position: relative;
 }
 
 .gallery-main img {
   max-width: 100%;
   max-height: 100%;
-  object-fit: contain;         /* ❗ НЕ cover */
+  object-fit: contain;
   border-radius: 14px;
 }
 
@@ -40,11 +41,12 @@
   background: rgba(0,0,0,0.6);
   border: 1px solid rgba(255,255,255,0.2);
   color: #fff;
-  font-size: 24px;
-  width: 42px;
-  height: 42px;
+  font-size: 26px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   cursor: pointer;
+  z-index: 5;
 }
 
 .gallery-btn.left { left: 12px; }
@@ -59,14 +61,18 @@
 }
 
 .gallery-thumbs img {
-  width: 90px;                 /* УВЕЛИЧЕНО */
+  width: 90px;
   height: 64px;
   object-fit: cover;
   border-radius: 10px;
-  opacity: 0.55;
+  opacity: 0.5;
   cursor: pointer;
   border: 2px solid transparent;
   transition: 0.25s;
+}
+
+.gallery-thumbs img:hover {
+  opacity: 0.8;
 }
 
 .gallery-thumbs img.active {
@@ -99,6 +105,12 @@
   border-radius: 999px;
   font-size: 26px;
   font-weight: 800;
+}
+
+/* ================= DESCRIPTION ================= */
+.car-description {
+  line-height: 1.6;
+  color: #ddd;
 }
 
 /* ================= MOBILE ================= */

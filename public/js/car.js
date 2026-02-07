@@ -12,13 +12,13 @@ async function loadCar() {
     `${car.brand} ${car.model}`;
 
   document.getElementById("carPrice").textContent = car.price;
- 
 
-  // 🔥 ГЛАВНОЕ: описание с переносами
+  /* ===== ОПИСАНИЕ С ПЕРЕНОСАМИ СТРОК ===== */
+  const desc = car.description || "";
   document.getElementById("carDescription").innerHTML =
-    car.description || "";
+    desc.replace(/\n/g, "<br>");
 
-  // ГАЛЕРЕЯ
+  /* ===== ГАЛЕРЕЯ ===== */
   images = car.images || [];
   if (images.length > 0) {
     setMainImage(0);
@@ -29,7 +29,13 @@ async function loadCar() {
 /* ===== GALLERY ===== */
 function setMainImage(index) {
   currentIndex = index;
+
   document.getElementById("mainImage").src = images[index];
+
+  // активная миниатюра
+  document.querySelectorAll(".gallery-thumbs img").forEach((img, i) => {
+    img.classList.toggle("active", i === index);
+  });
 }
 
 function renderThumbs() {
@@ -44,6 +50,7 @@ function renderThumbs() {
   });
 }
 
+/* ===== ARROWS ===== */
 document.getElementById("prevBtn").onclick = () => {
   if (!images.length) return;
   setMainImage((currentIndex - 1 + images.length) % images.length);
