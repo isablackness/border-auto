@@ -1,39 +1,49 @@
 /* =========================
-   GLOBAL BACKGROUND
+   GLOBAL PREMIUM BACKGROUND
    ========================= */
 
+/* ВАЖНО: не трогаем размеры layout */
 html, body {
   min-height: 100%;
 }
 
-/* Основной тёмный премиум-фон */
+/* Базовый фон */
 body {
+  background-color: #000;
+  position: relative;
+}
+
+/* Мягкий премиум-градиент */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
   background:
     radial-gradient(
-      circle at top center,
-      rgba(255,255,255,0.08) 0%,
+      ellipse at top center,
+      rgba(255,255,255,0.06) 0%,
       rgba(0,0,0,0.85) 45%,
-      #000 80%
+      #000 75%
     ),
     linear-gradient(
       135deg,
       #0b0b0b 0%,
       #000000 100%
     );
-  background-attachment: fixed;
-  background-repeat: no-repeat;
+  z-index: -2;
+  pointer-events: none;
 }
 
-/* Виньетка по краям */
-body::before {
+/* Лёгкая виньетка по краям */
+body::after {
   content: "";
   position: fixed;
   inset: 0;
   background: radial-gradient(
     ellipse at center,
-    rgba(255,255,255,0.04) 0%,
-    rgba(0,0,0,0.9) 70%
+    rgba(0,0,0,0) 35%,
+    rgba(0,0,0,0.65) 100%
   );
-  pointer-events: none;
   z-index: -1;
+  pointer-events: none;
 }
