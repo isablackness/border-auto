@@ -15,23 +15,9 @@ body {
 
 /* ===== ГЛОБАЛЬНЫЙ ФОН САЙТА ===== */
 body {
-  background:
-    radial-gradient(
-      ellipse at top center,
-      rgba(255,255,255,0.10) 0%,
-      rgba(255,255,255,0.04) 30%,
-      rgba(0,0,0,0.55) 55%,
-      rgba(0,0,0,0.92) 100%
-    ),
-    linear-gradient(
-      180deg,
-      #161616 0%,
-      #111111 50%,
-      #0b0b0b 100%
-    );
-  background-attachment: fixed;
   color: #fff;
 }
+
 
 /* =========================
    COMMON LAYOUT
@@ -51,4 +37,11 @@ a {
 
 a:hover {
   opacity: 0.85;
+}
+.site-header,
+main,
+footer,
+.section,
+.container {
+  background: transparent !important;
 }

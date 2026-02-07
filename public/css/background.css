@@ -1,28 +1,26 @@
-/* ===== GLOBAL BACKGROUND (SAFE VERSION) ===== */
+/* ===== GLOBAL BACKGROUND (FINAL SAFE) ===== */
 
 html,
 body {
   min-height: 100%;
-  background: none;
+  margin: 0;
 }
 
-/* Фон вешаем на body */
+/* мягкий тёмный фон */
 body {
   background:
     radial-gradient(
       ellipse at top center,
-      rgba(255,255,255,0.10) 0%,
-      rgba(255,255,255,0.04) 35%,
-      rgba(0,0,0,0.55) 60%,
-      rgba(0,0,0,0.92) 100%
+      rgba(255,255,255,0.08) 0%,
+      rgba(255,255,255,0.03) 35%,
+      rgba(0,0,0,0.55) 65%,
+      rgba(0,0,0,0.9) 100%
     ),
     linear-gradient(
       180deg,
-      #161616 0%,
-      #111111 50%,
-      #0b0b0b 100%
+      #1a1a1a 0%,
+      #121212 50%,
+      #0c0c0c 100%
     );
   background-attachment: fixed;
 }
-
-/* НИЧЕГО больше не трогаем */
