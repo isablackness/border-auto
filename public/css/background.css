@@ -1,4 +1,4 @@
-/* ===== GLOBAL BACKGROUND (FINAL SAFE) ===== */
+/* ===== BACKGROUND (SAFE + SOFT) ===== */
 
 html,
 body {
@@ -6,21 +6,22 @@ body {
   margin: 0;
 }
 
-/* мягкий тёмный фон */
+/* мягкий, чуть светлее, НЕ убивает контент */
 body {
   background:
     radial-gradient(
       ellipse at top center,
-      rgba(255,255,255,0.08) 0%,
-      rgba(255,255,255,0.03) 35%,
-      rgba(0,0,0,0.55) 65%,
-      rgba(0,0,0,0.9) 100%
+      rgba(255,255,255,0.10) 0%,
+      rgba(255,255,255,0.05) 30%,
+      rgba(0,0,0,0.60) 65%,
+      rgba(0,0,0,0.92) 100%
     ),
     linear-gradient(
       180deg,
-      #1a1a1a 0%,
-      #121212 50%,
-      #0c0c0c 100%
+      #1b1b1b 0%,
+      #141414 45%,
+      #0f0f0f 100%
     );
+
   background-attachment: fixed;
 }
