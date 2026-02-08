@@ -13,9 +13,17 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
+
   background: linear-gradient(180deg, #1f1f1f, #181818);
   border-radius: 16px;
   border: 1px solid #333;
+}
+
+/* >>> ВАЖНОЕ ИЗМЕНЕНИЕ <<< */
+.sort-bar .view-switch {
+  margin-left: auto;        /* уводим вправо */
+  display: flex;
+  gap: 10px;
 }
 
 /* ================= LAYOUT ================= */
@@ -36,7 +44,7 @@
   border: 1px solid rgba(255,255,255,0.08);
 }
 
-/* ================= GRID VIEW (DEFAULT) ================= */
+/* ================= GRID VIEW ================= */
 #catalog.view-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, 320px);
@@ -71,6 +79,7 @@
   border-radius: 22px;
   border: 1px solid #3a3a3a;
   overflow: hidden;
+
   display: flex;
   flex-direction: column;
   min-height: 520px;
@@ -99,13 +108,14 @@
   font-size: 14px;
   font-weight: 800;
   color: #fff;
+
   background: linear-gradient(180deg, #3a3a3a, #1e1e1e);
   border-radius: 12px;
   border: 1px solid rgba(255,255,255,0.35);
   z-index: 6;
 }
 
-/* ================= TEXT (ФИКС ФИОЛЕТОВОГО) ================= */
+/* ================= TEXT ================= */
 #catalog .car-card,
 #catalog .car-card a,
 #catalog .car-card h3,
@@ -156,5 +166,10 @@
 
   #catalog.view-grid {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  .sort-bar .view-switch {
+    margin-left: 0;
+    margin-top: 10px;
   }
 }
