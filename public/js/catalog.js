@@ -96,8 +96,8 @@ function renderCars(list) {
     card.innerHTML = `
       <div class="image-wrapper">
         <img src="${images[0] || ''}" alt="">
-        <div class="price-badge">${car.price} €</div>
       </div>
+
       <div class="info">
         <div class="car-title">${car.brand} ${car.model}</div>
         <div class="meta">
@@ -105,11 +105,15 @@ function renderCars(list) {
           <div>${car.mileage} км</div>
         </div>
       </div>
+
+      <div class="price-badge">
+        ${car.price} €
+      </div>
     `;
 
     const img = card.querySelector('img');
 
-    /* 🔁 hover-перелистывание */
+    /* 🔁 hover-перелистывание фото */
     card.querySelector('.image-wrapper').addEventListener('mousemove', e => {
       if (images.length < 2) return;
 
