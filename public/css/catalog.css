@@ -1,3 +1,12 @@
+/* ================= LAYOUT ================= */
+
+.catalog-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 36px;
+  align-items: flex-start;
+}
+
 /* ================= SORT BAR ================= */
 
 .sort-bar {
@@ -5,59 +14,245 @@
   margin: 20px auto 26px;
   padding: 14px 20px;
 
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 
   background: linear-gradient(180deg, #1f1f1f, #181818);
   border-radius: 16px;
   border: 1px solid #333;
 }
 
-.sort-bar .sort-label {
-  white-space: nowrap;
+.sort-bar > * {
+  flex-shrink: 0;
 }
 
-.sort-bar .sort-buttons {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-/* кнопки сортировки */
 .sort-bar button[data-sort] {
   height: 36px;
-  padding: 0 16px;
+  padding: 0 18px;
   border-radius: 999px;
   border: none;
+
   background: #d60000;
   color: #fff;
   font-weight: 700;
   cursor: pointer;
+
+  white-space: nowrap;
 }
 
 /* ================= VIEW SWITCH ================= */
 
 .view-switch {
+  margin-left: auto;
   display: flex;
   gap: 6px;
-  justify-self: end; /* 🔒 фикс справа */
 }
 
 .view-switch button {
   width: 36px;
   height: 36px;
   padding: 0;
+
   border-radius: 8px;
   border: 1px solid #333;
   background: #1a1a1a;
   color: #fff;
-  font-size: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   cursor: pointer;
 }
 
 .view-switch button.active {
   background: #ff0000;
   border-color: #ff0000;
+}
+
+/* ================= FILTER ================= */
+
+.filter-panel {
+  position: sticky;
+  top: 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  padding: 22px;
+  border-radius: 20px;
+
+  background: linear-gradient(180deg, #202020, #141414);
+  border: 1px solid rgba(255,255,255,0.1);
+
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.filter-panel h3 {
+  margin: 0 0 6px;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.filter-panel input,
+.filter-panel select,
+.filter-panel button {
+  width: 100%;
+  display: block;
+}
+
+.filter-panel input,
+.filter-panel select {
+  height: 44px;
+  padding: 0 14px;
+
+  background: linear-gradient(180deg, #2a2a2a, #1c1c1c);
+  border: 1px solid #3a3a3a;
+  border-radius: 12px;
+
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.filter-panel select option {
+  background: #fff;
+  color: #000;
+}
+
+.filter-panel button {
+  margin-top: 6px;
+  height: 46px;
+
+  border-radius: 999px;
+  border: none;
+
+  background: linear-gradient(135deg, #c30000, #ff0000);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+/* ================= CATALOG ================= */
+
+#catalog.view-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 320px);
+  gap: 32px;
+}
+
+#catalog.view-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ================= CARD ================= */
+
+.car-card {
+  display: flex;
+  flex-direction: column;
+
+  background: linear-gradient(180deg, #1f1f1f, #171717);
+  border-radius: 22px;
+  border: 1px solid #3a3a3a;
+  overflow: hidden;
+
+  text-decoration: none;
+  color: inherit;
+}
+
+.view-list .car-card {
+  flex-direction: row;
+  height: 180px;
+}
+
+/* ================= IMAGE ================= */
+
+.image-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.view-grid .image-wrapper {
+  height: 360px;
+}
+
+.view-list .image-wrapper {
+  width: 280px;
+  height: 100%;
+  flex-shrink: 0;
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ================= PRICE ================= */
+
+.price-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+
+  padding: 8px 16px;
+  background: #1a1a1a;
+  border-radius: 12px;
+
+  color: #fff;
+  font-weight: 800;
+}
+
+.view-list .price-badge {
+  position: static;
+  margin-left: auto;
+  align-self: center;
+  font-size: 22px;
+  padding: 12px 22px;
+}
+
+/* ================= INFO ================= */
+
+.car-card .info {
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}
+
+.car-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.meta {
+  display: flex;
+  gap: 14px;
+  font-size: 14px;
+  color: rgba(255,255,255,0.7);
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 900px) {
+  .catalog-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-panel {
+    position: static;
+    margin-bottom: 20px;
+  }
 }
