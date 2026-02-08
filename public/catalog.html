@@ -15,21 +15,20 @@
 
   <!-- ================= HEADER ================= -->
   <header class="site-header">
-    <div class="header-inner">
-      <a href="/" class="logo">
-        <img src="/img/logo.png" alt="Border Auto" />
+
+    <div class="logo-wrapper">
+      <a href="/">
+        <img src="/img/logo.png" alt="Border Auto">
       </a>
-
-      <div class="header-actions">
-        <a class="btn instagram" href="#" target="_blank">Instagram</a>
-        <a class="btn whatsapp" href="#" target="_blank">WhatsApp</a>
-      </div>
-
-      <nav class="main-nav">
-        <a href="/">Главная</a>
-        <a href="/contacts.html">Контакты</a>
-      </nav>
     </div>
+
+    <nav class="main-nav">
+      <a href="/">Главная</a>
+      <a href="/contacts.html">Контакты</a>
+      <a class="btn instagram" href="#" target="_blank">Instagram</a>
+      <a class="btn whatsapp" href="#" target="_blank">WhatsApp</a>
+    </nav>
+
   </header>
 
   <!-- ================= SORTING ================= -->
@@ -44,12 +43,8 @@
 
       <!-- ПЕРЕКЛЮЧЕНИЕ ВИДА -->
       <div class="view-switch">
-        <button id="viewGrid" class="view-btn active" title="3 в ряд">
-          ⬛⬛⬛
-        </button>
-        <button id="viewList" class="view-btn" title="1 в строку">
-          ☰
-        </button>
+        <button id="viewGrid" class="view-btn active" title="3 в ряд">⬛⬛⬛</button>
+        <button id="viewList" class="view-btn" title="1 в строку">☰</button>
       </div>
     </div>
   </section>
@@ -61,22 +56,20 @@
     <aside class="filter">
       <h3>Фильтр</h3>
 
-      <input type="text" id="filterBrand" placeholder="Марка" />
-      <input type="text" id="filterModel" placeholder="Модель" />
+      <input type="text" id="filterBrand" placeholder="Марка">
+      <input type="text" id="filterModel" placeholder="Модель">
 
       <select id="filterYear">
         <option value="">Год</option>
       </select>
 
-      <input type="number" id="filterPrice" placeholder="Цена до (€)" />
-      <input type="number" id="filterMileage" placeholder="Пробег до (км)" />
+      <input type="number" id="filterPrice" placeholder="Цена до (€)">
+      <input type="number" id="filterMileage" placeholder="Пробег до (км)">
 
       <button id="applyFilter" class="btn apply">Применить</button>
     </aside>
 
     <!-- ========== CATALOG ========== -->
-    <!-- 🔴 ВАЖНО: ИМЕННО ЭТОТ БЛОК -->
-    <!-- Класс view-grid / view-list переключается JS -->
     <section id="catalog" class="catalog view-grid">
       <!-- КАРТОЧКИ ДОБАВЛЯЮТСЯ ИЗ catalog.js -->
     </section>
