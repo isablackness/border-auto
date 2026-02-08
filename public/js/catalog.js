@@ -6,7 +6,7 @@ async function loadCars() {
   const res = await fetch('/api/cars');
   cars = await res.json();
   sortAndRender();
-} 
+}
 
 function sortAndRender(list = cars) {
   const sorted = [...list];

@@ -4,16 +4,10 @@
   <meta charset="UTF-8">
   <title>Автомобиль — Border Auto</title>
 
- 
   <link rel="stylesheet" href="/css/base.css">
-  <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/car.css">
-
 </head>
 <body>
-
-<!-- ФОН -->
-
 
 <header class="site-header">
   <div class="header-inner">
@@ -22,8 +16,8 @@
     </div>
 
     <div class="header-social">
-      <a href="https://www.instagram.com/border.auto/" target="_blank">Instagram</a>
-      <a href="https://api.whatsapp.com/send?phone=48668989731" target="_blank">WhatsApp</a>
+      <a class="instagram" href="https://www.instagram.com/border.auto/" target="_blank">Instagram</a>
+      <a class="whatsapp" href="https://api.whatsapp.com/send?phone=48668989731" target="_blank">WhatsApp</a>
     </div>
 
     <nav class="main-nav">
@@ -34,8 +28,46 @@
 </header>
 
 <main class="page-content">
-  <!-- твоя карточка авто без изменений -->
+  <div class="car-page">
+
+    <div class="car-gallery">
+      <div class="gallery-main">
+        <button class="gallery-btn left" id="prevBtn">‹</button>
+        <img id="mainImage" alt="">
+        <button class="gallery-btn right" id="nextBtn">›</button>
+        <div class="fullscreen-trigger" id="openFullscreen">⤢</div>
+      </div>
+
+      <div class="gallery-footer">
+        <div class="gallery-thumbs" id="thumbnails"></div>
+        <div class="gallery-counter" id="galleryCounter">1 / 1</div>
+      </div>
+    </div>
+
+    <div class="car-info">
+      <h1 id="carTitle"></h1>
+      <div class="car-price"><span id="carPrice"></span> €</div>
+      <div class="car-description" id="carDescription"></div>
+    </div>
+
+  </div>
 </main>
+
+<!-- FULLSCREEN -->
+<div class="image-viewer" id="imageViewer">
+  <button class="viewer-btn left" id="viewerPrev">‹</button>
+
+  <div class="viewer-image-wrapper">
+    <img id="viewerImage">
+  </div>
+
+  <button class="viewer-btn right" id="viewerNext">›</button>
+
+  <div class="viewer-footer">
+    <div class="viewer-thumbs" id="viewerThumbs"></div>
+    <div class="viewer-counter" id="viewerCounter">1 / 1</div>
+  </div>
+</div>
 
 <script src="/js/car.js"></script>
 </body>
