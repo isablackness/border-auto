@@ -36,33 +36,32 @@
   border: 1px solid rgba(255,255,255,0.08);
 }
 
-/* ================= GRID DEFAULT ================= */
-#catalog {
+/* ================= GRID VIEW (DEFAULT) ================= */
+#catalog.view-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, 320px);
   gap: 32px;
-  justify-content: start;
 }
 
 /* ================= LIST VIEW ================= */
-#catalog.list-view {
+#catalog.view-list {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-#catalog.list-view .car-card {
+#catalog.view-list .car-card {
   flex-direction: row;
   min-height: 200px;
 }
 
-#catalog.list-view .image-wrapper {
+#catalog.view-list .image-wrapper {
   width: 320px;
   height: 200px;
   flex-shrink: 0;
 }
 
-#catalog.list-view .info {
+#catalog.view-list .info {
   padding: 20px;
 }
 
@@ -106,13 +105,13 @@
   z-index: 6;
 }
 
-/* ================= TEXT FIX ================= */
-.car-card,
-.car-card a,
-.car-card h3,
-.car-card p,
-.car-card span {
-  color: #ffffff;
+/* ================= TEXT (ФИКС ФИОЛЕТОВОГО) ================= */
+#catalog .car-card,
+#catalog .car-card a,
+#catalog .car-card h3,
+#catalog .car-card p,
+#catalog .car-card span {
+  color: #ffffff !important;
   text-decoration: none;
 }
 
@@ -155,7 +154,7 @@
     grid-template-columns: 1fr;
   }
 
-  #catalog {
+  #catalog.view-grid {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   }
 }
