@@ -4,10 +4,17 @@
   <meta charset="UTF-8" />
   <title>Каталог — Border Auto</title>
 
+<<<<<<< HEAD
 <link rel="stylesheet" href="/css/base.css">
 <link rel="stylesheet" href="/css/style.css">
 <link rel="stylesheet" href="/css/catalog.css">
 
+=======
+
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/catalog.css">
+>>>>>>> b5a28e86611b676bde6dc69288630699ea7bf02f
 </head>
 <body>
 
@@ -18,8 +25,8 @@
     </div>
 
     <div class="header-social">
-      <a class="instagram" href="https://www.instagram.com/border.auto/" target="_blank">Instagram</a>
-      <a class="whatsapp" href="https://api.whatsapp.com/send?phone=48668989731" target="_blank">WhatsApp</a>
+      <a href="https://www.instagram.com/border.auto/" target="_blank">Instagram</a>
+      <a href="https://api.whatsapp.com/send?phone=48668989731" target="_blank">WhatsApp</a>
     </div>
 
     <nav class="main-nav">
@@ -29,52 +36,8 @@
   </div>
 </header>
 
-<!-- SORT BAR -->
-<div class="sort-bar">
-  <span class="sort-label">Сортировка:</span>
-
-  <button data-sort="price">
-    По цене <span class="arrow">↓</span>
-  </button>
-
-  <button data-sort="mileage">
-    По пробегу <span class="arrow">↓</span>
-  </button>
-
-  <button data-sort="position" class="active">
-    По дате публикации <span class="arrow">↓</span>
-  </button>
-
-  <button data-sort="year">
-    По дате производства <span class="arrow">↓</span>
-  </button>
-</div>
-
 <main class="page-content">
-  <div class="catalog-layout">
-
-    <aside class="filter-panel">
-      <h3>Фильтр</h3>
-      <input type="text" id="brand" placeholder="Марка">
-      <input type="text" id="model" placeholder="Модель">
-
-      <select id="year">
-        <option value="">Год</option>
-        <script>
-          for (let y = 2025; y >= 2000; y--) {
-            document.write(`<option value="${y}">${y}</option>`);
-          }
-        </script>
-      </select>
-
-      <input type="number" id="price" placeholder="Цена до (€)">
-      <input type="number" id="mileage" placeholder="Пробег до (км)">
-      <button onclick="applyFilters()">Применить</button>
-    </aside>
-
-    <section id="catalog"></section>
-
-  </div>
+  <!-- твой текущий каталог без изменений -->
 </main>
 
 <script src="/js/catalog.js"></script>
