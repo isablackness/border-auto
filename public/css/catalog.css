@@ -1,4 +1,141 @@
-/* ====== CATALOG GRID (по умолчанию) ====== */
+/* ================================================= */
+/* ================= LAYOUT ======================== */
+/* ================================================= */
+
+.catalog-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 36px;
+  align-items: flex-start;
+}
+
+/* ================================================= */
+/* ================= SORT BAR ====================== */
+/* ================================================= */
+
+.sort-bar {
+  max-width: 1400px;
+  margin: 20px auto 26px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(180deg, #1f1f1f, #181818);
+  border-radius: 16px;
+  border: 1px solid #333;
+}
+
+.sort-bar button {
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: none;
+  background: #d60000;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ================================================= */
+/* ================= VIEW SWITCH =================== */
+/* ================================================= */
+
+.view-switch {
+  margin-left: auto;
+  display: flex;
+  gap: 6px;
+}
+
+.view-switch button {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.view-switch button.active {
+  background: #ff0000;
+  border-color: #ff0000;
+}
+
+/* ================================================= */
+/* ================= FILTER ======================== */
+/* ================================================= */
+
+.filter-panel {
+  position: sticky;
+  top: 20px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  padding: 22px;
+  border-radius: 20px;
+
+  background: linear-gradient(180deg, #202020, #141414);
+  border: 1px solid rgba(255,255,255,0.1);
+
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.filter-panel h3 {
+  margin: 0 0 6px;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+}
+
+/* ВАЖНО: ЖЁСТКО ФИКСИРУЕМ КОЛОНКУ */
+.filter-panel input,
+.filter-panel select,
+.filter-panel button {
+  display: block;
+  width: 100%;
+}
+
+/* поля */
+.filter-panel input,
+.filter-panel select {
+  height: 44px;
+  padding: 0 14px;
+  background: linear-gradient(180deg, #2a2a2a, #1c1c1c);
+  border: 1px solid #3a3a3a;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* dropdown fix */
+.filter-panel select option {
+  background: #fff;
+  color: #000;
+}
+
+/* кнопка */
+.filter-panel button {
+  margin-top: 6px;
+  height: 46px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #c30000, #ff0000);
+  border: none;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* ================================================= */
+/* ================= CATALOG ======================= */
+/* ================================================= */
 
 #catalog.view-grid {
   display: grid;
@@ -6,15 +143,15 @@
   gap: 32px;
 }
 
-/* ====== CATALOG LIST ====== */
-
 #catalog.view-list {
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
-/* ====== CARD BASE ====== */
+/* ================================================= */
+/* ================= CARD ========================== */
+/* ================================================= */
 
 .car-card {
   display: flex;
@@ -25,28 +162,16 @@
   overflow: hidden;
   text-decoration: none;
   color: inherit;
-  transition: box-shadow 0.25s ease, transform 0.25s ease;
 }
-
-.car-card:hover {
-  box-shadow: 0 18px 45px rgba(0,0,0,0.55);
-}
-
-/* ====== GRID CARD ====== */
-
-.view-grid .car-card {
-  flex-direction: column;
-}
-
-/* ====== LIST CARD ====== */
 
 .view-list .car-card {
   flex-direction: row;
-  align-items: stretch;
   height: 180px;
 }
 
-/* ====== IMAGE ====== */
+/* ================================================= */
+/* ================= IMAGE ========================= */
+/* ================================================= */
 
 .image-wrapper {
   position: relative;
@@ -69,20 +194,21 @@
   object-fit: cover;
 }
 
-/* ====== PRICE ====== */
+/* ================================================= */
+/* ================= PRICE ========================= */
+/* ================================================= */
 
 .price-badge {
   position: absolute;
   top: 14px;
   left: 14px;
   padding: 8px 16px;
-  background: linear-gradient(180deg, #2a2a2a, #161616);
+  background: #1a1a1a;
   border-radius: 12px;
-  color: #ffffff;
+  color: #fff;
   font-weight: 800;
 }
 
-/* LIST — цена справа крупно */
 .view-list .price-badge {
   position: static;
   margin-left: auto;
@@ -91,7 +217,9 @@
   padding: 12px 22px;
 }
 
-/* ====== INFO ====== */
+/* ================================================= */
+/* ================= INFO ========================== */
+/* ================================================= */
 
 .car-card .info {
   padding: 18px 22px;
@@ -101,23 +229,11 @@
   gap: 6px;
 }
 
-.view-list .info {
-  flex: 1;
-}
-
-/* ====== TITLE ====== */
-
 .car-title {
   font-size: 20px;
   font-weight: 800;
-  color: #ffffff;
+  color: #fff;
 }
-
-.car-card:hover .car-title {
-  text-shadow: 0 6px 20px rgba(0,0,0,0.7);
-}
-
-/* ====== META ====== */
 
 .meta {
   display: flex;
@@ -126,25 +242,17 @@
   color: rgba(255,255,255,0.7);
 }
 
-/* ====== VIEW SWITCH ====== */
+/* ================================================= */
+/* ================= MOBILE ======================== */
+/* ================================================= */
 
-.view-switch {
-  margin-left: auto;
-  display: flex;
-  gap: 6px;
-}
+@media (max-width: 900px) {
+  .catalog-layout {
+    grid-template-columns: 1fr;
+  }
 
-.view-switch button {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  border: 1px solid #333;
-  background: #1c1c1c;
-  color: #fff;
-  cursor: pointer;
-}
-
-.view-switch button.active {
-  background: #ff0000;
-  border-color: #ff0000;
+  .filter-panel {
+    position: static;
+    margin-bottom: 20px;
+  }
 }
