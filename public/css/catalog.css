@@ -146,28 +146,81 @@
   object-fit: cover;
 }
 
-/* ================= PRICE (BUSINESS STYLE) ================= */
+/* ================= PRICE (CREATIVE PREMIUM) ================= */
 .price-badge {
   position: absolute;
   top: 14px;
   left: 14px;
 
-  padding: 7px 16px;
+  padding: 8px 18px 8px 16px;
 
   font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
   color: #ffffff;
 
-  background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
-  border: 1px solid rgba(255,255,255,0.25);
-  border-radius: 10px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.18),
+      rgba(255,255,255,0.05)
+    ),
+    linear-gradient(
+      180deg,
+      #2a2a2a,
+      #161616
+    );
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.35);
 
   box-shadow:
-    0 6px 18px rgba(0,0,0,0.45),
-    inset 0 1px 0 rgba(255,255,255,0.08);
+    0 8px 22px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.25);
 
   z-index: 6;
+  overflow: hidden;
+}
+
+/* Акцентная линия */
+.price-badge::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 4px;
+  height: 100%;
+
+  background: linear-gradient(
+    180deg,
+    #ff2d2d,
+    #b80000
+  );
+}
+
+/* Световой блик */
+.price-badge::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -60%;
+
+  width: 200%;
+  height: 200%;
+
+  background: linear-gradient(
+    120deg,
+    transparent 40%,
+    rgba(255,255,255,0.25) 50%,
+    transparent 60%
+  );
+
+  transform: rotate(-8deg);
+  pointer-events: none;
 }
 
 /* ================= OVERLAY (ПОДРОБНЕЕ) ================= */
