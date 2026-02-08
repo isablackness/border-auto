@@ -69,8 +69,9 @@ function renderCars(list) {
     const images = car.images || [];
     const hasImages = images.length > 0;
 
-    const card = document.createElement('div');
+    const card = document.createElement('a');
     card.className = 'car-card';
+    card.href = `/car.html?id=${car.id}`;
 
     card.innerHTML = `
       <div class="image-wrapper">
@@ -82,17 +83,17 @@ function renderCars(list) {
 
         <div class="price-badge">${car.price} €</div>
 
-        ${images.length > 1 ? `
-          <div class="photo-dots">
-            ${images.map((_, i) => `<span class="${i === 0 ? 'active' : ''}"></span>`).join('')}
-          </div>
-        ` : ''}
+        ${
+          images.length > 1
+            ? `<div class="photo-dots">
+                ${images.map((_, i) => `<span class="${i === 0 ? 'active' : ''}"></span>`).join('')}
+              </div>`
+            : ''
+        }
       </div>
 
       <div class="info">
-        <a href="/car.html?id=${car.id}" class="car-title">
-          ${car.brand} ${car.model}
-        </a>
+        <div class="car-title">${car.brand} ${car.model}</div>
         <div class="meta">
           <div>${car.year}</div>
           <div>${car.mileage} км</div>
