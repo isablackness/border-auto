@@ -35,7 +35,6 @@
   <button data-sort="position" class="active">По дате публикации ↓</button>
   <button data-sort="year">По дате производства ↓</button>
 
-  <!-- переключатель вида -->
   <div class="view-switch">
     <button data-view="grid" class="active">⬛⬛⬛</button>
     <button data-view="list">☰</button>
@@ -43,32 +42,39 @@
 </div>
 
 <main class="page-content">
-  <div class="catalog-layout">
 
-    <aside class="filter-panel">
-      <h3>Фильтр</h3>
+  <!-- === ВАЖНЫЙ WRAPPER ДЛЯ КАТАЛОГА === -->
+  <div class="catalog-page">
 
-      <input type="text" id="brand" placeholder="Марка">
-      <input type="text" id="model" placeholder="Модель">
+    <div class="catalog-layout">
 
-      <select id="year">
-        <option value="">Год</option>
-        <script>
-          for (let y = 2025; y >= 2000; y--) {
-            document.write(`<option value="${y}">${y}</option>`);
-          }
-        </script>
-      </select>
+      <aside class="filter-panel">
+        <h3>Фильтр</h3>
 
-      <input type="number" id="price" placeholder="Цена до (€)">
-      <input type="number" id="mileage" placeholder="Пробег до (км)">
-      <button onclick="applyFilters()">Применить</button>
-    </aside>
+        <input type="text" id="brand" placeholder="Марка">
+        <input type="text" id="model" placeholder="Модель">
 
-    <!-- по умолчанию GRID -->
-    <section id="catalog" class="view-grid"></section>
+        <select id="year">
+          <option value="">Год</option>
+          <script>
+            for (let y = 2025; y >= 2000; y--) {
+              document.write(`<option value="${y}">${y}</option>`);
+            }
+          </script>
+        </select>
+
+        <input type="number" id="price" placeholder="Цена до (€)">
+        <input type="number" id="mileage" placeholder="Пробег до (км)">
+        <button onclick="applyFilters()">Применить</button>
+      </aside>
+
+      <section id="catalog" class="view-grid"></section>
+
+    </div>
 
   </div>
+  <!-- === /catalog-page === -->
+
 </main>
 
 <script src="/js/catalog.js"></script>
