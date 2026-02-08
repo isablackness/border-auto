@@ -144,3 +144,43 @@
   background: rgba(255,255,255,0.06);
   border-radius: 999px;
 }
+
+/* ================= CAR INFO (FIXED) ================= */
+.car-card .info {
+  padding: 16px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.car-card .info h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* meta row */
+.car-card .info .meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* meta pills — ЛЕГЧЕ */
+.car-card .info .meta div {
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+
+  color: rgba(255,255,255,0.75);
+  background: rgba(255,255,255,0.04);
+
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* акцент только на пробег */
+.car-card .info .meta div:last-child {
+  color: rgba(255,255,255,0.9);
+}
