@@ -108,10 +108,10 @@
   border-radius: 22px;
   border: 1px solid #3a3a3a;
   overflow: hidden;
-
   display: flex;
   flex-direction: column;
-  min-height: 470px; /* было 520 */
+
+  min-height: 490px; /* было 520 — убрали лишний воздух */
 
   position: relative;
   box-shadow: 0 8px 22px rgba(0,0,0,0.35);
@@ -126,10 +126,9 @@
 /* ================= IMAGE ================= */
 .image-wrapper {
   position: relative;
-  height: 310px; /* было 360 */
+  height: 330px; /* было 360 — аккуратно меньше */
   background: radial-gradient(circle at center, #2a2a2a, #121212);
   overflow: hidden;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -141,19 +140,33 @@
   object-fit: cover;
 }
 
-/* ================= PRICE ================= */
+/* ================= PRICE (WITH SHINE) ================= */
 .price-badge {
   position: absolute;
   top: 14px;
   left: 14px;
 
-  padding: 8px 18px;
+  padding: 8px 18px 8px 16px;
   font-size: 14px;
   font-weight: 800;
   letter-spacing: 0.4px;
   color: #ffffff;
 
-  background: linear-gradient(180deg, #3a3a3a, #1e1e1e);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.18),
+      rgba(255,255,255,0.05)
+    ),
+    linear-gradient(
+      180deg,
+      #2a2a2a,
+      #161616
+    );
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
   border-radius: 12px;
   border: 1px solid rgba(255,255,255,0.35);
 
@@ -165,30 +178,36 @@
   overflow: hidden;
 }
 
-/* блик */
+.price-badge::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #ff2d2d, #b80000);
+}
+
 .price-badge::after {
   content: "";
   position: absolute;
-  top: -50%;
-  left: -80%;
-  width: 60%;
+  top: -40%;
+  left: -120%;
+  width: 200%;
   height: 200%;
   background: linear-gradient(
     120deg,
-    transparent 0%,
-    rgba(255,255,255,0.6) 50%,
-    transparent 100%
+    transparent 45%,
+    rgba(255,255,255,0.35) 50%,
+    transparent 55%
   );
-  transform: rotate(25deg);
-  animation: priceShine 4.5s ease-in-out infinite;
+  transform: rotate(-8deg);
+  transition: left 0.6s ease;
   pointer-events: none;
 }
 
-@keyframes priceShine {
-  0%   { left: -80%; }
-  45%  { left: -80%; }
-  75%  { left: 130%; }
-  100% { left: 130%; }
+.car-card:hover .price-badge::after {
+  left: 120%;
 }
 
 /* ================= OVERLAY ================= */
@@ -203,6 +222,7 @@
   pointer-events: none;
   transition: opacity 0.3s ease;
   z-index: 10;
+  text-decoration: none;
 }
 
 .car-card:hover .card-overlay {
@@ -212,27 +232,27 @@
 
 /* ================= INFO ================= */
 .car-card .info {
-  padding: 14px 18px 16px; /* плотнее */
+  padding: 18px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .car-card .info h3 {
   margin: 0;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
   color: #ffffff;
 }
 
 .car-card .info .meta {
   display: flex;
-  gap: 6px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .car-card .info .meta div {
-  padding: 3px 9px;
+  padding: 4px 10px;
   font-size: 12px;
   font-weight: 500;
   color: rgba(255,255,255,0.75);
@@ -258,10 +278,6 @@
   }
 
   .image-wrapper {
-    height: 240px;
-  }
-
-  .car-card {
-    min-height: auto;
+    height: 260px;
   }
 }
