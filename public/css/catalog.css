@@ -168,3 +168,25 @@
     margin-bottom: 20px;
   }
 }
+/* === HARD FIX: FILTER NEVER MOVES === */
+
+/* grid должен разрешать сжиматься правой колонке */
+.catalog-layout {
+  grid-template-columns: 300px minmax(0, 1fr);
+}
+
+/* правый контент НЕ ИМЕЕТ ПРАВА расширять grid */
+#catalog {
+  min-width: 0;
+}
+
+/* list-view тоже */
+#catalog.view-list {
+  min-width: 0;
+}
+
+/* карточка не может ломать контейнер */
+#catalog.view-list .car-card {
+  max-width: 100%;
+}
+
