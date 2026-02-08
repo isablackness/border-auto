@@ -1,154 +1,296 @@
-let cars = [];
-let filteredCars = [];
-
-let currentSort = 'position';
-let sortDir = 'desc';
-
-/* ================= LOAD ================= */
-async function loadCars() {
-  const res = await fetch('/api/cars');
-  cars = await res.json();
-  filteredCars = [...cars];
-  sortAndRender();
+/* ================= PAGE CONTAINER ================= */
+.catalog-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
 }
 
-/* ================= SORT ================= */
-function sortAndRender() {
-  const sorted = [...filteredCars];
-
-  sorted.sort((a, b) => {
-    let valA = a[currentSort] ?? 0;
-    let valB = b[currentSort] ?? 0;
-    return sortDir === 'asc' ? valA - valB : valB - valA;
-  });
-
-  renderCars(sorted);
+/* ================= SORT BAR ================= */
+.sort-bar {
+  margin: 20px 0 26px;
+  padding: 14px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(180deg, #1f1f1f, #181818);
+  border-radius: 16px;
+  border: 1px solid #333;
 }
 
-/* ================= FILTERS ================= */
-window.applyFilters = function () {
-  const brand = document.getElementById('brand').value.toLowerCase();
-  const model = document.getElementById('model').value.toLowerCase();
-  const year = document.getElementById('year').value;
-  const price = document.getElementById('price').value;
-  const mileage = document.getElementById('mileage').value;
+/* ================= LAYOUT ================= */
+.catalog-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 36px;
+  align-items: flex-start;
+}
 
-  filteredCars = cars.filter(car => {
-    if (brand && !car.brand.toLowerCase().includes(brand)) return false;
-    if (model && !car.model.toLowerCase().includes(model)) return false;
-    if (year && car.year != year) return false;
-    if (price && car.price > price) return false;
-    if (mileage && car.mileage > mileage) return false;
-    return true;
-  });
+/* ================= FILTER PANEL ================= */
+.filter-panel {
+  background: linear-gradient(180deg, #202020, #141414);
+  border-radius: 20px;
+  padding: 24px;
+  position: sticky;
+  top: 20px;
 
-  sortAndRender();
-};
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow:
+    0 18px 40px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+}
 
-/* ================= SORT BUTTONS ================= */
-document.addEventListener('click', e => {
-  const btn = e.target.closest('[data-sort]');
-  if (!btn) return;
+.filter-panel h3 {
+  margin: 0 0 18px;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+}
 
-  const sort = btn.dataset.sort;
+/* ===== FILTER INPUTS ===== */
+.filter-panel input,
+.filter-panel select {
+  width: 100%;
+  height: 44px;
+  margin-bottom: 14px;
+  padding: 0 14px;
 
-  if (currentSort === sort) {
-    sortDir = sortDir === 'asc' ? 'desc' : 'asc';
-  } else {
-    currentSort = sort;
-    sortDir = 'desc';
+  background: linear-gradient(180deg, #2a2a2a, #1c1c1c);
+  border: 1px solid #3a3a3a;
+  border-radius: 12px;
+
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  outline: none;
+
+  transition: all 0.25s ease;
+}
+
+.filter-panel input::placeholder {
+  color: rgba(255,255,255,0.5);
+}
+
+.filter-panel input:focus,
+.filter-panel select:focus {
+  border-color: #ff2d2d;
+  box-shadow: 0 0 0 2px rgba(255,45,45,0.25);
+}
+
+/* ===== FILTER BUTTON ===== */
+.filter-panel button {
+  width: 100%;
+  height: 46px;
+  margin-top: 6px;
+
+  background: linear-gradient(135deg, #c30000, #ff0000);
+  border: none;
+  border-radius: 999px;
+
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+
+  box-shadow: 0 10px 30px rgba(255,0,0,0.45);
+  transition: all 0.25s ease;
+}
+
+.filter-panel button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 40px rgba(255,0,0,0.6);
+}
+
+/* ================= GRID ================= */
+#catalog {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 320px);
+  gap: 32px;
+  justify-content: start;
+}
+
+/* ================= CARD ================= */
+.car-card {
+  background: linear-gradient(180deg, #1f1f1f, #171717);
+  border-radius: 22px;
+  border: 1px solid #3a3a3a;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 520px;
+  position: relative;
+
+  box-shadow: 0 8px 22px rgba(0,0,0,0.35);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.car-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 45px rgba(0,0,0,0.55);
+}
+
+/* ================= IMAGE ================= */
+.image-wrapper {
+  position: relative;
+  height: 360px;
+  background: radial-gradient(circle at center, #2a2a2a, #121212);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ================= PRICE (CREATIVE + SHINE) ================= */
+.price-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+
+  padding: 8px 18px 8px 16px;
+
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,0.18),
+      rgba(255,255,255,0.05)
+    ),
+    linear-gradient(
+      180deg,
+      #2a2a2a,
+      #161616
+    );
+
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.35);
+
+  box-shadow:
+    0 8px 22px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+
+  z-index: 6;
+  overflow: hidden;
+}
+
+/* Акцентная линия */
+.price-badge::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #ff2d2d, #b80000);
+}
+
+/* Световой блик */
+.price-badge::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -120%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    120deg,
+    transparent 45%,
+    rgba(255,255,255,0.35) 50%,
+    transparent 55%
+  );
+  transform: rotate(-8deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.car-card:hover .price-badge::after {
+  left: 120%;
+}
+
+/* ================= OVERLAY (БЕЗ ЗАТЕМНЕНИЯ) ================= */
+.card-overlay {
+  position: absolute;
+  inset: 0;
+
+  /* ❌ убрали затемнение */
+  background: transparent;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: opacity 0.25s ease;
+  z-index: 10;
+  text-decoration: none;
+}
+
+.car-card:hover .card-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.overlay-button {
+  padding: 14px 36px;
+  border-radius: 16px;
+
+  background: rgba(0,0,0,0.55);
+  border: 2px solid rgba(255,255,255,0.95);
+
+  color: #fff;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.4px;
+
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.card-overlay:hover .overlay-button {
+  transform: scale(1.05);
+  background: rgba(255,255,255,0.08);
+}
+
+/* ================= INFO ================= */
+.car-card .info {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 900px) {
+  .catalog-layout {
+    grid-template-columns: 1fr;
   }
 
-  document.querySelectorAll('[data-sort]').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-
-  sortAndRender();
-});
-
-/* ================= PRICE HELPERS ================= */
-function formatPrice(num) {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-}
-
-function animatePrice(el, value) {
-  const duration = 400;
-  const startTime = performance.now();
-
-  function step(now) {
-    const progress = Math.min((now - startTime) / duration, 1);
-    const current = Math.floor(progress * value);
-    el.textContent = formatPrice(current) + ' €';
-
-    if (progress < 1) {
-      requestAnimationFrame(step);
-    }
+  #catalog {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    justify-content: center;
   }
 
-  requestAnimationFrame(step);
+  .filter-panel {
+    position: static;
+    margin-bottom: 20px;
+  }
+
+  .image-wrapper {
+    height: 260px;
+  }
 }
-
-/* ================= RENDER ================= */
-function renderCars(list) {
-  const catalog = document.getElementById('catalog');
-  catalog.innerHTML = '';
-
-  list.forEach(car => {
-    const hasImage = car.images && car.images.length > 0;
-
-    const card = document.createElement('div');
-    card.className = 'car-card';
-
-    card.innerHTML = `
-      <div class="image-wrapper">
-
-        ${
-          hasImage
-            ? `<img src="${car.images[0]}" alt="${car.brand} ${car.model}">`
-            : `
-              <div class="no-photo">
-                <svg width="48" height="48" viewBox="0 0 24 24">
-                  <path fill="#888" d="M21 5h-3.2l-1.8-2H8L6.2 5H3v14h18V5zm-9 11a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
-                </svg>
-                <span>Нет фото</span>
-              </div>
-            `
-        }
-
-        <div class="price-badge" data-price="${car.price}">
-          ${formatPrice(car.price)} €
-        </div>
-
-        <a class="card-overlay" href="/car.html?id=${car.id}">
-          <div class="overlay-button">Подробнее</div>
-        </a>
-      </div>
-
-      <div class="info">
-        <h3>${car.brand} ${car.model}</h3>
-        <div class="meta">
-          <div>${car.year}</div>
-          <div>${car.mileage} км</div>
-        </div>
-      </div>
-    `;
-
-    const priceEl = card.querySelector('.price-badge');
-    const priceValue = car.price;
-    let animated = false;
-
-    card.addEventListener('mouseenter', () => {
-      if (animated) return;
-      animated = true;
-      animatePrice(priceEl, priceValue);
-    });
-
-    card.addEventListener('mouseleave', () => {
-      animated = false;
-      priceEl.textContent = formatPrice(priceValue) + ' €';
-    });
-
-    catalog.appendChild(card);
-  });
-}
-
-loadCars();
