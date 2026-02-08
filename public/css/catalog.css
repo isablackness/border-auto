@@ -115,3 +115,26 @@ body {
   background: red !important;
 }
 
+/* === CATALOG STRUCTURE LOCK === */
+
+/* всегда grid, без вариантов */
+.page-content > .catalog-layout {
+  display: grid !important;
+  grid-template-columns: 300px minmax(0, 1fr) !important;
+  gap: 36px;
+  align-items: flex-start;
+}
+
+/* фильтр — ТОЛЬКО левая колонка */
+.page-content > .catalog-layout > .filter-panel {
+  display: block !important;
+  width: 300px;
+  min-width: 300px;
+  max-width: 300px;
+}
+
+/* каталог — ТОЛЬКО правая колонка */
+.page-content > .catalog-layout > #catalog {
+  min-width: 0;
+}
+
