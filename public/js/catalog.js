@@ -4,7 +4,6 @@ let filteredCars = [];
 let currentSort = 'position';
 let sortDir = 'desc';
 
-/* ================= LOAD ================= */
 async function loadCars() {
   const res = await fetch('/api/cars');
   cars = await res.json();
@@ -12,7 +11,6 @@ async function loadCars() {
   sortAndRender();
 }
 
-/* ================= SORT ================= */
 function sortAndRender() {
   const sorted = [...filteredCars];
 
@@ -25,7 +23,6 @@ function sortAndRender() {
   renderCars(sorted);
 }
 
-/* ================= FILTERS ================= */
 window.applyFilters = function () {
   const brand = document.getElementById('brand').value.toLowerCase();
   const model = document.getElementById('model').value.toLowerCase();
@@ -45,7 +42,6 @@ window.applyFilters = function () {
   sortAndRender();
 };
 
-/* ================= SORT BUTTONS ================= */
 document.addEventListener('click', e => {
   const btn = e.target.closest('[data-sort]');
   if (!btn) return;
@@ -65,42 +61,38 @@ document.addEventListener('click', e => {
   sortAndRender();
 });
 
-/* ================= RENDER ================= */
 function renderCars(list) {
   const catalog = document.getElementById('catalog');
   catalog.innerHTML = '';
 
   list.forEach(car => {
-    const hasImage = car.images && car.images.length > 0;
+    const images = car.images || [];
+    const hasImages = images.length > 0;
 
     const card = document.createElement('div');
     card.className = 'car-card';
 
     card.innerHTML = `
       <div class="image-wrapper">
-
         ${
-          hasImage
-            ? `<img src="${car.images[0]}" alt="${car.brand} ${car.model}" data-images='${JSON.stringify(car.images)}'>`
-            : `
-              <div class="no-photo">
-                <svg width="48" height="48" viewBox="0 0 24 24">
-                  <path fill="#888" d="M21 5h-3.2l-1.8-2H8L6.2 5H3v14h18V5zm-9 11a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
-                </svg>
-                <span>Нет фото</span>
-              </div>
-            `
+          hasImages
+            ? `<img src="${images[0]}" alt="${car.brand} ${car.model}">`
+            : `<div class="no-photo"><span>Нет фото</span></div>`
         }
 
         <div class="price-badge">${car.price} €</div>
 
-        <a class="card-overlay" href="/car.html?id=${car.id}">
-          <div class="overlay-button">Подробнее</div>
-        </a>
+        ${images.length > 1 ? `
+          <div class="photo-dots">
+            ${images.map((_, i) => `<span class="${i === 0 ? 'active' : ''}"></span>`).join('')}
+          </div>
+        ` : ''}
       </div>
 
       <div class="info">
-        <h3>${car.brand} ${car.model}</h3>
+        <a href="/car.html?id=${car.id}" class="car-title">
+          ${car.brand} ${car.model}
+        </a>
         <div class="meta">
           <div>${car.year}</div>
           <div>${car.mileage} км</div>
@@ -110,39 +102,32 @@ function renderCars(list) {
 
     catalog.appendChild(card);
 
-    if (hasImage && car.images.length > 1) {
-      enableHoverPreview(card, car.images);
+    if (images.length > 1) {
+      enableHoverPreview(card, images);
     }
   });
 }
 
-/* ================= HOVER PREVIEW ================= */
 function enableHoverPreview(card, images) {
   if (window.matchMedia('(hover: none)').matches) return;
 
   const wrapper = card.querySelector('.image-wrapper');
   const img = wrapper.querySelector('img');
+  const dots = wrapper.querySelectorAll('.photo-dots span');
   const total = images.length;
-  let lastIndex = 0;
 
   wrapper.addEventListener('mousemove', e => {
     const rect = wrapper.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percent = x / rect.width;
-    const index = Math.min(
-      total - 1,
-      Math.max(0, Math.floor(percent * total))
-    );
+    const percent = (e.clientX - rect.left) / rect.width;
+    const index = Math.min(total - 1, Math.max(0, Math.floor(percent * total)));
 
-    if (index !== lastIndex) {
-      img.src = images[index];
-      lastIndex = index;
-    }
+    img.src = images[index];
+    dots.forEach((d, i) => d.classList.toggle('active', i === index));
   });
 
   wrapper.addEventListener('mouseleave', () => {
     img.src = images[0];
-    lastIndex = 0;
+    dots.forEach((d, i) => d.classList.toggle('active', i === 0));
   });
 }
 

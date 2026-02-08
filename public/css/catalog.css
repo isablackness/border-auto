@@ -1,49 +1,8 @@
-/* ================= PAGE / LAYOUT ================= */
-.catalog-page {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 20px 40px;
-}
-
-.catalog-layout {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 36px;
-  align-items: flex-start;
-}
-
-/* ================= SORT BAR ================= */
-.sort-bar {
-  margin: 20px 0 26px;
-  padding: 14px 20px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  background: linear-gradient(180deg, #1f1f1f, #181818);
-  border-radius: 16px;
-  border: 1px solid #333;
-}
-
-/* ================= FILTER PANEL ================= */
-.filter-panel {
-  background: linear-gradient(180deg, #202020, #141414);
-  border-radius: 20px;
-  padding: 24px;
-  position: sticky;
-  top: 20px;
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow:
-    0 18px 40px rgba(0,0,0,0.55),
-    inset 0 1px 0 rgba(255,255,255,0.06);
-}
-
 /* ================= GRID ================= */
 #catalog {
   display: grid;
   grid-template-columns: repeat(auto-fill, 320px);
   gap: 32px;
-  justify-content: start;
 }
 
 /* ================= CARD ================= */
@@ -54,22 +13,12 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  min-height: 490px;
-  position: relative;
-  box-shadow: 0 8px 22px rgba(0,0,0,0.35);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.car-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 45px rgba(0,0,0,0.55);
 }
 
 /* ================= IMAGE ================= */
 .image-wrapper {
   position: relative;
-  height: 330px;
-  background: radial-gradient(circle at center, #2a2a2a, #121212);
+  height: 360px;
   overflow: hidden;
 }
 
@@ -77,7 +26,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.15s ease;
 }
 
 /* ================= PRICE ================= */
@@ -85,72 +33,55 @@
   position: absolute;
   top: 14px;
   left: 14px;
-  padding: 8px 18px 8px 16px;
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 0.4px;
-  color: #ffffff;
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.05)),
-    linear-gradient(180deg, #2a2a2a, #161616);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  padding: 8px 16px;
+  background: linear-gradient(180deg, #2a2a2a, #161616);
   border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.35);
-  box-shadow:
-    0 8px 22px rgba(0,0,0,0.55),
-    inset 0 1px 0 rgba(255,255,255,0.25);
-  z-index: 6;
-}
-
-/* ================= OVERLAY ================= */
-.card-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-  z-index: 10;
-}
-
-.car-card:hover .card-overlay {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.overlay-button {
-  padding: 14px 36px;
-  border-radius: 16px;
-  background: rgba(0,0,0,0.65);
-  border: 2px solid rgba(255,255,255,0.95);
-  color: #ffffff;
+  color: #fff;
   font-weight: 800;
+  z-index: 2;
+}
+
+/* ================= DOTS ================= */
+.photo-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 2;
+}
+
+.photo-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+}
+
+.photo-dots span.active {
+  background: #ffffff;
 }
 
 /* ================= INFO ================= */
 .car-card .info {
   padding: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
 }
 
-/* ================= MOBILE ================= */
-@media (max-width: 900px) {
-  .catalog-layout {
-    grid-template-columns: 1fr;
-  }
+.car-title {
+  display: inline-block;
+  font-size: 17px;
+  font-weight: 700;
+  color: #ffffff;
+  text-decoration: none;
+}
 
-  #catalog {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    justify-content: center;
-  }
+.car-title:hover {
+  text-decoration: underline;
+}
 
-  .image-wrapper {
-    height: 260px;
-  }
+.meta {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
 }
