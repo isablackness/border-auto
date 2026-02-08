@@ -98,3 +98,11 @@
   min-width: 0;
 }
 
+/* === STABILITY FIX (НЕ МЕНЯЕТ ВИД) === */
+.catalog-layout {
+  grid-template-columns: 300px minmax(0, 1fr);
+}
+
+#catalog {
+  min-width: 0;
+}
