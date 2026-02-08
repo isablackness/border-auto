@@ -1,5 +1,6 @@
 /* ================= SAFETY ================= */
 
+.catalog-page,
 .catalog-page * {
   box-sizing: border-box;
 }
@@ -70,9 +71,18 @@
   color: #eaeaea;
 }
 
-/* заголовок */
-.catalog-page .car-card .info a {
-  color: #ffffff;
+/* 🔒 жёстко фиксируем цвет текста */
+.catalog-page .car-card .info,
+.catalog-page .car-card .info * {
+  color: #eaeaea !important;
+}
+
+/* ссылки — без фиолетового */
+.catalog-page .car-card .info a,
+.catalog-page .car-card .info a:visited,
+.catalog-page .car-card .info a:hover,
+.catalog-page .car-card .info a:active {
+  color: #ffffff !important;
   text-decoration: none;
   font-size: 17px;
   font-weight: 700;
@@ -85,7 +95,7 @@
 /* вторичный текст */
 .catalog-page .car-card .info span,
 .catalog-page .car-card .info div {
-  color: #bcbcbc;
+  color: #bcbcbc !important;
   font-size: 14px;
 }
 
@@ -100,14 +110,60 @@
   padding: 10px 18px;
   font-size: 16px;
   font-weight: 900;
+  letter-spacing: 0.4px;
 
   color: #f2f2f2;
-  background: linear-gradient(135deg, #3a3a3a, #1e1e1e);
+
+  background: linear-gradient(
+    135deg,
+    #3a3a3a 0%,
+    #2b2b2b 20%,
+    #4a4a4a 35%,
+    #1f1f1f 55%,
+    #3c3c3c 75%,
+    #242424 100%
+  );
+
   border-radius: 8px;
+  border: 1px solid #5a5a5a;
 
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.12),
-    0 6px 16px rgba(0,0,0,.6);
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    inset 0 -1px 0 rgba(0,0,0,0.6),
+    0 6px 18px rgba(0,0,0,0.6);
+
+  overflow: hidden;
+}
+
+/* ================= PRICE SHINE (ANIMATION) ================= */
+
+.catalog-page .price-badge::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -60%;
+  width: 50%;
+  height: 180%;
+  pointer-events: none;
+
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255,255,255,0.15) 40%,
+    rgba(255,255,255,0.45) 50%,
+    rgba(255,255,255,0.15) 60%,
+    transparent 100%
+  );
+
+  transform: skewX(-20deg);
+  animation: priceShine 4.5s ease-in-out infinite;
+}
+
+@keyframes priceShine {
+  0%   { left: -60%; opacity: 0; }
+  15%  { opacity: 1; }
+  40%  { left: 140%; opacity: 0; }
+  100% { left: 140%; opacity: 0; }
 }
 
 /* ================= LIST VIEW ================= */
