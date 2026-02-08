@@ -63,7 +63,7 @@
   color: #ffffff;
 }
 
-/* поля фильтра — НОРМАЛЬНЫЕ, НЕ УРЕЗАННЫЕ */
+/* поля фильтра */
 .filter-panel input,
 .filter-panel select {
   width: 100%;
@@ -82,10 +82,14 @@
   outline: none;
 }
 
-.filter-panel input::placeholder {
-  color: rgba(255,255,255,0.55);
+/* 🔴 ВАЖНЫЙ FIX: option */
+.filter-panel select option {
+  background: #ffffff;     /* системный белый */
+  color: #000000;          /* чёрный текст */
+  font-weight: 500;
 }
 
+/* focus */
 .filter-panel input:focus,
 .filter-panel select:focus {
   border-color: #ff2d2d;
