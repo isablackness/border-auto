@@ -42,7 +42,8 @@ window.applyFilters = function () {
   sortAndRender();
 };
 
-/* сортировка */
+/* ================= SORT ================= */
+
 document.addEventListener('click', e => {
   const btn = e.target.closest('[data-sort]');
   if (!btn) return;
@@ -62,7 +63,8 @@ document.addEventListener('click', e => {
   sortAndRender();
 });
 
-/* переключение вида */
+/* ================= VIEW SWITCH ================= */
+
 document.addEventListener('click', e => {
   const btn = e.target.closest('[data-view]');
   if (!btn) return;
@@ -77,14 +79,7 @@ document.addEventListener('click', e => {
   btn.classList.add('active');
 });
 
-/* восстановление вида */
-document.addEventListener('DOMContentLoaded', () => {
-  const saved = localStorage.getItem('catalogView') || 'grid';
-  const catalog = document.getElementById('catalog');
-  catalog.className = saved === 'list' ? 'view-list' : 'view-grid';
-
-  document.querySelector(`[data-view="${saved}"]`)?.classList.add('active');
-});
+/* ================= RENDER ================= */
 
 function renderCars(list) {
   const catalog = document.getElementById('catalog');
@@ -92,6 +87,7 @@ function renderCars(list) {
 
   list.forEach(car => {
     const images = car.images || [];
+    let currentIndex = 0;
 
     const card = document.createElement('a');
     card.className = 'car-card';
@@ -102,7 +98,6 @@ function renderCars(list) {
         <img src="${images[0] || ''}" alt="">
         <div class="price-badge">${car.price} €</div>
       </div>
-
       <div class="info">
         <div class="car-title">${car.brand} ${car.model}</div>
         <div class="meta">
@@ -112,8 +107,39 @@ function renderCars(list) {
       </div>
     `;
 
+    const img = card.querySelector('img');
+
+    /* 🔁 hover-перелистывание */
+    card.querySelector('.image-wrapper').addEventListener('mousemove', e => {
+      if (images.length < 2) return;
+
+      const rect = e.currentTarget.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const index = Math.floor((x / rect.width) * images.length);
+
+      if (index !== currentIndex && images[index]) {
+        currentIndex = index;
+        img.src = images[index];
+      }
+    });
+
+    card.querySelector('.image-wrapper').addEventListener('mouseleave', () => {
+      currentIndex = 0;
+      img.src = images[0];
+    });
+
     catalog.appendChild(card);
   });
 }
+
+/* ================= INIT ================= */
+
+document.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('catalogView') || 'grid';
+  const catalog = document.getElementById('catalog');
+  catalog.className = saved === 'list' ? 'view-list' : 'view-grid';
+
+  document.querySelector(`[data-view="${saved}"]`)?.classList.add('active');
+});
 
 loadCars();
