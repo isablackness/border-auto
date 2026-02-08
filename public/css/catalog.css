@@ -18,38 +18,34 @@
   border: 1px solid #333;
 }
 
-/* ================= LAYOUT ================= */
+/* ================= LAYOUT (ТОЛЬКО СЕТКА, БЕЗ ФОНА) ================= */
 .catalog-layout {
   display: grid;
   grid-template-columns: 300px 1fr;
   gap: 36px;
   align-items: flex-start;
-
-  /* ✨ МЯГКАЯ ПЛАТФОРМА */
-  background: rgba(255,255,255,0.02);
-  border-radius: 26px;
-  padding: 28px;
-
-  box-shadow:
-    0 18px 50px rgba(0,0,0,0.35),
-    inset 0 1px 0 rgba(255,255,255,0.04);
 }
 
 /* ================= FILTER PANEL ================= */
 .filter-panel {
-  background: linear-gradient(180deg, #1e1e1e, #171717);
-  border: 1px solid #353535;
+  background: linear-gradient(180deg, #1f1f1f, #141414);
+  border: 1px solid #3a3a3a;
   border-radius: 18px;
   padding: 22px;
   position: sticky;
   top: 20px;
+
+  box-shadow:
+    0 12px 30px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
 /* ================= GRID ================= */
 #catalog {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, 320px);
   gap: 32px;
+  justify-content: start;
 }
 
 /* ================= CARD ================= */
@@ -63,21 +59,17 @@
   min-height: 520px;
   position: relative;
 
-  /* ✨ БАЗОВАЯ ТЕНЬ */
-  box-shadow:
-    0 10px 26px rgba(0,0,0,0.35);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.35);
   transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease,
-    border-color 0.35s ease;
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
 }
 
-/* hover — аккуратно, премиум */
 .car-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-4px);
   border-color: rgba(255,255,255,0.35);
-  box-shadow:
-    0 22px 55px rgba(0,0,0,0.55);
+  box-shadow: 0 18px 45px rgba(0,0,0,0.55);
 }
 
 /* ================= IMAGE ================= */
@@ -172,7 +164,11 @@
 @media (max-width: 900px) {
   .catalog-layout {
     grid-template-columns: 1fr;
-    padding: 20px;
+  }
+
+  #catalog {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    justify-content: center;
   }
 
   .filter-panel {
