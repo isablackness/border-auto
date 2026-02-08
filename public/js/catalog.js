@@ -81,7 +81,7 @@ function renderCars(list) {
 
         ${
           hasImage
-            ? `<img src="${car.images[0]}" alt="${car.brand} ${car.model}">`
+            ? `<img src="${car.images[0]}" alt="${car.brand} ${car.model}" data-images='${JSON.stringify(car.images)}'>`
             : `
               <div class="no-photo">
                 <svg width="48" height="48" viewBox="0 0 24 24">
@@ -109,6 +109,40 @@ function renderCars(list) {
     `;
 
     catalog.appendChild(card);
+
+    if (hasImage && car.images.length > 1) {
+      enableHoverPreview(card, car.images);
+    }
+  });
+}
+
+/* ================= HOVER PREVIEW ================= */
+function enableHoverPreview(card, images) {
+  if (window.matchMedia('(hover: none)').matches) return;
+
+  const wrapper = card.querySelector('.image-wrapper');
+  const img = wrapper.querySelector('img');
+  const total = images.length;
+  let lastIndex = 0;
+
+  wrapper.addEventListener('mousemove', e => {
+    const rect = wrapper.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percent = x / rect.width;
+    const index = Math.min(
+      total - 1,
+      Math.max(0, Math.floor(percent * total))
+    );
+
+    if (index !== lastIndex) {
+      img.src = images[index];
+      lastIndex = index;
+    }
+  });
+
+  wrapper.addEventListener('mouseleave', () => {
+    img.src = images[0];
+    lastIndex = 0;
   });
 }
 

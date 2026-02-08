@@ -32,64 +32,10 @@
   padding: 24px;
   position: sticky;
   top: 20px;
-
   border: 1px solid rgba(255,255,255,0.08);
   box-shadow:
     0 18px 40px rgba(0,0,0,0.55),
     inset 0 1px 0 rgba(255,255,255,0.06);
-}
-
-.filter-panel h3 {
-  margin: 0 0 18px;
-  font-size: 20px;
-  font-weight: 800;
-  color: #fff;
-}
-
-.filter-panel input,
-.filter-panel select {
-  width: 100%;
-  height: 44px;
-  margin-bottom: 14px;
-  padding: 0 14px;
-  background: linear-gradient(180deg, #2a2a2a, #1c1c1c);
-  border: 1px solid #3a3a3a;
-  border-radius: 12px;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  outline: none;
-  transition: all 0.25s ease;
-}
-
-.filter-panel input::placeholder {
-  color: rgba(255,255,255,0.5);
-}
-
-.filter-panel input:focus,
-.filter-panel select:focus {
-  border-color: #ff2d2d;
-  box-shadow: 0 0 0 2px rgba(255,45,45,0.25);
-}
-
-.filter-panel button {
-  width: 100%;
-  height: 46px;
-  margin-top: 6px;
-  background: linear-gradient(135deg, #c30000, #ff0000);
-  border: none;
-  border-radius: 999px;
-  color: #fff;
-  font-size: 15px;
-  font-weight: 800;
-  cursor: pointer;
-  box-shadow: 0 10px 30px rgba(255,0,0,0.45);
-  transition: all 0.25s ease;
-}
-
-.filter-panel button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 16px 40px rgba(255,0,0,0.6);
 }
 
 /* ================= GRID ================= */
@@ -125,18 +71,16 @@
   height: 330px;
   background: radial-gradient(circle at center, #2a2a2a, #121212);
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .image-wrapper img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: opacity 0.15s ease;
 }
 
-/* ================= PRICE (WITH SHINE) ================= */
+/* ================= PRICE ================= */
 .price-badge {
   position: absolute;
   top: 14px;
@@ -157,39 +101,6 @@
     0 8px 22px rgba(0,0,0,0.55),
     inset 0 1px 0 rgba(255,255,255,0.25);
   z-index: 6;
-  overflow: hidden;
-}
-
-.price-badge::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(180deg, #ff2d2d, #b80000);
-}
-
-.price-badge::after {
-  content: "";
-  position: absolute;
-  top: -40%;
-  left: -120%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    120deg,
-    transparent 45%,
-    rgba(255,255,255,0.35) 50%,
-    transparent 55%
-  );
-  transform: rotate(-8deg);
-  transition: left 0.6s ease;
-  pointer-events: none;
-}
-
-.car-card:hover .price-badge::after {
-  left: 120%;
 }
 
 /* ================= OVERLAY ================= */
@@ -204,7 +115,6 @@
   pointer-events: none;
   transition: opacity 0.3s ease;
   z-index: 10;
-  text-decoration: none;
 }
 
 .car-card:hover .card-overlay {
@@ -212,7 +122,6 @@
   pointer-events: auto;
 }
 
-/* === ВОЗВРАЩЕНА КНОПКА === */
 .overlay-button {
   padding: 14px 36px;
   border-radius: 16px;
@@ -220,15 +129,6 @@
   border: 2px solid rgba(255,255,255,0.95);
   color: #ffffff;
   font-weight: 800;
-  font-size: 15px;
-  letter-spacing: 0.4px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
-  transition: transform 0.25s ease, background 0.25s ease;
-}
-
-.card-overlay:hover .overlay-button {
-  transform: scale(1.05);
-  background: rgba(255,255,255,0.08);
 }
 
 /* ================= INFO ================= */
@@ -237,29 +137,6 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-}
-
-.car-card .info h3 {
-  margin: 0;
-  font-size: 17px;
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.car-card .info .meta {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.car-card .info .meta div {
-  padding: 4px 10px;
-  font-size: 12px;
-  font-weight: 500;
-  color: rgba(255,255,255,0.75);
-  background: rgba(255,255,255,0.04);
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.08);
 }
 
 /* ================= MOBILE ================= */
@@ -271,11 +148,6 @@
   #catalog {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     justify-content: center;
-  }
-
-  .filter-panel {
-    position: static;
-    margin-bottom: 20px;
   }
 
   .image-wrapper {
