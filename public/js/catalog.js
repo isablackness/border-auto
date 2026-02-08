@@ -1,97 +1,115 @@
-var cars = [];
-var filteredCars = [];
+let cars = [];
+let filteredCars = [];
 
-/* LOAD */
-function loadCars() {
-  fetch('/api/cars')
-    .then(res => res.json())
-    .then(data => {
-      cars = data || [];
-      filteredCars = cars.slice();
-      fillYears();
-      renderCars(filteredCars);
-    });
+let currentSort = 'position';
+let sortDir = 'desc';
+
+/* ================= LOAD ================= */
+async function loadCars() {
+  const res = await fetch('/api/cars');
+  cars = await res.json();
+  filteredCars = [...cars];
+  sortAndRender();
 }
 
-/* YEARS */
-function fillYears() {
-  var yearSelect = document.getElementById('year');
-  var years = [...new Set(cars.map(c => c.year))].sort((a,b)=>b-a);
-  years.forEach(y => {
-    var opt = document.createElement('option');
-    opt.value = y;
-    opt.textContent = y;
-    yearSelect.appendChild(opt);
+/* ================= SORT ================= */
+function sortAndRender() {
+  const sorted = [...filteredCars];
+
+  sorted.sort((a, b) => {
+    let valA = a[currentSort] ?? 0;
+    let valB = b[currentSort] ?? 0;
+    return sortDir === 'asc' ? valA - valB : valB - valA;
   });
+
+  renderCars(sorted);
 }
 
-/* FILTERS */
+/* ================= FILTERS ================= */
 window.applyFilters = function () {
-  var brand = brandInput.value.toLowerCase();
-  var model = modelInput.value.toLowerCase();
-  var year = yearSelect.value;
-  var price = priceInput.value;
-  var mileage = mileageInput.value;
+  const brand = document.getElementById('brand').value.toLowerCase();
+  const model = document.getElementById('model').value.toLowerCase();
+  const year = document.getElementById('year').value;
+  const price = document.getElementById('price').value;
+  const mileage = document.getElementById('mileage').value;
 
-  filteredCars = cars.filter(c => {
-    if (brand && !c.brand.toLowerCase().includes(brand)) return false;
-    if (model && !c.model.toLowerCase().includes(model)) return false;
-    if (year && c.year != year) return false;
-    if (price && c.price > price) return false;
-    if (mileage && c.mileage > mileage) return false;
+  filteredCars = cars.filter(car => {
+    if (brand && !car.brand.toLowerCase().includes(brand)) return false;
+    if (model && !car.model.toLowerCase().includes(model)) return false;
+    if (year && car.year != year) return false;
+    if (price && car.price > price) return false;
+    if (mileage && car.mileage > mileage) return false;
     return true;
   });
 
-  renderCars(filteredCars);
+  sortAndRender();
 };
 
-/* RESET */
-window.resetFilters = function () {
-  brandInput.value = '';
-  modelInput.value = '';
-  yearSelect.value = '';
-  priceInput.value = '';
-  mileageInput.value = '';
-  filteredCars = cars.slice();
-  renderCars(filteredCars);
-};
+/* ================= SORT BUTTONS ================= */
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-sort]');
+  if (!btn) return;
 
-/* RENDER */
+  const sort = btn.dataset.sort;
+
+  if (currentSort === sort) {
+    sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+  } else {
+    currentSort = sort;
+    sortDir = 'desc';
+  }
+
+  document.querySelectorAll('[data-sort]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  sortAndRender();
+});
+
+/* ================= RENDER ================= */
 function renderCars(list) {
+  const catalog = document.getElementById('catalog');
   catalog.innerHTML = '';
+
   list.forEach(car => {
-    var card = document.createElement('div');
+    const hasImage = car.images && car.images.length > 0;
+
+    const card = document.createElement('div');
     card.className = 'car-card';
+
     card.innerHTML = `
       <div class="image-wrapper">
-        <img src="${car.images?.[0] || ''}">
-        <div class="price-badge">${format(car.price)} €</div>
+
+        ${
+          hasImage
+            ? `<img src="${car.images[0]}" alt="${car.brand} ${car.model}">`
+            : `
+              <div class="no-photo">
+                <svg width="48" height="48" viewBox="0 0 24 24">
+                  <path fill="#888" d="M21 5h-3.2l-1.8-2H8L6.2 5H3v14h18V5zm-9 11a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/>
+                </svg>
+                <span>Нет фото</span>
+              </div>
+            `
+        }
+
+        <div class="price-badge">${car.price} €</div>
+
         <a class="card-overlay" href="/car.html?id=${car.id}">
           <div class="overlay-button">Подробнее</div>
         </a>
       </div>
+
       <div class="info">
         <h3>${car.brand} ${car.model}</h3>
         <div class="meta">
           <div>${car.year}</div>
-          <div>${format(car.mileage)} км</div>
+          <div>${car.mileage} км</div>
         </div>
-      </div>`;
+      </div>
+    `;
+
     catalog.appendChild(card);
   });
 }
-
-/* HELPERS */
-function format(n) {
-  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-}
-
-/* INIT */
-var brandInput = document.getElementById('brand');
-var modelInput = document.getElementById('model');
-var yearSelect = document.getElementById('year');
-var priceInput = document.getElementById('price');
-var mileageInput = document.getElementById('mileage');
-var catalog = document.getElementById('catalog');
 
 loadCars();
