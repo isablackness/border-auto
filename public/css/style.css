@@ -5,17 +5,17 @@
 body {
   margin: 0;
 
-  /* СЕРЫЙ ПРЕМИУМ ГРАДИЕНТ (БЕЗ ЛОМКИ ВИЗУАЛА) */
+  /* СВЕТЛЕЕ СЕРЫЙ ГРАДИЕНТ — БОЛЬШЕ КОНТРАСТА */
   background:
     radial-gradient(
       circle at top,
-      #2a2a2a 0%,
-      #1f1f1f 35%,
-      #171717 65%,
-      #121212 100%
+      #3a3a3a 0%,   /* было ~2a → стало светлее */
+      #2e2e2e 35%,
+      #232323 65%,
+      #1a1a1a 100%
     );
 
-  color: #fff;
+  color: #ffffff;
   font-family: "Inter", Arial, sans-serif;
 }
 
@@ -24,14 +24,14 @@ body {
   background:
     linear-gradient(
       180deg,
-      #2b2b2b 0%,
-      #1d1d1d 60%,
-      #151515 100%
+      #3b3b3b 0%,
+      #2a2a2a 60%,
+      #202020 100%
     );
 
   padding: 36px 20px 26px;
   text-align: center;
-  border-bottom: 1px solid #2a2a2a;
+  border-bottom: 1px solid #3a3a3a;
 }
 
 .logo-wrapper {
@@ -44,7 +44,7 @@ body {
   height: auto;
   display: block;
   margin: 0 auto;
-  filter: drop-shadow(0 12px 40px rgba(0,0,0,0.7));
+  filter: drop-shadow(0 12px 40px rgba(0,0,0,0.65));
 }
 
 /* ===== NAV ===== */
@@ -58,11 +58,11 @@ body {
 .main-nav a {
   padding: 11px 28px;
   border-radius: 999px;
-  background: linear-gradient(180deg, #2a2a2a, #1c1c1c);
+  background: linear-gradient(180deg, #333333, #242424);
   color: #fff;
   text-decoration: none;
   font-weight: 600;
-  border: 1px solid #333;
+  border: 1px solid #444;
   transition: all 0.3s ease;
 }
 
