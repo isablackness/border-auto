@@ -45,6 +45,9 @@
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 14px 40px rgba(0,0,0,.45);
+
+  /* 🔒 ФИКС ЦВЕТА ТЕКСТА НА УРОВНЕ КАРТОЧКИ */
+  color: #eaeaea !important;
 }
 
 /* ================= IMAGE ================= */
@@ -68,28 +71,25 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  color: #eaeaea;
+  color: inherit !important;
 }
 
-/* 🔒 жёстко фиксируем цвет текста */
-.catalog-page .car-card .info,
-.catalog-page .car-card .info * {
-  color: #eaeaea !important;
-}
-
-/* ссылки — без фиолетового */
+/* 🔥 СБРОС ЛЮБЫХ СТИЛЕЙ ССЫЛОК */
 .catalog-page .car-card .info a,
-.catalog-page .car-card .info a:visited,
-.catalog-page .car-card .info a:hover,
-.catalog-page .car-card .info a:active {
+.catalog-page .car-card .info a *,
+.catalog-page .car-card a,
+.catalog-page .car-card a:link,
+.catalog-page .car-card a:visited,
+.catalog-page .car-card a:hover,
+.catalog-page .car-card a:active,
+.catalog-page .car-card a:focus {
   color: #ffffff !important;
-  text-decoration: none;
-  font-size: 17px;
-  font-weight: 700;
+  text-decoration: none !important;
 }
 
+/* hover */
 .catalog-page .car-card .info a:hover {
-  text-decoration: underline;
+  text-decoration: underline !important;
 }
 
 /* вторичный текст */
@@ -135,7 +135,7 @@
   overflow: hidden;
 }
 
-/* ================= PRICE SHINE (ANIMATION) ================= */
+/* ================= PRICE SHINE ================= */
 
 .catalog-page .price-badge::after {
   content: "";
