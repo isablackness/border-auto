@@ -13,15 +13,13 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
-
   background: linear-gradient(180deg, #1f1f1f, #181818);
   border-radius: 16px;
   border: 1px solid #333;
 }
 
-/* >>> ВАЖНОЕ ИЗМЕНЕНИЕ <<< */
 .sort-bar .view-switch {
-  margin-left: auto;        /* уводим вправо */
+  margin-left: auto;
   display: flex;
   gap: 10px;
 }
@@ -34,14 +32,88 @@
   align-items: flex-start;
 }
 
-/* ================= FILTER ================= */
+/* ================= FILTER (FIXED) ================= */
 .filter-panel {
+  width: 100%;
+  max-width: 300px;
+  box-sizing: border-box;
+
   background: linear-gradient(180deg, #202020, #141414);
   border-radius: 20px;
-  padding: 24px;
+  padding: 22px;
+
   position: sticky;
   top: 20px;
+
   border: 1px solid rgba(255,255,255,0.08);
+  box-shadow:
+    0 12px 30px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.filter-panel h3 {
+  margin: 0 0 18px;
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+/* поля строго в колонку */
+.filter-panel input,
+.filter-panel select,
+.filter-panel button {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* INPUT / SELECT */
+.filter-panel input,
+.filter-panel select {
+  height: 44px;
+  margin-bottom: 14px;
+  padding: 0 14px;
+
+  background: linear-gradient(180deg, #2a2a2a, #1c1c1c);
+  border: 1px solid #3a3a3a;
+  border-radius: 12px;
+
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  outline: none;
+}
+
+.filter-panel input::placeholder {
+  color: rgba(255,255,255,0.5);
+}
+
+.filter-panel input:focus,
+.filter-panel select:focus {
+  border-color: #ff2d2d;
+  box-shadow: 0 0 0 2px rgba(255,45,45,0.25);
+}
+
+/* BUTTON */
+.filter-panel button {
+  height: 46px;
+  margin-top: 6px;
+
+  background: linear-gradient(135deg, #c30000, #ff0000);
+  border: none;
+  border-radius: 999px;
+
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+
+  box-shadow: 0 10px 30px rgba(255,0,0,0.45);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-panel button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 40px rgba(255,0,0,0.6);
 }
 
 /* ================= GRID VIEW ================= */
@@ -79,7 +151,6 @@
   border-radius: 22px;
   border: 1px solid #3a3a3a;
   overflow: hidden;
-
   display: flex;
   flex-direction: column;
   min-height: 520px;
@@ -107,8 +178,7 @@
   padding: 8px 18px;
   font-size: 14px;
   font-weight: 800;
-  color: #fff;
-
+  color: #ffffff;
   background: linear-gradient(180deg, #3a3a3a, #1e1e1e);
   border-radius: 12px;
   border: 1px solid rgba(255,255,255,0.35);
@@ -153,8 +223,8 @@
   padding: 14px 36px;
   border-radius: 16px;
   background: rgba(0,0,0,0.65);
-  border: 2px solid #fff;
-  color: #fff;
+  border: 2px solid #ffffff;
+  color: #ffffff;
   font-weight: 800;
 }
 
@@ -162,6 +232,12 @@
 @media (max-width: 900px) {
   .catalog-layout {
     grid-template-columns: 1fr;
+  }
+
+  .filter-panel {
+    max-width: 100%;
+    position: static;
+    margin-bottom: 20px;
   }
 
   #catalog.view-grid {
