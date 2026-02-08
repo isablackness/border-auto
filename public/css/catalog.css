@@ -15,9 +15,7 @@
   align-items: flex-start !important;
 }
 
-/* ================================================= */
-/* ================= SORT BAR ====================== */
-/* ================================================= */
+/* ================= SORT BAR ================= */
 
 .sort-bar {
   max-width: 1400px;
@@ -25,28 +23,19 @@
   padding: 14px 20px;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   gap: 10px;
   background: linear-gradient(180deg, #1f1f1f, #181818);
   border-radius: 16px;
   border: 1px solid #333;
 }
 
-/* ================================================= */
-/* ============== FILTER — FINAL FIX =============== */
-/* ================================================= */
+/* ================= FILTER (FINAL FIX) ================= */
 
-/* ЖЁСТКАЯ привязка именно к каталогу */
 .catalog-layout > aside.filter-panel {
   grid-column: 1 !important;
-
   display: flex !important;
   flex-direction: column !important;
-  align-items: stretch !important;
   gap: 14px !important;
-
-  width: 100% !important;
-  max-width: 100% !important;
 
   background: linear-gradient(180deg, #202020, #141414) !important;
   border-radius: 20px !important;
@@ -54,59 +43,16 @@
 
   position: sticky !important;
   top: 20px !important;
-
-  border: 1px solid rgba(255,255,255,0.08) !important;
-  box-shadow:
-    0 18px 40px rgba(0,0,0,0.55),
-    inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
-/* СБРОС ВСЕХ глобальных form-стилей */
-.catalog-layout > aside.filter-panel *,
-.catalog-layout > aside.filter-panel *::before,
-.catalog-layout > aside.filter-panel *::after {
-  box-sizing: border-box !important;
-  float: none !important;
-}
-
-/* инпуты и селекты */
 .catalog-layout > aside.filter-panel input,
-.catalog-layout > aside.filter-panel select {
+.catalog-layout > aside.filter-panel select,
+.catalog-layout > aside.filter-panel button {
   display: block !important;
   width: 100% !important;
-  height: 44px !important;
-
-  padding: 0 14px !important;
-  background: linear-gradient(180deg, #2a2a2a, #1c1c1c) !important;
-
-  border: 1px solid #3a3a3a !important;
-  border-radius: 12px !important;
-
-  color: #ffffff !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
 }
 
-/* кнопка */
-.catalog-layout > aside.filter-panel button {
-  width: 100% !important;
-  height: 46px !important;
-  margin-top: 6px !important;
-
-  background: linear-gradient(135deg, #c30000, #ff0000) !important;
-  border: none !important;
-  border-radius: 999px !important;
-
-  color: #ffffff !important;
-  font-size: 15px !important;
-  font-weight: 800 !important;
-
-  cursor: pointer !important;
-}
-
-/* ================================================= */
-/* ================== CATALOG ====================== */
-/* ================================================= */
+/* ================= CATALOG GRID ================= */
 
 #catalog {
   grid-column: 2 !important;
@@ -115,22 +61,17 @@
   gap: 32px;
 }
 
-/* ================================================= */
-/* =================== CARD ======================== */
-/* ================================================= */
+/* ================= CARD ================= */
 
 .car-card {
   display: flex;
   flex-direction: column;
-
   background: linear-gradient(180deg, #1f1f1f, #171717);
   border-radius: 22px;
   border: 1px solid #3a3a3a;
   overflow: hidden;
-
   text-decoration: none;
   color: inherit;
-
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -159,14 +100,11 @@
   position: absolute;
   top: 14px;
   left: 14px;
-
   padding: 8px 16px;
   background: linear-gradient(180deg, #2a2a2a, #161616);
   border-radius: 12px;
-
   color: #ffffff;
   font-weight: 800;
-  font-size: 14px;
 }
 
 /* ================= DOTS ================= */
@@ -191,17 +129,10 @@
   background: #ffffff;
 }
 
-/* ================================================= */
-/* ============ PREMIUM TYPOGRAPHY ================= */
-/* ================================================= */
+/* ================= PREMIUM TYPOGRAPHY ================= */
 
 .car-card .info {
   padding: 18px 18px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-
-  /* дорогой системный стек */
   font-family:
     -apple-system,
     BlinkMacSystemFont,
@@ -213,51 +144,29 @@
     sans-serif;
 }
 
-/* НАЗВАНИЕ */
-.car-card .car-title {
+.car-title {
   font-size: 19px;
   font-weight: 800;
-  line-height: 1.25;
   letter-spacing: 0.3px;
   color: #ffffff;
-
-  /* объём */
   text-shadow:
     0 1px 0 rgba(255,255,255,0.06),
     0 4px 12px rgba(0,0,0,0.6);
+  transition: text-shadow 0.25s ease, letter-spacing 0.25s ease;
 }
 
-/* МЕТА */
-.car-card .meta {
+/* 🔥 УСИЛЕННЫЙ HOVER */
+.car-card:hover .car-title {
+  letter-spacing: 0.6px;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,0.12),
+    0 8px 22px rgba(0,0,0,0.75);
+}
+
+.meta {
   display: flex;
   gap: 12px;
-
   font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0.35px;
   color: rgba(255,255,255,0.7);
-}
-
-/* ================================================= */
-/* ================= MOBILE ======================== */
-/* ================================================= */
-
-@media (max-width: 900px) {
-  .catalog-layout {
-    grid-template-columns: 1fr !important;
-  }
-
-  .catalog-layout > aside.filter-panel {
-    position: static !important;
-    margin-bottom: 20px;
-  }
-
-  #catalog {
-    grid-column: 1 !important;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  }
-
-  .image-wrapper {
-    height: 260px;
-  }
 }
