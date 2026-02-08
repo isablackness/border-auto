@@ -34,6 +34,12 @@
   <button data-sort="mileage">По пробегу ↓</button>
   <button data-sort="position" class="active">По дате публикации ↓</button>
   <button data-sort="year">По дате производства ↓</button>
+
+  <!-- переключатель вида -->
+  <div class="view-switch">
+    <button data-view="grid" class="active">⬛⬛⬛</button>
+    <button data-view="list">☰</button>
+  </div>
 </div>
 
 <main class="page-content">
@@ -41,6 +47,7 @@
 
     <aside class="filter-panel">
       <h3>Фильтр</h3>
+
       <input type="text" id="brand" placeholder="Марка">
       <input type="text" id="model" placeholder="Модель">
 
@@ -58,7 +65,8 @@
       <button onclick="applyFilters()">Применить</button>
     </aside>
 
-    <section id="catalog"></section>
+    <!-- по умолчанию GRID -->
+    <section id="catalog" class="view-grid"></section>
 
   </div>
 </main>

@@ -42,6 +42,7 @@ window.applyFilters = function () {
   sortAndRender();
 };
 
+/* сортировка */
 document.addEventListener('click', e => {
   const btn = e.target.closest('[data-sort]');
   if (!btn) return;
@@ -61,13 +62,36 @@ document.addEventListener('click', e => {
   sortAndRender();
 });
 
+/* переключение вида */
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-view]');
+  if (!btn) return;
+
+  const view = btn.dataset.view;
+  const catalog = document.getElementById('catalog');
+
+  catalog.className = view === 'list' ? 'view-list' : 'view-grid';
+  localStorage.setItem('catalogView', view);
+
+  document.querySelectorAll('[data-view]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+});
+
+/* восстановление вида */
+document.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('catalogView') || 'grid';
+  const catalog = document.getElementById('catalog');
+  catalog.className = saved === 'list' ? 'view-list' : 'view-grid';
+
+  document.querySelector(`[data-view="${saved}"]`)?.classList.add('active');
+});
+
 function renderCars(list) {
   const catalog = document.getElementById('catalog');
   catalog.innerHTML = '';
 
   list.forEach(car => {
     const images = car.images || [];
-    const hasImages = images.length > 0;
 
     const card = document.createElement('a');
     card.className = 'car-card';
@@ -75,21 +99,8 @@ function renderCars(list) {
 
     card.innerHTML = `
       <div class="image-wrapper">
-        ${
-          hasImages
-            ? `<img src="${images[0]}" alt="${car.brand} ${car.model}">`
-            : `<div class="no-photo"><span>Нет фото</span></div>`
-        }
-
+        <img src="${images[0] || ''}" alt="">
         <div class="price-badge">${car.price} €</div>
-
-        ${
-          images.length > 1
-            ? `<div class="photo-dots">
-                ${images.map((_, i) => `<span class="${i === 0 ? 'active' : ''}"></span>`).join('')}
-              </div>`
-            : ''
-        }
       </div>
 
       <div class="info">
@@ -102,33 +113,6 @@ function renderCars(list) {
     `;
 
     catalog.appendChild(card);
-
-    if (images.length > 1) {
-      enableHoverPreview(card, images);
-    }
-  });
-}
-
-function enableHoverPreview(card, images) {
-  if (window.matchMedia('(hover: none)').matches) return;
-
-  const wrapper = card.querySelector('.image-wrapper');
-  const img = wrapper.querySelector('img');
-  const dots = wrapper.querySelectorAll('.photo-dots span');
-  const total = images.length;
-
-  wrapper.addEventListener('mousemove', e => {
-    const rect = wrapper.getBoundingClientRect();
-    const percent = (e.clientX - rect.left) / rect.width;
-    const index = Math.min(total - 1, Math.max(0, Math.floor(percent * total)));
-
-    img.src = images[index];
-    dots.forEach((d, i) => d.classList.toggle('active', i === index));
-  });
-
-  wrapper.addEventListener('mouseleave', () => {
-    img.src = images[0];
-    dots.forEach((d, i) => d.classList.toggle('active', i === 0));
   });
 }
 
