@@ -191,10 +191,8 @@
   position: absolute;
   top: 0;
   left: 0;
-
   width: 4px;
   height: 100%;
-
   background: linear-gradient(180deg, #ff2d2d, #b80000);
 }
 
@@ -204,32 +202,30 @@
   position: absolute;
   top: -40%;
   left: -120%;
-
   width: 200%;
   height: 200%;
-
   background: linear-gradient(
     120deg,
     transparent 45%,
     rgba(255,255,255,0.35) 50%,
     transparent 55%
   );
-
   transform: rotate(-8deg);
   transition: left 0.6s ease;
   pointer-events: none;
 }
 
-/* АНИМАЦИЯ БЛИКА */
 .car-card:hover .price-badge::after {
   left: 120%;
 }
 
-/* ================= OVERLAY (ПОДРОБНЕЕ) ================= */
+/* ================= OVERLAY (БЕЗ ЗАТЕМНЕНИЯ) ================= */
 .card-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+
+  /* ❌ убрали затемнение */
+  background: transparent;
 
   display: flex;
   align-items: center;
@@ -238,7 +234,7 @@
   opacity: 0;
   pointer-events: none;
 
-  transition: opacity 0.3s ease;
+  transition: opacity 0.25s ease;
   z-index: 10;
   text-decoration: none;
 }
@@ -252,7 +248,7 @@
   padding: 14px 36px;
   border-radius: 16px;
 
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.55);
   border: 2px solid rgba(255,255,255,0.95);
 
   color: #fff;

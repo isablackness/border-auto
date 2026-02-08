@@ -1,296 +1,153 @@
-/* ================= PAGE CONTAINER ================= */
-.catalog-page {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 20px 40px;
+var cars = [];
+var filteredCars = [];
+
+var currentSort = 'position';
+var sortDir = 'desc';
+
+/* ================= LOAD ================= */
+function loadCars() {
+  fetch('/api/cars')
+    .then(function (res) {
+      return res.json();
+    })
+    .then(function (data) {
+      cars = data || [];
+      filteredCars = cars.slice();
+      sortAndRender();
+    })
+    .catch(function (err) {
+      console.error('Ошибка загрузки авто:', err);
+    });
 }
 
-/* ================= SORT BAR ================= */
-.sort-bar {
-  margin: 20px 0 26px;
-  padding: 14px 20px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  background: linear-gradient(180deg, #1f1f1f, #181818);
-  border-radius: 16px;
-  border: 1px solid #333;
+/* ================= SORT ================= */
+function sortAndRender() {
+  var sorted = filteredCars.slice();
+
+  sorted.sort(function (a, b) {
+    var valA = a[currentSort] !== undefined ? a[currentSort] : 0;
+    var valB = b[currentSort] !== undefined ? b[currentSort] : 0;
+
+    if (sortDir === 'asc') {
+      return valA - valB;
+    } else {
+      return valB - valA;
+    }
+  });
+
+  renderCars(sorted);
 }
 
-/* ================= LAYOUT ================= */
-.catalog-layout {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 36px;
-  align-items: flex-start;
-}
+/* ================= FILTERS ================= */
+window.applyFilters = function () {
+  var brand = document.getElementById('brand').value.toLowerCase();
+  var model = document.getElementById('model').value.toLowerCase();
+  var year = document.getElementById('year').value;
+  var price = document.getElementById('price').value;
+  var mileage = document.getElementById('mileage').value;
 
-/* ================= FILTER PANEL ================= */
-.filter-panel {
-  background: linear-gradient(180deg, #202020, #141414);
-  border-radius: 20px;
-  padding: 24px;
-  position: sticky;
-  top: 20px;
+  filteredCars = cars.filter(function (car) {
+    if (brand && car.brand.toLowerCase().indexOf(brand) === -1) return false;
+    if (model && car.model.toLowerCase().indexOf(model) === -1) return false;
+    if (year && car.year != year) return false;
+    if (price && car.price > price) return false;
+    if (mileage && car.mileage > mileage) return false;
+    return true;
+  });
 
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow:
-    0 18px 40px rgba(0,0,0,0.55),
-    inset 0 1px 0 rgba(255,255,255,0.06);
-}
+  sortAndRender();
+};
 
-.filter-panel h3 {
-  margin: 0 0 18px;
-  font-size: 20px;
-  font-weight: 800;
-  color: #fff;
-}
+/* ================= SORT BUTTONS ================= */
+document.addEventListener('click', function (e) {
+  var btn = e.target.closest('[data-sort]');
+  if (!btn) return;
 
-/* ===== FILTER INPUTS ===== */
-.filter-panel input,
-.filter-panel select {
-  width: 100%;
-  height: 44px;
-  margin-bottom: 14px;
-  padding: 0 14px;
+  var sort = btn.dataset.sort;
 
-  background: linear-gradient(180deg, #2a2a2a, #1c1c1c);
-  border: 1px solid #3a3a3a;
-  border-radius: 12px;
-
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  outline: none;
-
-  transition: all 0.25s ease;
-}
-
-.filter-panel input::placeholder {
-  color: rgba(255,255,255,0.5);
-}
-
-.filter-panel input:focus,
-.filter-panel select:focus {
-  border-color: #ff2d2d;
-  box-shadow: 0 0 0 2px rgba(255,45,45,0.25);
-}
-
-/* ===== FILTER BUTTON ===== */
-.filter-panel button {
-  width: 100%;
-  height: 46px;
-  margin-top: 6px;
-
-  background: linear-gradient(135deg, #c30000, #ff0000);
-  border: none;
-  border-radius: 999px;
-
-  color: #fff;
-  font-size: 15px;
-  font-weight: 800;
-  cursor: pointer;
-
-  box-shadow: 0 10px 30px rgba(255,0,0,0.45);
-  transition: all 0.25s ease;
-}
-
-.filter-panel button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 16px 40px rgba(255,0,0,0.6);
-}
-
-/* ================= GRID ================= */
-#catalog {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 320px);
-  gap: 32px;
-  justify-content: start;
-}
-
-/* ================= CARD ================= */
-.car-card {
-  background: linear-gradient(180deg, #1f1f1f, #171717);
-  border-radius: 22px;
-  border: 1px solid #3a3a3a;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  min-height: 520px;
-  position: relative;
-
-  box-shadow: 0 8px 22px rgba(0,0,0,0.35);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.car-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 45px rgba(0,0,0,0.55);
-}
-
-/* ================= IMAGE ================= */
-.image-wrapper {
-  position: relative;
-  height: 360px;
-  background: radial-gradient(circle at center, #2a2a2a, #121212);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.image-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* ================= PRICE (CREATIVE + SHINE) ================= */
-.price-badge {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-
-  padding: 8px 18px 8px 16px;
-
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 0.4px;
-  color: #ffffff;
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(255,255,255,0.18),
-      rgba(255,255,255,0.05)
-    ),
-    linear-gradient(
-      180deg,
-      #2a2a2a,
-      #161616
-    );
-
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.35);
-
-  box-shadow:
-    0 8px 22px rgba(0,0,0,0.55),
-    inset 0 1px 0 rgba(255,255,255,0.25);
-
-  z-index: 6;
-  overflow: hidden;
-}
-
-/* Акцентная линия */
-.price-badge::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(180deg, #ff2d2d, #b80000);
-}
-
-/* Световой блик */
-.price-badge::after {
-  content: "";
-  position: absolute;
-  top: -40%;
-  left: -120%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    120deg,
-    transparent 45%,
-    rgba(255,255,255,0.35) 50%,
-    transparent 55%
-  );
-  transform: rotate(-8deg);
-  transition: left 0.6s ease;
-  pointer-events: none;
-}
-
-.car-card:hover .price-badge::after {
-  left: 120%;
-}
-
-/* ================= OVERLAY (БЕЗ ЗАТЕМНЕНИЯ) ================= */
-.card-overlay {
-  position: absolute;
-  inset: 0;
-
-  /* ❌ убрали затемнение */
-  background: transparent;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  opacity: 0;
-  pointer-events: none;
-
-  transition: opacity 0.25s ease;
-  z-index: 10;
-  text-decoration: none;
-}
-
-.car-card:hover .card-overlay {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.overlay-button {
-  padding: 14px 36px;
-  border-radius: 16px;
-
-  background: rgba(0,0,0,0.55);
-  border: 2px solid rgba(255,255,255,0.95);
-
-  color: #fff;
-  font-weight: 800;
-  font-size: 15px;
-  letter-spacing: 0.4px;
-
-  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
-  transition: transform 0.25s ease, background 0.25s ease;
-}
-
-.card-overlay:hover .overlay-button {
-  transform: scale(1.05);
-  background: rgba(255,255,255,0.08);
-}
-
-/* ================= INFO ================= */
-.car-card .info {
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-grow: 1;
-}
-
-/* ================= MOBILE ================= */
-@media (max-width: 900px) {
-  .catalog-layout {
-    grid-template-columns: 1fr;
+  if (currentSort === sort) {
+    sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+  } else {
+    currentSort = sort;
+    sortDir = 'desc';
   }
 
-  #catalog {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    justify-content: center;
-  }
+  sortAndRender();
+});
 
-  .filter-panel {
-    position: static;
-    margin-bottom: 20px;
-  }
-
-  .image-wrapper {
-    height: 260px;
-  }
+/* ================= PRICE HELPERS ================= */
+function formatPrice(num) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
+
+function animatePrice(el, value) {
+  var duration = 400;
+  var startTime = performance.now();
+
+  function step(now) {
+    var progress = Math.min((now - startTime) / duration, 1);
+    var current = Math.floor(progress * value);
+    el.textContent = formatPrice(current) + ' €';
+
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    }
+  }
+
+  requestAnimationFrame(step);
+}
+
+/* ================= RENDER ================= */
+function renderCars(list) {
+  var catalog = document.getElementById('catalog');
+  if (!catalog) return;
+
+  catalog.innerHTML = '';
+
+  list.forEach(function (car) {
+    var card = document.createElement('div');
+    card.className = 'car-card';
+
+    var imgHtml = '';
+    if (car.images && car.images.length > 0) {
+      imgHtml = '<img src="' + car.images[0] + '" alt="">';
+    } else {
+      imgHtml = '<div class="no-photo">Нет фото</div>';
+    }
+
+    card.innerHTML =
+      '<div class="image-wrapper">' +
+        imgHtml +
+        '<div class="price-badge">' + formatPrice(car.price) + ' €</div>' +
+        '<a class="card-overlay" href="/car.html?id=' + car.id + '">' +
+          '<div class="overlay-button">Подробнее</div>' +
+        '</a>' +
+      '</div>' +
+      '<div class="info">' +
+        '<h3>' + car.brand + ' ' + car.model + '</h3>' +
+        '<div class="meta">' +
+          '<div>' + car.year + '</div>' +
+          '<div>' + car.mileage + ' км</div>' +
+        '</div>' +
+      '</div>';
+
+    var priceEl = card.querySelector('.price-badge');
+    var priceValue = car.price;
+    var animated = false;
+
+    card.addEventListener('mouseenter', function () {
+      if (animated) return;
+      animated = true;
+      animatePrice(priceEl, priceValue);
+    });
+
+    card.addEventListener('mouseleave', function () {
+      animated = false;
+      priceEl.textContent = formatPrice(priceValue) + ' €';
+    });
+
+    catalog.appendChild(card);
+  });
+}
+
+loadCars();
