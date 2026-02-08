@@ -1,4 +1,8 @@
-/* ================= GLOBAL SAFETY ================= */
+/* =========================================================
+   CATALOG PAGE — FINAL STABLE VERSION
+   ========================================================= */
+
+/* ---------- GLOBAL ---------- */
 
 .catalog-page,
 .catalog-page * {
@@ -6,7 +10,7 @@
   font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
 }
 
-/* ================= LAYOUT ================= */
+/* ---------- LAYOUT ---------- */
 
 .catalog-page .catalog-layout {
   display: grid;
@@ -15,7 +19,7 @@
   align-items: flex-start;
 }
 
-/* ================= FILTER ================= */
+/* ---------- FILTER ---------- */
 
 .catalog-page .filter-panel {
   width: 300px;
@@ -28,7 +32,7 @@
   margin-bottom: 10px;
 }
 
-/* ================= GRID VIEW ================= */
+/* ---------- GRID VIEW ---------- */
 
 .catalog-page #catalog.view-grid {
   display: grid;
@@ -36,7 +40,7 @@
   gap: 32px;
 }
 
-/* ================= CARD ================= */
+/* ---------- CARD ---------- */
 
 .catalog-page .car-card {
   position: relative;
@@ -48,7 +52,7 @@
   box-shadow: 0 14px 40px rgba(0,0,0,.45);
 }
 
-/* ================= IMAGE ================= */
+/* ---------- IMAGE ---------- */
 
 .catalog-page .car-card .image-wrapper {
   width: 100%;
@@ -62,7 +66,7 @@
   object-fit: cover;
 }
 
-/* ================= INFO BLOCK ================= */
+/* ---------- INFO BLOCK ---------- */
 
 .catalog-page .car-card .info {
   padding: 18px 20px 22px;
@@ -71,46 +75,41 @@
   gap: 6px;
 }
 
-/* ===== TITLE (MODEL) ===== */
-.catalog-page .car-card .info a {
-  color: #f1f1f1 !important;
+/* =========================================================
+   !!! HARD OVERRIDE FOR TEXT & LINKS !!!
+   ========================================================= */
+
+/* MODEL NAME */
+.catalog-page .car-card .info a,
+.catalog-page .car-card .info a:visited,
+.catalog-page .car-card .info a:hover,
+.catalog-page .car-card .info a:active,
+.catalog-page .car-card .info a:focus {
+  color: #f2f2f2 !important;
+  text-decoration: none !important;
   font-size: 17px;
   font-weight: 700;
   line-height: 1.25;
-  text-decoration: none !important;
   letter-spacing: 0.3px;
-}
-
-.catalog-page .car-card .info a:hover {
-  color: #ffffff !important;
-  text-decoration: none !important;
-}
-
-/* ===== YEAR ===== */
-.catalog-page .car-card .info .year {
-  font-size: 14px;
-  font-weight: 600;
-  color: #cfcfcf !important;
-}
-
-/* ===== MILEAGE ===== */
-.catalog-page .car-card .info .mileage {
-  font-size: 13px;
-  font-weight: 500;
-  color: #9a9a9a !important;
-  letter-spacing: 0.4px;
-}
-
-/* ===== REMOVE ANY DEFAULT LINK STYLES ===== */
-.catalog-page .car-card .info a:visited,
-.catalog-page .car-card .info a:active,
-.catalog-page .car-card .info a:focus {
-  color: #f1f1f1 !important;
-  text-decoration: none !important;
   outline: none;
 }
 
-/* ================= PRICE BADGE ================= */
+/* YEAR */
+.catalog-page .car-card .info .year {
+  color: #d0d0d0 !important;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* MILEAGE */
+.catalog-page .car-card .info .mileage {
+  color: #9c9c9c !important;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+}
+
+/* ---------- PRICE BADGE ---------- */
 
 .catalog-page .price-badge {
   position: absolute;
@@ -145,7 +144,7 @@
   overflow: hidden;
 }
 
-/* ================= PRICE SHINE ================= */
+/* ---------- PRICE SHINE ---------- */
 
 .catalog-page .price-badge::after {
   content: "";
@@ -176,7 +175,7 @@
   100% { left: 140%; opacity: 0; }
 }
 
-/* ================= LIST VIEW ================= */
+/* ---------- LIST VIEW ---------- */
 
 .catalog-page #catalog.view-list {
   display: flex;
@@ -200,7 +199,6 @@
   justify-content: center;
 }
 
-/* price right side */
 .catalog-page #catalog.view-list .price-badge {
   position: static;
   margin-left: auto;
