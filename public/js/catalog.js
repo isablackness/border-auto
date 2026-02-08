@@ -65,6 +65,28 @@ document.addEventListener('click', e => {
   sortAndRender();
 });
 
+/* ================= PRICE HELPERS ================= */
+function formatPrice(num) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
+
+function animatePrice(el, value) {
+  const duration = 400;
+  const startTime = performance.now();
+
+  function step(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
+    const current = Math.floor(progress * value);
+    el.textContent = formatPrice(current) + ' €';
+
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    }
+  }
+
+  requestAnimationFrame(step);
+}
+
 /* ================= RENDER ================= */
 function renderCars(list) {
   const catalog = document.getElementById('catalog');
@@ -92,7 +114,9 @@ function renderCars(list) {
             `
         }
 
-        <div class="price-badge">${car.price} €</div>
+        <div class="price-badge" data-price="${car.price}">
+          ${formatPrice(car.price)} €
+        </div>
 
         <a class="card-overlay" href="/car.html?id=${car.id}">
           <div class="overlay-button">Подробнее</div>
@@ -107,6 +131,21 @@ function renderCars(list) {
         </div>
       </div>
     `;
+
+    const priceEl = card.querySelector('.price-badge');
+    const priceValue = car.price;
+    let animated = false;
+
+    card.addEventListener('mouseenter', () => {
+      if (animated) return;
+      animated = true;
+      animatePrice(priceEl, priceValue);
+    });
+
+    card.addEventListener('mouseleave', () => {
+      animated = false;
+      priceEl.textContent = formatPrice(priceValue) + ' €';
+    });
 
     catalog.appendChild(card);
   });
