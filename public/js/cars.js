@@ -18,4 +18,3 @@ const cars = [
     description: "Audi A6, ухоженный автомобиль"
   }
 ];
- 

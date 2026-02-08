@@ -4,7 +4,7 @@ let images = [];
 let index = 0;
 let lensEnabled = false;
 let zoom = 2.5;
- 
+
 const mainImg = document.getElementById("mainImage");
 const viewer = document.getElementById("imageViewer");
 const viewerImg = document.getElementById("viewerImage");
