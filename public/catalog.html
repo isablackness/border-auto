@@ -4,73 +4,87 @@
   <meta charset="UTF-8" />
   <title>Каталог — Border Auto</title>
 
-  <link rel="stylesheet" href="/css/base.css">
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="/css/catalog.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ОСНОВНЫЕ СТИЛИ -->
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/catalog.css" />
 </head>
+
 <body>
 
-<header class="site-header">
-  <div class="header-inner">
-    <div class="logo-wrapper">
-      <img src="/images/logo1.png" alt="Border Auto">
+  <!-- ================= HEADER ================= -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="logo">
+        <img src="/img/logo.png" alt="Border Auto" />
+      </a>
+
+      <div class="header-actions">
+        <a class="btn instagram" href="#" target="_blank">Instagram</a>
+        <a class="btn whatsapp" href="#" target="_blank">WhatsApp</a>
+      </div>
+
+      <nav class="main-nav">
+        <a href="/">Главная</a>
+        <a href="/contacts.html">Контакты</a>
+      </nav>
     </div>
+  </header>
 
-    <div class="header-social">
-      <a class="instagram" href="https://www.instagram.com/border.auto/" target="_blank">Instagram</a>
-      <a class="whatsapp" href="https://api.whatsapp.com/send?phone=48668989731" target="_blank">WhatsApp</a>
+  <!-- ================= SORTING ================= -->
+  <section class="sorting">
+    <div class="sorting-inner">
+      <span class="sorting-label">Сортировка:</span>
+
+      <button class="sort-btn" data-sort="price">По цене ↓</button>
+      <button class="sort-btn" data-sort="mileage">По пробегу ↓</button>
+      <button class="sort-btn" data-sort="created">По дате публикации ↓</button>
+      <button class="sort-btn" data-sort="year">По дате производства ↓</button>
+
+      <!-- ПЕРЕКЛЮЧЕНИЕ ВИДА -->
+      <div class="view-switch">
+        <button id="viewGrid" class="view-btn active" title="3 в ряд">
+          ⬛⬛⬛
+        </button>
+        <button id="viewList" class="view-btn" title="1 в строку">
+          ☰
+        </button>
+      </div>
     </div>
+  </section>
 
-    <nav class="main-nav">
-      <a href="/catalog.html">Главная</a>
-      <a href="/contacts.html">Контакты</a>
-    </nav>
-  </div>
-</header>
+  <!-- ================= CONTENT ================= -->
+  <main class="page-content">
 
-<div class="sort-bar">
-  <span class="sort-label">Сортировка:</span>
-  <button data-sort="price">По цене ↓</button>
-  <button data-sort="mileage">По пробегу ↓</button>
-  <button data-sort="position" class="active">По дате публикации ↓</button>
-  <button data-sort="year">По дате производства ↓</button>
-
-  <!-- переключатель вида -->
-  <div class="view-switch">
-    <button data-view="grid" class="active">⬛⬛⬛</button>
-    <button data-view="list">☰</button>
-  </div>
-</div>
-
-<main class="page-content">
-  <div class="catalog-layout">
-
-    <aside class="filter-panel">
+    <!-- ========== FILTER ========== -->
+    <aside class="filter">
       <h3>Фильтр</h3>
 
-      <input type="text" id="brand" placeholder="Марка">
-      <input type="text" id="model" placeholder="Модель">
+      <input type="text" id="filterBrand" placeholder="Марка" />
+      <input type="text" id="filterModel" placeholder="Модель" />
 
-      <select id="year">
+      <select id="filterYear">
         <option value="">Год</option>
-        <script>
-          for (let y = 2025; y >= 2000; y--) {
-            document.write(`<option value="${y}">${y}</option>`);
-          }
-        </script>
       </select>
 
-      <input type="number" id="price" placeholder="Цена до (€)">
-      <input type="number" id="mileage" placeholder="Пробег до (км)">
-      <button onclick="applyFilters()">Применить</button>
+      <input type="number" id="filterPrice" placeholder="Цена до (€)" />
+      <input type="number" id="filterMileage" placeholder="Пробег до (км)" />
+
+      <button id="applyFilter" class="btn apply">Применить</button>
     </aside>
 
-    <!-- по умолчанию GRID -->
-    <section id="catalog" class="view-grid"></section>
+    <!-- ========== CATALOG ========== -->
+    <!-- 🔴 ВАЖНО: ИМЕННО ЭТОТ БЛОК -->
+    <!-- Класс view-grid / view-list переключается JS -->
+    <section id="catalog" class="catalog view-grid">
+      <!-- КАРТОЧКИ ДОБАВЛЯЮТСЯ ИЗ catalog.js -->
+    </section>
 
-  </div>
-</main>
+  </main>
 
-<script src="/js/catalog.js"></script>
+  <!-- ================= SCRIPTS ================= -->
+  <script src="/js/catalog.js"></script>
+
 </body>
 </html>

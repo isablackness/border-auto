@@ -1,70 +1,112 @@
-/* ================= PRICE — DARK METALLIC (FINAL FIX) ================= */
+/* ================= CATALOG LAYOUT ================= */
 
-/* позиционирование */
+#catalog {
+  position: relative;
+}
+
+/* ================= CARD ================= */
+
+.car-card {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+
+  border-radius: 22px;
+  overflow: hidden;
+
+  /* 🔴 КЛЮЧЕВОЕ */
+  isolation: isolate;
+}
+
+/* ================= IMAGE ================= */
+
+.image-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-wrapper img {
+  width: 100%;
+  display: block;
+}
+
+/* ================= INFO ================= */
+
+.info {
+  padding: 16px;
+}
+
+.car-title {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.meta {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* ================= PRICE ================= */
+
 .view-grid .price-badge {
   position: absolute;
   top: 14px;
   left: 14px;
-  z-index: 10;
 }
 
 .view-list .price-badge {
-  position: relative;
-  margin-left: auto;
-  margin-right: 26px;
-  align-self: center;
-  z-index: 10;
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
-/* основной стиль */
+/* 🔒 ПОЛНАЯ ИЗОЛЯЦИЯ ЦЕНЫ */
 .price-badge {
   position: relative;
+  z-index: 10;
 
-  /* 🔒 ПОЛНАЯ ИЗОЛЯЦИЯ ОТ КАРТОЧКИ */
   overflow: hidden;
   isolation: isolate;
-  contain: paint;
+  pointer-events: none;
 
-  /* 🔥 FIX chrome compositor */
-  transform: translateZ(0);
-  will-change: transform;
-  backface-visibility: hidden;
+  padding: 12px 22px;
 
-  padding: 10px 18px;
-
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 900;
   letter-spacing: 0.4px;
-
   color: #f2f2f2;
 
   background:
     linear-gradient(
       135deg,
-      #3a3a3a 0%,
-      #2b2b2b 20%,
-      #4a4a4a 35%,
+      #2a2a2a 0%,
+      #3b3b3b 30%,
       #1f1f1f 55%,
       #3c3c3c 75%,
       #242424 100%
     );
 
-  border-radius: 8px;
+  border-radius: 6px;
   border: 1px solid #5a5a5a;
 
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.15),
     inset 0 -1px 0 rgba(0,0,0,0.6),
-    0 6px 18px rgba(0,0,0,0.6);
+    0 8px 22px rgba(0,0,0,0.65);
 }
 
-/* крупнее в list */
+/* крупная цена в LIST */
 .view-list .price-badge {
-  font-size: 26px;
-  padding: 14px 26px;
+  font-size: 30px;
+  padding: 16px 32px;
 }
 
-/* ====== БЛИК (ТОЛЬКО ВНУТРИ ЦЕНЫ) ====== */
+/* ================= SHINE ================= */
+
 .price-badge::after {
   content: "";
   position: absolute;
@@ -72,8 +114,6 @@
   left: -70%;
   width: 40%;
   height: 160%;
-
-  pointer-events: none;
 
   background: linear-gradient(
     120deg,
@@ -84,7 +124,7 @@
     transparent 100%
   );
 
-  transform: skewX(-20deg) translateZ(0);
+  transform: skewX(-20deg);
   animation: priceShine 4.5s ease-in-out infinite;
 }
 
