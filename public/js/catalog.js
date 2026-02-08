@@ -1,153 +1,97 @@
 var cars = [];
 var filteredCars = [];
 
-var currentSort = 'position';
-var sortDir = 'desc';
-
-/* ================= LOAD ================= */
+/* LOAD */
 function loadCars() {
   fetch('/api/cars')
-    .then(function (res) {
-      return res.json();
-    })
-    .then(function (data) {
+    .then(res => res.json())
+    .then(data => {
       cars = data || [];
       filteredCars = cars.slice();
-      sortAndRender();
-    })
-    .catch(function (err) {
-      console.error('Ошибка загрузки авто:', err);
+      fillYears();
+      renderCars(filteredCars);
     });
 }
 
-/* ================= SORT ================= */
-function sortAndRender() {
-  var sorted = filteredCars.slice();
-
-  sorted.sort(function (a, b) {
-    var valA = a[currentSort] !== undefined ? a[currentSort] : 0;
-    var valB = b[currentSort] !== undefined ? b[currentSort] : 0;
-
-    if (sortDir === 'asc') {
-      return valA - valB;
-    } else {
-      return valB - valA;
-    }
+/* YEARS */
+function fillYears() {
+  var yearSelect = document.getElementById('year');
+  var years = [...new Set(cars.map(c => c.year))].sort((a,b)=>b-a);
+  years.forEach(y => {
+    var opt = document.createElement('option');
+    opt.value = y;
+    opt.textContent = y;
+    yearSelect.appendChild(opt);
   });
-
-  renderCars(sorted);
 }
 
-/* ================= FILTERS ================= */
+/* FILTERS */
 window.applyFilters = function () {
-  var brand = document.getElementById('brand').value.toLowerCase();
-  var model = document.getElementById('model').value.toLowerCase();
-  var year = document.getElementById('year').value;
-  var price = document.getElementById('price').value;
-  var mileage = document.getElementById('mileage').value;
+  var brand = brandInput.value.toLowerCase();
+  var model = modelInput.value.toLowerCase();
+  var year = yearSelect.value;
+  var price = priceInput.value;
+  var mileage = mileageInput.value;
 
-  filteredCars = cars.filter(function (car) {
-    if (brand && car.brand.toLowerCase().indexOf(brand) === -1) return false;
-    if (model && car.model.toLowerCase().indexOf(model) === -1) return false;
-    if (year && car.year != year) return false;
-    if (price && car.price > price) return false;
-    if (mileage && car.mileage > mileage) return false;
+  filteredCars = cars.filter(c => {
+    if (brand && !c.brand.toLowerCase().includes(brand)) return false;
+    if (model && !c.model.toLowerCase().includes(model)) return false;
+    if (year && c.year != year) return false;
+    if (price && c.price > price) return false;
+    if (mileage && c.mileage > mileage) return false;
     return true;
   });
 
-  sortAndRender();
+  renderCars(filteredCars);
 };
 
-/* ================= SORT BUTTONS ================= */
-document.addEventListener('click', function (e) {
-  var btn = e.target.closest('[data-sort]');
-  if (!btn) return;
+/* RESET */
+window.resetFilters = function () {
+  brandInput.value = '';
+  modelInput.value = '';
+  yearSelect.value = '';
+  priceInput.value = '';
+  mileageInput.value = '';
+  filteredCars = cars.slice();
+  renderCars(filteredCars);
+};
 
-  var sort = btn.dataset.sort;
-
-  if (currentSort === sort) {
-    sortDir = sortDir === 'asc' ? 'desc' : 'asc';
-  } else {
-    currentSort = sort;
-    sortDir = 'desc';
-  }
-
-  sortAndRender();
-});
-
-/* ================= PRICE HELPERS ================= */
-function formatPrice(num) {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-}
-
-function animatePrice(el, value) {
-  var duration = 400;
-  var startTime = performance.now();
-
-  function step(now) {
-    var progress = Math.min((now - startTime) / duration, 1);
-    var current = Math.floor(progress * value);
-    el.textContent = formatPrice(current) + ' €';
-
-    if (progress < 1) {
-      requestAnimationFrame(step);
-    }
-  }
-
-  requestAnimationFrame(step);
-}
-
-/* ================= RENDER ================= */
+/* RENDER */
 function renderCars(list) {
-  var catalog = document.getElementById('catalog');
-  if (!catalog) return;
-
   catalog.innerHTML = '';
-
-  list.forEach(function (car) {
+  list.forEach(car => {
     var card = document.createElement('div');
     card.className = 'car-card';
-
-    var imgHtml = '';
-    if (car.images && car.images.length > 0) {
-      imgHtml = '<img src="' + car.images[0] + '" alt="">';
-    } else {
-      imgHtml = '<div class="no-photo">Нет фото</div>';
-    }
-
-    card.innerHTML =
-      '<div class="image-wrapper">' +
-        imgHtml +
-        '<div class="price-badge">' + formatPrice(car.price) + ' €</div>' +
-        '<a class="card-overlay" href="/car.html?id=' + car.id + '">' +
-          '<div class="overlay-button">Подробнее</div>' +
-        '</a>' +
-      '</div>' +
-      '<div class="info">' +
-        '<h3>' + car.brand + ' ' + car.model + '</h3>' +
-        '<div class="meta">' +
-          '<div>' + car.year + '</div>' +
-          '<div>' + car.mileage + ' км</div>' +
-        '</div>' +
-      '</div>';
-
-    var priceEl = card.querySelector('.price-badge');
-    var priceValue = car.price;
-    var animated = false;
-
-    card.addEventListener('mouseenter', function () {
-      if (animated) return;
-      animated = true;
-      animatePrice(priceEl, priceValue);
-    });
-
-    card.addEventListener('mouseleave', function () {
-      animated = false;
-      priceEl.textContent = formatPrice(priceValue) + ' €';
-    });
-
+    card.innerHTML = `
+      <div class="image-wrapper">
+        <img src="${car.images?.[0] || ''}">
+        <div class="price-badge">${format(car.price)} €</div>
+        <a class="card-overlay" href="/car.html?id=${car.id}">
+          <div class="overlay-button">Подробнее</div>
+        </a>
+      </div>
+      <div class="info">
+        <h3>${car.brand} ${car.model}</h3>
+        <div class="meta">
+          <div>${car.year}</div>
+          <div>${format(car.mileage)} км</div>
+        </div>
+      </div>`;
     catalog.appendChild(card);
   });
 }
+
+/* HELPERS */
+function format(n) {
+  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
+
+/* INIT */
+var brandInput = document.getElementById('brand');
+var modelInput = document.getElementById('model');
+var yearSelect = document.getElementById('year');
+var priceInput = document.getElementById('price');
+var mileageInput = document.getElementById('mileage');
+var catalog = document.getElementById('catalog');
 
 loadCars();
