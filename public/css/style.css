@@ -1,186 +1,99 @@
-/* ================= PAGE CONTAINER ================= */
-.catalog-page {
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+
+  /* СВЕТЛЕЕ СЕРЫЙ ГРАДИЕНТ — БОЛЬШЕ КОНТРАСТА */
+  background:
+    radial-gradient(
+      circle at top,
+      #3a3a3a 0%,   /* было ~2a → стало светлее */
+      #2e2e2e 35%,
+      #232323 65%,
+      #1a1a1a 100%
+    );
+
+  color: #ffffff;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+/* ===== HEADER ===== */
+.site-header {
+  background:
+    linear-gradient(
+      180deg,
+      #3b3b3b 0%,
+      #2a2a2a 60%,
+      #202020 100%
+    );
+
+  padding: 36px 20px 26px;
+  text-align: center;
+  border-bottom: 1px solid #3a3a3a;
+}
+
+.logo-wrapper {
+  margin-bottom: 24px;
+}
+
+.logo-wrapper img {
+  max-width: 420px;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  filter: drop-shadow(0 12px 40px rgba(0,0,0,0.65));
+}
+
+/* ===== NAV ===== */
+.main-nav {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.main-nav a {
+  padding: 11px 28px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #333333, #242424);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  border: 1px solid #444;
+  transition: all 0.3s ease;
+}
+
+.main-nav a:hover {
+  background: linear-gradient(135deg, #c30000, #ff0000);
+  box-shadow: 0 10px 30px rgba(255,0,0,0.35);
+  transform: translateY(-1px);
+}
+
+/* ===== PAGE ===== */
+.page-content {
+  padding: 34px 30px 40px;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 20px 40px;
 }
 
-/* ================= SORT BAR ================= */
-.sort-bar {
-  margin: 20px 0 26px;
-  padding: 14px 20px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  background: linear-gradient(180deg, #1f1f1f, #181818);
-  border-radius: 16px;
-  border: 1px solid #333;
-}
-
-/* ================= LAYOUT ================= */
-.catalog-layout {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 36px;
-  align-items: flex-start;
-
-  /* ✨ МЯГКАЯ ПЛАТФОРМА */
-  background: rgba(255,255,255,0.02);
-  border-radius: 26px;
-  padding: 28px;
-
-  box-shadow:
-    0 18px 50px rgba(0,0,0,0.35),
-    inset 0 1px 0 rgba(255,255,255,0.04);
-}
-
-/* ================= FILTER PANEL ================= */
-.filter-panel {
-  background: linear-gradient(180deg, #1e1e1e, #171717);
-  border: 1px solid #353535;
-  border-radius: 18px;
-  padding: 22px;
-  position: sticky;
-  top: 20px;
-}
-
-/* ================= GRID ================= */
-#catalog {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 32px;
-}
-
-/* ================= CARD ================= */
-.car-card {
-  background: linear-gradient(180deg, #1f1f1f, #171717);
-  border-radius: 22px;
-  border: 1px solid #3a3a3a;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  min-height: 520px;
-  position: relative;
-
-  /* ✨ БАЗОВАЯ ТЕНЬ */
-  box-shadow:
-    0 10px 26px rgba(0,0,0,0.35);
-  transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease,
-    border-color 0.35s ease;
-}
-
-/* hover — аккуратно, премиум */
-.car-card:hover {
-  transform: translateY(-6px);
-  border-color: rgba(255,255,255,0.35);
-  box-shadow:
-    0 22px 55px rgba(0,0,0,0.55);
-}
-
-/* ================= IMAGE ================= */
-.image-wrapper {
-  position: relative;
-  height: 360px;
-  background: radial-gradient(circle at center, #2a2a2a, #121212);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.image-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* ================= NO PHOTO ================= */
-.no-photo {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  color: rgba(255,255,255,0.6);
-  font-weight: 700;
-}
-
-.no-photo span {
-  border: 2px dashed rgba(255,255,255,0.3);
-  padding: 14px 28px;
-  border-radius: 14px;
-  font-size: 15px;
-}
-
-/* ================= PRICE ================= */
-.price-badge {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  padding: 8px 18px;
-  font-weight: 800;
-  font-size: 14px;
+/* ===== GENERIC BUTTON ===== */
+.btn,
+button {
+  background: linear-gradient(135deg, #c30000, #ff0000);
+  border: none;
   color: #fff;
+  padding: 12px 22px;
   border-radius: 999px;
-  background: linear-gradient(135deg, #ff3b3b, #b80000);
-  box-shadow: 0 8px 22px rgba(255, 59, 59, 0.55);
-  z-index: 5;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-/* ================= OVERLAY ================= */
-.card-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 4;
-  text-decoration: none;
-}
-
-.car-card:hover .card-overlay {
-  opacity: 1;
-}
-
-.overlay-button {
-  padding: 14px 36px;
-  border-radius: 16px;
-  border: 2px solid rgba(255,255,255,0.9);
-  color: #fff;
-  font-weight: 800;
-  background: rgba(0,0,0,0.35);
-}
-
-/* ================= INFO ================= */
-.car-card .info {
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-grow: 1;
-}
-
-/* ================= MOBILE ================= */
-@media (max-width: 900px) {
-  .catalog-layout {
-    grid-template-columns: 1fr;
-    padding: 20px;
-  }
-
-  .filter-panel {
-    position: static;
-    margin-bottom: 20px;
-  }
-
-  .image-wrapper {
-    height: 260px;
-  }
+.btn:hover,
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px rgba(255,0,0,0.4);
 }

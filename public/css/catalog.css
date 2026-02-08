@@ -13,51 +13,10 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
-  background: linear-gradient(180deg, #0e0e0e, #000);
+  background: linear-gradient(180deg, #1f1f1f, #181818);
   border-radius: 16px;
-  border: 1px solid #1a1a1a;
+  border: 1px solid #333;
 }
-
-.sort-bar span {
-  color: #aaa;
-  font-weight: 600;
-}
-
-.sort-bar button {
-  position: relative;
-  background: #111;
-  border: 1px solid #222;
-  color: #eee;
-  padding: 8px 16px 8px 36px;
-  border-radius: 999px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.25s;
-}
-
-.sort-bar button:hover {
-  background: #1a1a1a;
-}
-
-.sort-bar button.active {
-  background: linear-gradient(135deg, #c30000, #ff0000);
-  color: #fff;
-  border-color: transparent;
-}
-
-.sort-bar button::before {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 14px;
-  opacity: 0.85;
-}
-
-.sort-bar button[data-sort="price"]::before { content: "€"; }
-.sort-bar button[data-sort="mileage"]::before { content: "🛣"; }
-.sort-bar button[data-sort="date"]::before { content: "🕒"; }
-.sort-bar button[data-sort="year"]::before { content: "📅"; }
 
 /* ================= LAYOUT ================= */
 .catalog-layout {
@@ -65,56 +24,25 @@
   grid-template-columns: 300px 1fr;
   gap: 36px;
   align-items: flex-start;
+
+  /* ✨ МЯГКАЯ ПЛАТФОРМА */
+  background: rgba(255,255,255,0.02);
+  border-radius: 26px;
+  padding: 28px;
+
+  box-shadow:
+    0 18px 50px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.04);
 }
 
 /* ================= FILTER PANEL ================= */
 .filter-panel {
-  background: linear-gradient(180deg, #0e0e0e, #000);
-  border: 1px solid #1a1a1a;
-  border-radius: 16px;
+  background: linear-gradient(180deg, #1e1e1e, #171717);
+  border: 1px solid #353535;
+  border-radius: 18px;
   padding: 22px;
   position: sticky;
   top: 20px;
-}
-
-.filter-panel h3 {
-  color: #fff;
-  margin-bottom: 16px;
-  font-size: 18px;
-  font-weight: 800;
-}
-
-.filter-panel input,
-.filter-panel select {
-  width: 100%;
-  height: 42px;
-  margin-bottom: 12px;
-  padding: 0 12px;
-  background: #111;
-  border: 1px solid #222;
-  border-radius: 10px;
-  color: #eee;
-}
-
-.filter-panel input::placeholder {
-  color: #777;
-}
-
-.filter-panel button {
-  width: 100%;
-  height: 44px;
-  margin-top: 6px;
-  border-radius: 999px;
-  border: none;
-  font-weight: 800;
-  cursor: pointer;
-  background: linear-gradient(135deg, #c30000, #ff0000);
-  color: #fff;
-  transition: 0.25s;
-}
-
-.filter-panel button:hover {
-  opacity: 0.9;
 }
 
 /* ================= GRID ================= */
@@ -126,21 +54,37 @@
 
 /* ================= CARD ================= */
 .car-card {
-  background: linear-gradient(180deg, #111, #0b0b0b);
+  background: linear-gradient(180deg, #1f1f1f, #171717);
   border-radius: 22px;
-  border: 1px solid #1e1e1e;
+  border: 1px solid #3a3a3a;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   min-height: 520px;
   position: relative;
+
+  /* ✨ БАЗОВАЯ ТЕНЬ */
+  box-shadow:
+    0 10px 26px rgba(0,0,0,0.35);
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+/* hover — аккуратно, премиум */
+.car-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255,255,255,0.35);
+  box-shadow:
+    0 22px 55px rgba(0,0,0,0.55);
 }
 
 /* ================= IMAGE ================= */
 .image-wrapper {
   position: relative;
   height: 360px;
-  background: radial-gradient(circle at center, #1a1a1a, #000);
+  background: radial-gradient(circle at center, #2a2a2a, #121212);
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -162,16 +106,12 @@
   align-items: center;
   justify-content: center;
   gap: 14px;
-  color: rgba(255,255,255,0.55);
+  color: rgba(255,255,255,0.6);
   font-weight: 700;
 }
 
-.no-photo svg {
-  opacity: 0.55;
-}
-
 .no-photo span {
-  border: 2px dashed rgba(255,255,255,0.25);
+  border: 2px dashed rgba(255,255,255,0.3);
   padding: 14px 28px;
   border-radius: 14px;
   font-size: 15px;
@@ -188,7 +128,7 @@
   color: #fff;
   border-radius: 999px;
   background: linear-gradient(135deg, #ff3b3b, #b80000);
-  box-shadow: 0 8px 20px rgba(255, 59, 59, 0.45);
+  box-shadow: 0 8px 22px rgba(255, 59, 59, 0.55);
   z-index: 5;
 }
 
@@ -213,16 +153,10 @@
 .overlay-button {
   padding: 14px 36px;
   border-radius: 16px;
-  border: 2px solid rgba(255,255,255,0.85);
+  border: 2px solid rgba(255,255,255,0.9);
   color: #fff;
   font-weight: 800;
-  letter-spacing: 0.4px;
   background: rgba(0,0,0,0.35);
-  transition: 0.25s;
-}
-
-.card-overlay:hover .overlay-button {
-  background: rgba(255,255,255,0.08);
 }
 
 /* ================= INFO ================= */
@@ -238,6 +172,7 @@
 @media (max-width: 900px) {
   .catalog-layout {
     grid-template-columns: 1fr;
+    padding: 20px;
   }
 
   .filter-panel {
