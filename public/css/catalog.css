@@ -52,11 +52,9 @@
   height: 44px;
   margin-bottom: 14px;
   padding: 0 14px;
-
   background: linear-gradient(180deg, #2a2a2a, #1c1c1c);
   border: 1px solid #3a3a3a;
   border-radius: 12px;
-
   color: #fff;
   font-size: 14px;
   font-weight: 600;
@@ -110,9 +108,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-
-  min-height: 490px; /* было 520 — убрали лишний воздух */
-
+  min-height: 490px;
   position: relative;
   box-shadow: 0 8px 22px rgba(0,0,0,0.35);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -126,7 +122,7 @@
 /* ================= IMAGE ================= */
 .image-wrapper {
   position: relative;
-  height: 330px; /* было 360 — аккуратно меньше */
+  height: 330px;
   background: radial-gradient(circle at center, #2a2a2a, #121212);
   overflow: hidden;
   display: flex;
@@ -145,35 +141,21 @@
   position: absolute;
   top: 14px;
   left: 14px;
-
   padding: 8px 18px 8px 16px;
   font-size: 14px;
   font-weight: 800;
   letter-spacing: 0.4px;
   color: #ffffff;
-
   background:
-    linear-gradient(
-      135deg,
-      rgba(255,255,255,0.18),
-      rgba(255,255,255,0.05)
-    ),
-    linear-gradient(
-      180deg,
-      #2a2a2a,
-      #161616
-    );
-
+    linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.05)),
+    linear-gradient(180deg, #2a2a2a, #161616);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-
   border-radius: 12px;
   border: 1px solid rgba(255,255,255,0.35);
-
   box-shadow:
     0 8px 22px rgba(0,0,0,0.55),
     inset 0 1px 0 rgba(255,255,255,0.25);
-
   z-index: 6;
   overflow: hidden;
 }
@@ -214,7 +196,7 @@
 .card-overlay {
   position: absolute;
   inset: 0;
-  background: transparent;
+  background: rgba(0,0,0,0.45);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -228,6 +210,25 @@
 .car-card:hover .card-overlay {
   opacity: 1;
   pointer-events: auto;
+}
+
+/* === ВОЗВРАЩЕНА КНОПКА === */
+.overlay-button {
+  padding: 14px 36px;
+  border-radius: 16px;
+  background: rgba(0,0,0,0.65);
+  border: 2px solid rgba(255,255,255,0.95);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.4px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.card-overlay:hover .overlay-button {
+  transform: scale(1.05);
+  background: rgba(255,255,255,0.08);
 }
 
 /* ================= INFO ================= */
