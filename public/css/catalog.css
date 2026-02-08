@@ -104,3 +104,39 @@ body::before {
   z-index: 99999;
 }
 
+/* ================= CATALOG ISOLATION ================= */
+
+/* фиксируем сетку каталога */
+.catalog-page .catalog-layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 36px;
+  align-items: flex-start;
+}
+
+/* фильтр — ТОЛЬКО колонка слева */
+.catalog-page .filter-panel {
+  display: block !important;
+  width: 300px;
+  min-width: 300px;
+  max-width: 300px;
+}
+
+/* отменяем глобальные flex-правила для формы фильтра */
+.catalog-page .filter-panel form {
+  display: block !important;
+}
+
+/* инпуты снова вертикально */
+.catalog-page .filter-panel input,
+.catalog-page .filter-panel select,
+.catalog-page .filter-panel button {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* правый блок НЕ ломает grid */
+.catalog-page #catalog {
+  min-width: 0;
+}
+
