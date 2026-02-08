@@ -1,23 +1,15 @@
-/* ================= RESET ONLY FOR CATALOG ================= */
-.catalog-layout *,
-.catalog-layout *::before,
-.catalog-layout *::after {
-  box-sizing: border-box;
-}
-
-/* ================= PAGE ================= */
+/* ================= CATALOG PAGE RESET ================= */
 .page-content {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 20px 40px;
 }
 
-/* ================= MAIN LAYOUT ================= */
 .catalog-layout {
-  display: grid !important;
-  grid-template-columns: 300px 1fr !important;
-  gap: 36px !important;
-  align-items: start !important;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 36px;
+  align-items: flex-start;
 }
 
 /* ================= SORT BAR ================= */
@@ -27,15 +19,16 @@
   padding: 14px 20px;
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 10px;
   background: linear-gradient(180deg, #1f1f1f, #181818);
   border-radius: 16px;
   border: 1px solid #333;
 }
 
-/* ================= FILTER (HARD FIX) ================= */
-.filter-panel {
-  grid-column: 1 !important;
+/* ================= FILTER — HARD ISOLATION ================= */
+.catalog-layout > .filter-panel {
+  grid-column: 1;
 
   display: flex !important;
   flex-direction: column !important;
@@ -43,7 +36,6 @@
   gap: 14px !important;
 
   width: 100% !important;
-  max-width: 100% !important;
 
   background: linear-gradient(180deg, #202020, #141414);
   border-radius: 20px;
@@ -58,38 +50,39 @@
     inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
-/* kill inline layouts */
-.filter-panel form,
-.filter-panel .row,
-.filter-panel .filters,
-.filter-panel .filter-row {
+/* сброс ЛЮБЫХ глобальных form-стилей */
+.catalog-layout > .filter-panel * {
+  box-sizing: border-box;
+}
+
+.catalog-layout > .filter-panel input,
+.catalog-layout > .filter-panel select,
+.catalog-layout > .filter-panel button {
   display: block !important;
   width: 100% !important;
+  max-width: 100% !important;
+  flex: none !important;
 }
 
 /* inputs */
-.filter-panel input,
-.filter-panel select {
-  display: block !important;
-  width: 100% !important;
+.catalog-layout > .filter-panel input,
+.catalog-layout > .filter-panel select {
   height: 44px;
-
   padding: 0 14px;
-  background: linear-gradient(180deg, #2a2a2a, #1c1c1c);
 
+  background: linear-gradient(180deg, #2a2a2a, #1c1c1c);
   border: 1px solid #3a3a3a;
   border-radius: 12px;
 
   color: #ffffff;
   font-size: 14px;
   font-weight: 600;
+  outline: none;
 }
 
 /* button */
-.filter-panel button {
-  width: 100% !important;
+.catalog-layout > .filter-panel button {
   height: 46px;
-
   margin-top: 6px;
 
   background: linear-gradient(135deg, #c30000, #ff0000);
@@ -99,11 +92,12 @@
   color: #ffffff;
   font-size: 15px;
   font-weight: 800;
+  cursor: pointer;
 }
 
 /* ================= CATALOG GRID ================= */
 #catalog {
-  grid-column: 2 !important;
+  grid-column: 2;
 
   display: grid;
   grid-template-columns: repeat(auto-fill, 320px);
@@ -149,6 +143,7 @@
 
   color: #ffffff;
   font-weight: 800;
+  font-size: 14px;
 }
 
 /* ================= DOTS ================= */
@@ -177,24 +172,18 @@
   padding: 18px;
 }
 
-.car-title {
-  font-size: 17px;
-  font-weight: 700;
-}
-
 /* ================= MOBILE ================= */
 @media (max-width: 900px) {
   .catalog-layout {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr;
   }
 
-  .filter-panel {
+  .catalog-layout > .filter-panel {
     position: static;
-    margin-bottom: 20px;
   }
 
   #catalog {
-    grid-column: 1 !important;
+    grid-column: 1;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   }
 
