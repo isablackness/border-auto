@@ -45,9 +45,7 @@
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 14px 40px rgba(0,0,0,.45);
-
-  /* 🔒 ФИКС ЦВЕТА ТЕКСТА НА УРОВНЕ КАРТОЧКИ */
-  color: #eaeaea !important;
+  color: #e6e6e6;
 }
 
 /* ================= IMAGE ================= */
@@ -64,39 +62,55 @@
   object-fit: cover;
 }
 
-/* ================= INFO ================= */
+/* ================= INFO (TEXT BLOCK) ================= */
 
 .catalog-page .car-card .info {
   padding: 18px 20px 22px;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  color: inherit !important;
 }
 
-/* 🔥 СБРОС ЛЮБЫХ СТИЛЕЙ ССЫЛОК */
-.catalog-page .car-card .info a,
-.catalog-page .car-card .info a *,
-.catalog-page .car-card a,
-.catalog-page .car-card a:link,
-.catalog-page .car-card a:visited,
-.catalog-page .car-card a:hover,
-.catalog-page .car-card a:active,
-.catalog-page .car-card a:focus {
+/* ===== MODEL (MAIN TITLE) ===== */
+.catalog-page .car-card .info a {
   color: #ffffff !important;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.25;
   text-decoration: none !important;
+  letter-spacing: 0.2px;
 }
 
-/* hover */
 .catalog-page .car-card .info a:hover {
   text-decoration: underline !important;
 }
 
-/* вторичный текст */
+/* ===== META ROWS ===== */
 .catalog-page .car-card .info span,
 .catalog-page .car-card .info div {
-  color: #bcbcbc !important;
   font-size: 14px;
+  color: #b7b7b7 !important;
+  line-height: 1.4;
+}
+
+/* визуальное разделение */
+.catalog-page .car-card .info span + span,
+.catalog-page .car-card .info span + div,
+.catalog-page .car-card .info div + div {
+  margin-top: 2px;
+}
+
+/* ===== EMPHASIS FOR YEAR ===== */
+.catalog-page .car-card .info .year {
+  font-weight: 600;
+  color: #d0d0d0 !important;
+}
+
+/* ===== EMPHASIS FOR MILEAGE ===== */
+.catalog-page .car-card .info .mileage {
+  font-size: 13px;
+  color: #9e9e9e !important;
+  letter-spacing: 0.3px;
 }
 
 /* ================= PRICE ================= */
@@ -111,7 +125,6 @@
   font-size: 16px;
   font-weight: 900;
   letter-spacing: 0.4px;
-
   color: #f2f2f2;
 
   background: linear-gradient(
