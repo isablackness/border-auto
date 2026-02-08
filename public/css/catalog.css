@@ -19,7 +19,7 @@
 .price-badge {
   position: relative;
 
-  /* 🔒 ЖЁСТКАЯ ИЗОЛЯЦИЯ */
+  /* 🔒 ЖЁСТКАЯ ИЗОЛЯЦИЯ (блик не выходит за пределы цены) */
   overflow: hidden;
   isolation: isolate;
   contain: paint;
