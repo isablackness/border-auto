@@ -106,3 +106,12 @@
 #catalog {
   min-width: 0;
 }
+
+body {
+  outline: 5px solid red !important;
+}
+
+.filter-panel {
+  background: red !important;
+}
+
