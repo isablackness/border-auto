@@ -1,48 +1,101 @@
-.catalog-layout {
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 32px;
-  padding: 30px;
+/* ================= LAYOUT ================= */
+
+.page-content {
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
+.catalog-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 36px;
+  align-items: flex-start;
+  padding: 30px 20px 40px;
+}
+
+/* ================= SORT BAR ================= */
+
+.sort-bar {
+  max-width: 1400px;
+  margin: 20px auto 30px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(180deg, #1f1f1f, #181818);
+  border-radius: 18px;
+  border: 1px solid #333;
+}
+
+.sort-label {
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.sort-bar button {
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #2a2a2a, #1c1c1c);
+  border: 1px solid #3a3a3a;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sort-bar button.active {
+  background: linear-gradient(135deg, #c30000, #ff0000);
+  border-color: transparent;
+}
+
+.view-switch {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+
+/* ================= FILTER ================= */
+
 .filter-panel {
-  background: #111;
-  border-radius: 20px;
-  padding: 20px;
+  background: linear-gradient(180deg, #1f1f1f, #141414);
+  border-radius: 22px;
+  padding: 24px;
+  border: 1px solid rgba(255,255,255,0.08);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .filter-panel input,
 .filter-panel select {
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: none;
-  background: #1c1c1c;
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #111, #0b0b0b);
+  border: 1px solid #2c2c2c;
   color: #fff;
 }
 
 .filter-panel button {
   margin-top: 10px;
-  padding: 12px;
+  padding: 14px;
   border-radius: 999px;
   border: none;
   background: #d60000;
   color: #fff;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
 }
 
-/* ===== GRID ===== */
+/* ================= GRID VIEW ================= */
 
 #catalog.view-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 28px;
+  grid-template-columns: repeat(auto-fill, 320px);
+  gap: 32px;
+  justify-content: flex-start;
 }
 
-/* ===== LIST ===== */
+/* ================= LIST VIEW ================= */
 
 #catalog.view-list {
   display: flex;
@@ -50,25 +103,30 @@
   gap: 20px;
 }
 
-/* ===== CARD ===== */
+/* ================= CARD ================= */
 
 .car-card {
-  background: #151515;
-  border-radius: 26px;
+  width: 320px;
+  background: linear-gradient(180deg, #1f1f1f, #171717);
+  border-radius: 24px;
+  border: 1px solid #2f2f2f;
   overflow: hidden;
-  text-decoration: none;
-  color: #fff;
   display: flex;
   flex-direction: column;
   position: relative;
+  text-decoration: none;
+  color: #fff;
 }
 
 .car-card:hover {
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  transform: translateY(-6px);
+  box-shadow: 0 26px 70px rgba(0,0,0,0.75);
 }
 
+/* ================= IMAGE ================= */
+
 .image-wrapper {
-  height: 300px;
+  height: 360px;
   overflow: hidden;
 }
 
@@ -78,8 +136,24 @@
   object-fit: cover;
 }
 
+/* ================= PRICE ================= */
+
+.price-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 12px 26px;
+  font-size: 16px;
+  font-weight: 900;
+  color: #f2f2f2;
+  background: linear-gradient(180deg, #2b2b2b, #1e1e1e);
+  border-radius: 8px;
+}
+
+/* ================= INFO ================= */
+
 .info {
-  padding: 18px 20px;
+  padding: 18px 20px 22px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -93,23 +167,31 @@
 .meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px 14px;
   font-size: 13px;
   opacity: 0.85;
 }
 
 .meta div {
-  background: rgba(255,255,255,0.08);
   padding: 4px 10px;
   border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  white-space: nowrap;
 }
 
-.price-badge {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  background: #000;
-  padding: 10px 18px;
-  border-radius: 10px;
-  font-weight: 800;
+/* ================= MOBILE ================= */
+
+@media (max-width: 900px) {
+  .catalog-layout {
+    grid-template-columns: 1fr;
+  }
+
+  #catalog.view-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  .car-card {
+    width: 100%;
+  }
 }
