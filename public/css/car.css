@@ -66,7 +66,7 @@
   cursor: pointer;
 }
 
-/* ================= THUMBS (PAGE) ================= */
+/* ================= THUMBS ================= */
 
 .gallery-footer {
   margin-top: 12px;
@@ -102,31 +102,83 @@
 /* ================= INFO ================= */
 
 .car-info {
-  background: #1b1b1b;
+  background: linear-gradient(180deg, #1f1f1f, #171717);
   border-radius: 26px;
-  padding: 26px;
+  padding: 30px;
+  border: 1px solid rgba(255,255,255,0.08);
 }
 
-.car-price {
+/* ===== TITLE (BRAND + MODEL) ===== */
+
+.car-title {
   font-size: 32px;
   font-weight: 900;
+  letter-spacing: 0.3px;
   margin-bottom: 18px;
+  position: relative;
 }
+
+.car-title::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #d60000, #ff3b3b);
+  border-radius: 2px;
+  margin-top: 10px;
+}
+
+/* ===== PRICE ===== */
+
+.car-price-box {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 14px 22px;
+  margin: 22px 0 24px;
+  background: linear-gradient(135deg, #b80000, #ff1f1f);
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(255,0,0,0.35);
+}
+
+.car-price-box span {
+  font-size: 34px;
+  font-weight: 900;
+  color: #fff;
+}
+
+.car-price-box .currency {
+  font-size: 22px;
+  opacity: 0.9;
+}
+
+/* ================= META ================= */
 
 .car-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 10px 14px;
-  margin-bottom: 26px;
+  margin-bottom: 28px;
 }
 
 .car-meta div {
   padding: 6px 14px;
   border-radius: 999px;
   background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  font-size: 14px;
+  color: #e6e6e6;
 }
 
-/* ================= FULLSCREEN (FIXED) ================= */
+/* ================= DESCRIPTION ================= */
+
+.car-description {
+  font-size: 15px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+/* ================= FULLSCREEN ================= */
 
 .image-viewer {
   position: fixed;
@@ -140,7 +192,6 @@
   display: block;
 }
 
-/* центрируем ТОЛЬКО изображение */
 .viewer-image-wrapper {
   width: 100vw;
   height: 100vh;
@@ -154,11 +205,10 @@
   max-width: 90vw;
   max-height: 90vh;
   object-fit: contain;
-  cursor: zoom-in;
   transition: transform 0.1s linear;
+  cursor: zoom-in;
 }
 
-/* fullscreen arrows */
 .viewer-btn {
   position: absolute;
   top: 50%;
@@ -170,13 +220,10 @@
   cursor: pointer;
   width: 60px;
   height: 60px;
-  z-index: 5;
 }
 
 .viewer-btn.left { left: 20px; }
 .viewer-btn.right { right: 20px; }
-
-/* ===== fullscreen thumbs STRICTLY BOTTOM ===== */
 
 .viewer-footer {
   position: absolute;
@@ -217,19 +264,6 @@
   color: #fff;
 }
 
-/* ================= ZOOM LENS ================= */
-
-.zoom-lens {
-  position: absolute;
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.5);
-  pointer-events: none;
-  display: none;
-  box-shadow: 0 0 30px rgba(0,0,0,0.6);
-}
-
 /* ================= RESPONSIVE ================= */
 
 @media (max-width: 1000px) {
@@ -239,5 +273,13 @@
 
   .gallery-main img {
     height: 420px;
+  }
+
+  .car-title {
+    font-size: 26px;
+  }
+
+  .car-price-box span {
+    font-size: 28px;
   }
 }
