@@ -9,19 +9,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+const PORT = process.env.PORT || 10000;
+
 app.use(express.json({ limit: "10mb" }));
 
 /* ===== STATIC ===== */
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/admin", express.static(path.join(__dirname, "admin")));
 
 /* ===== ROOT ===== */
 app.get("/", (req, res) => {
   res.redirect("/catalog.html");
-});
-
-/* ===== ADMIN ===== */
-app.get("/admin", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/admin/index.html"));
 });
 
 /* ===== DB ===== */
@@ -99,7 +97,6 @@ app.delete("/api/cars/:id", async (req, res) => {
 });
 
 /* ===== START ===== */
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on", PORT);
 });
