@@ -1,15 +1,18 @@
 const form = document.getElementById("carForm");
 const title = document.getElementById("formTitle");
-const dropZone = document.getElementById("dropZone");
-const fileInput = document.getElementById("fileInput");
+const imageInput = document.getElementById("imageInput");
+const addImageBtn = document.getElementById("addImage");
 const imagesList = document.getElementById("imagesList");
 
-const params = new URLSearchParams(window.location.search);
+const params = new URLSearchParams(location.search);
 const editId = params.get("id");
 
 let images = [];
+let dragIndex = null;
 
-title.textContent = editId ? "Редактирование автомобиля" : "Добавление автомобиля";
+title.textContent = editId
+  ? "Редактирование автомобиля"
+  : "Добавление автомобиля";
 
 /* ================= LOAD ================= */
 
@@ -41,17 +44,39 @@ loadCar();
 
 /* ================= IMAGES ================= */
 
+addImageBtn.onclick = () => {
+  const url = imageInput.value.trim();
+  if (!url) return;
+
+  images.push(url);
+  imageInput.value = "";
+  renderImages();
+};
+
 function renderImages() {
   imagesList.innerHTML = "";
 
   images.forEach((src, index) => {
     const div = document.createElement("div");
     div.className = "image-thumb";
+    div.draggable = true;
 
     div.innerHTML = `
       <img src="${src}">
       <button type="button">✕</button>
     `;
+
+    div.ondragstart = () => dragIndex = index;
+
+    div.ondragover = e => e.preventDefault();
+
+    div.ondrop = () => {
+      if (dragIndex === null || dragIndex === index) return;
+      const moved = images.splice(dragIndex, 1)[0];
+      images.splice(index, 0, moved);
+      dragIndex = null;
+      renderImages();
+    };
 
     div.querySelector("button").onclick = () => {
       images.splice(index, 1);
@@ -59,36 +84,6 @@ function renderImages() {
     };
 
     imagesList.appendChild(div);
-  });
-}
-
-/* drag & drop */
-
-dropZone.onclick = () => fileInput.click();
-
-dropZone.ondragover = e => {
-  e.preventDefault();
-  dropZone.classList.add("hover");
-};
-
-dropZone.ondragleave = () => dropZone.classList.remove("hover");
-
-dropZone.ondrop = e => {
-  e.preventDefault();
-  dropZone.classList.remove("hover");
-  handleFiles(e.dataTransfer.files);
-};
-
-fileInput.onchange = e => handleFiles(e.target.files);
-
-function handleFiles(files) {
-  [...files].forEach(file => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      images.push(e.target.result);
-      renderImages();
-    };
-    reader.readAsDataURL(file);
   });
 }
 
@@ -105,20 +100,18 @@ form.onsubmit = async e => {
     mileage: Number(form.mileage.value),
     gearbox: form.gearbox.value,
     description: form.description.value.trim(),
-    images
+    images // ⚠️ только URL, без base64
   };
 
-  const url = editId ? `/api/admin/cars/${editId}` : "/api/admin/cars";
-  const method = editId ? "PUT" : "POST";
-
   try {
-    const res = await fetch(url, {
-      method,
+    const res = await fetch(`/api/admin/cars/${editId}`, {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     });
 
     if (!res.ok) throw new Error();
+
     location.href = "/admin/";
   } catch {
     alert("Ошибка сохранения");

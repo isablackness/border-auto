@@ -38,14 +38,18 @@
       <input name="price" type="number" placeholder="Цена €" required>
     </div>
 
-    <textarea name="description" placeholder="Описание"></textarea>
+    <textarea
+      name="description"
+      class="big-textarea"
+      placeholder="Подробное описание автомобиля">
+    </textarea>
 
     <div class="images-section">
-      <h3>Фотографии</h3>
+      <h3>Фотографии (перетаскивай для сортировки)</h3>
 
-      <div id="dropZone" class="drop-zone">
-        <span>Перетащи фото сюда или кликни</span>
-        <input type="file" id="fileInput" multiple accept="image/*">
+      <div class="add-image-row">
+        <input type="text" id="imageInput" placeholder="URL изображения">
+        <button type="button" id="addImage">Добавить</button>
       </div>
 
       <div id="imagesList" class="images-grid"></div>
