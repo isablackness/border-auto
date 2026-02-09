@@ -16,12 +16,10 @@ async function loadCar() {
   if (!editId) return;
 
   try {
-    const res = await fetch("/api/cars");
+    const res = await fetch(`/api/cars/${editId}`);
     if (!res.ok) throw new Error();
 
-    const cars = await res.json();
-    const car = cars.find(c => String(c.id) === String(editId));
-    if (!car) throw new Error();
+    const car = await res.json();
 
     form.brand.value = car.brand || "";
     form.model.value = car.model || "";
@@ -84,7 +82,7 @@ function renderImages() {
   });
 }
 
-/* ================= DROP ZONE (visual) ================= */
+/* ================= DROP ZONE (VISUAL) ================= */
 
 dropZone.ondragover = e => {
   e.preventDefault();
@@ -104,7 +102,6 @@ form.onsubmit = async e => {
   e.preventDefault();
 
   const data = {
-    id: editId, // ⬅️ ВАЖНО: backend по нему обновляет
     brand: form.brand.value.trim(),
     model: form.model.value.trim(),
     year: Number(form.year.value),
@@ -116,8 +113,8 @@ form.onsubmit = async e => {
   };
 
   try {
-    const res = await fetch("/api/cars", {
-      method: "POST",
+    const res = await fetch(`/api/cars/${editId}`, {
+      method: "PUT",              // ✅ ЕДИНСТВЕННО ВЕРНО
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     });
