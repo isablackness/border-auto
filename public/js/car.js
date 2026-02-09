@@ -2,6 +2,7 @@ const id = new URLSearchParams(location.search).get("id");
 
 let images = [];
 let index = 0;
+let zoom = 2.5;
 
 /* ===== ELEMENTS ===== */
 
@@ -20,8 +21,14 @@ const viewerThumbs = document.getElementById("viewerThumbs");
 const viewerCounter = document.getElementById("viewerCounter");
 const viewerPrev = document.getElementById("viewerPrev");
 const viewerNext = document.getElementById("viewerNext");
+const viewerWrapper = document.querySelector(".viewer-image-wrapper");
 
-/* ===== LOAD CAR ===== */
+/* zoom lens */
+const lens = document.createElement("div");
+lens.className = "zoom-lens";
+viewerWrapper.appendChild(lens);
+
+/* ===== LOAD ===== */
 
 async function loadCar() {
   const car = await (await fetch(`/api/cars/${id}`)).json();
@@ -72,13 +79,11 @@ function renderThumbs() {
   });
 }
 
-prevBtn.onclick = () => {
+prevBtn.onclick = () =>
   setMain((index - 1 + images.length) % images.length);
-};
 
-nextBtn.onclick = () => {
+nextBtn.onclick = () =>
   setMain((index + 1) % images.length);
-};
 
 /* ===== FULLSCREEN ===== */
 
@@ -120,8 +125,28 @@ viewerNext.onclick = e => {
   setViewer((index + 1) % images.length);
 };
 
-/* close fullscreen on click outside */
+/* close fullscreen */
 viewer.onclick = () => viewer.classList.remove("open");
+
+/* ===== ZOOM LENS ===== */
+
+viewerWrapper.addEventListener("mousemove", e => {
+  const rect = viewerWrapper.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  lens.style.display = "block";
+  lens.style.left = `${x - lens.offsetWidth / 2}px`;
+  lens.style.top = `${y - lens.offsetHeight / 2}px`;
+
+  viewerImg.style.transformOrigin = `${(x / rect.width) * 100}% ${(y / rect.height) * 100}%`;
+  viewerImg.style.transform = `scale(${zoom})`;
+});
+
+viewerWrapper.addEventListener("mouseleave", () => {
+  lens.style.display = "none";
+  viewerImg.style.transform = "scale(1)";
+});
 
 /* ===== INIT ===== */
 

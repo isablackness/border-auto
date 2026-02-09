@@ -30,10 +30,12 @@
   object-fit: cover;
 }
 
+/* ===== ARROWS (NO ANIMATION) ===== */
+
 .gallery-btn {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%); /* фиксировано */
   width: 46px;
   height: 46px;
   border-radius: 50%;
@@ -43,6 +45,7 @@
   border: none;
   cursor: pointer;
   z-index: 2;
+  transition: none; /* 🔴 убрана анимация */
 }
 
 .gallery-btn.left { left: 14px; }
@@ -143,12 +146,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .viewer-image-wrapper img {
-  max-width: 90%;
-  max-height: 90%;
+  max-width: 80%;   /* 🔴 уменьшено */
+  max-height: 80%;  /* 🔴 уменьшено */
   object-fit: contain;
+  transition: transform 0.15s linear;
 }
 
 .viewer-btn {
@@ -167,35 +172,17 @@
 .viewer-btn.left { left: 20px; }
 .viewer-btn.right { right: 20px; }
 
-.viewer-footer {
-  padding: 12px;
-}
+/* ================= ZOOM LENS ================= */
 
-.viewer-thumbs {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-}
-
-.viewer-thumbs img {
-  width: 70px;
-  height: 50px;
-  object-fit: cover;
-  opacity: 0.5;
-  cursor: pointer;
-  border: 2px solid transparent;
-}
-
-.viewer-thumbs img.active {
-  opacity: 1;
-  border-color: #d60000;
-}
-
-.viewer-counter {
-  text-align: center;
-  margin-top: 6px;
-  font-size: 13px;
-  opacity: 0.7;
+.zoom-lens {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.5);
+  pointer-events: none;
+  display: none;
+  box-shadow: 0 0 30px rgba(0,0,0,0.6);
 }
 
 /* ================= RESPONSIVE ================= */
