@@ -62,7 +62,6 @@ app.put("/api/cars/:id", async (req, res) => {
       images
     } = req.body;
 
-    // images ДОЛЖЕН БЫТЬ массивом строк
     const imagesArray = Array.isArray(images) ? images : [];
 
     const r = await pool.query(
@@ -82,14 +81,13 @@ app.put("/api/cars/:id", async (req, res) => {
       [
         brand,
         model,
-        year,
         year ? Number(year) : null,
         price ? Number(price) : null,
         mileage ? Number(mileage) : null,
         gearbox || null,
         description || null,
         imagesArray,
-        req.params.id
+        Number(req.params.id)
       ]
     );
 
@@ -104,7 +102,7 @@ app.put("/api/cars/:id", async (req, res) => {
 app.delete("/api/cars/:id", async (req, res) => {
   await pool.query(
     "DELETE FROM cars WHERE id = $1",
-    [req.params.id]
+    [Number(req.params.id)]
   );
   res.json({ ok: true });
 });
