@@ -1,6 +1,191 @@
+/* ================= RESET ================= */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #2a2a2a, #0f0f0f);
+  color: #fff;
+  font-family: Inter, Arial, sans-serif;
+}
+
+/* ================= LAYOUT ================= */
+.admin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 30px 80px;
+}
+
+.admin-edit {
+  max-width: 1000px;
+}
+
+/* ================= HEADERS ================= */
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.admin-header h1,
+.admin-container h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+/* ================= BUTTONS ================= */
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.admin-header button,
+.save-btn {
+  padding: 10px 20px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, #c30000, #ff0000);
+  color: #fff;
+  font-weight: 700;
+}
+
+.admin-header button + button {
+  margin-left: 10px;
+}
+
+.admin-header button:last-child {
+  background: #2a2a2a;
+}
+
+/* ================= LIST PAGE ================= */
+#carList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+.admin-car {
+  background: linear-gradient(180deg, #1e1e1e, #141414);
+  border-radius: 20px;
+  border: 1px solid #333;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-car img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  background: #000;
+}
+
+.admin-car .info {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-car .info strong {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.admin-car .price {
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+/* actions */
+.admin-car .actions {
+  display: flex;
+  gap: 10px;
+  padding: 14px 18px 18px;
+}
+
+.admin-car .actions button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 700;
+  color: #fff;
+}
+
+.admin-car .actions .edit {
+  background: #2f2f2f;
+}
+
+.admin-car .actions .delete {
+  background: #4a0000;
+}
+
+/* ================= LOGIN ================= */
+.admin-container form {
+  max-width: 420px;
+}
+
+.admin-container form input,
+.admin-container form button {
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+/* ================= EDIT FORM ================= */
+.edit-form {
+  background: linear-gradient(180deg, #1e1e1e, #141414);
+  padding: 32px;
+  border-radius: 26px;
+  border: 1px solid #333;
+}
+
+.edit-form .row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.edit-form input,
+.edit-form select,
+.edit-form textarea {
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid #333;
+  background: #0e0e0e;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+}
+
+.edit-form input::placeholder,
+.edit-form textarea::placeholder {
+  color: #777;
+}
+
+.edit-form textarea {
+  resize: vertical;
+}
+
 .big-textarea {
   min-height: 220px;
   font-size: 15px;
+  margin-bottom: 24px;
+}
+
+/* ================= IMAGES ================= */
+.images-section h3 {
+  margin: 20px 0 12px;
+  font-size: 18px;
 }
 
 .add-image-row {
@@ -28,18 +213,44 @@
   width: 140px;
   height: 90px;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: 14px;
+  border: 1px solid #333;
 }
 
 .image-thumb button {
   position: absolute;
   top: 6px;
   right: 6px;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.75);
   border: none;
   color: #fff;
   border-radius: 50%;
   width: 22px;
   height: 22px;
   cursor: pointer;
+}
+
+/* ================= SAVE ================= */
+.save-btn {
+  margin-top: 30px;
+  padding: 14px;
+  width: 100%;
+  border-radius: 18px;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 900px) {
+  .edit-form .row {
+    grid-template-columns: 1fr;
+  }
+
+  #carList {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-container {
+    padding: 24px 16px 60px;
+  }
 }
