@@ -10,37 +10,42 @@ const editId = params.get("id");
 let images = [];
 let draggedIndex = null;
 
-/* ===== LOAD ===== */
+/* ================= LOAD ================= */
+
 async function loadCar() {
   if (!editId) return;
 
-  const res = await fetch("/api/cars");
-  const cars = await res.json();
-  const car = cars.find(c => String(c.id) === String(editId));
+  try {
+    const res = await fetch("/api/cars");
+    if (!res.ok) throw new Error();
 
-  if (!car) {
+    const cars = await res.json();
+    const car = cars.find(c => String(c.id) === String(editId));
+    if (!car) throw new Error();
+
+    form.brand.value = car.brand || "";
+    form.model.value = car.model || "";
+    form.year.value = car.year || "";
+    form.price.value = car.price || "";
+    form.mileage.value = car.mileage || "";
+    form.gearbox.value = car.gearbox || "";
+    form.description.value = car.description || "";
+
+    images = Array.isArray(car.images) ? [...car.images] : [];
+    renderImages();
+  } catch {
     alert("Ошибка загрузки автомобиля");
-    return;
   }
-
-  form.brand.value = car.brand || "";
-  form.model.value = car.model || "";
-  form.year.value = car.year || "";
-  form.price.value = car.price || "";
-  form.mileage.value = car.mileage || "";
-  form.gearbox.value = car.gearbox || "";
-  form.description.value = car.description || "";
-
-  images = car.images || [];
-  renderImages();
 }
 
 loadCar();
 
-/* ===== IMAGES ===== */
+/* ================= IMAGES ================= */
+
 addImageBtn.onclick = () => {
   const url = imageInput.value.trim();
   if (!url) return;
+
   images.push(url);
   imageInput.value = "";
   renderImages();
@@ -63,7 +68,7 @@ function renderImages() {
     item.ondragover = e => e.preventDefault();
 
     item.ondrop = () => {
-      if (draggedIndex === null) return;
+      if (draggedIndex === null || draggedIndex === index) return;
       const moved = images.splice(draggedIndex, 1)[0];
       images.splice(index, 0, moved);
       draggedIndex = null;
@@ -79,7 +84,8 @@ function renderImages() {
   });
 }
 
-/* визуальный drop zone */
+/* ================= DROP ZONE (visual) ================= */
+
 dropZone.ondragover = e => {
   e.preventDefault();
   dropZone.classList.add("hover");
@@ -92,12 +98,13 @@ dropZone.ondrop = e => {
   dropZone.classList.remove("hover");
 };
 
-/* ===== SAVE ===== */
+/* ================= SAVE ================= */
+
 form.onsubmit = async e => {
   e.preventDefault();
 
   const data = {
-    id: editId,
+    id: editId, // ⬅️ ВАЖНО: backend по нему обновляет
     brand: form.brand.value.trim(),
     model: form.model.value.trim(),
     year: Number(form.year.value),
@@ -109,13 +116,14 @@ form.onsubmit = async e => {
   };
 
   try {
-    const res = await fetch("/api/admin/cars", {
-      method: "POST", // ❗ ВАЖНО
+    const res = await fetch("/api/cars", {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     });
 
     if (!res.ok) throw new Error();
+
     location.href = "/admin/";
   } catch {
     alert("Ошибка сохранения");
