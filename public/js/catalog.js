@@ -117,10 +117,11 @@ function renderCars(list) {
       <div class="info">
         <div class="car-title">${car.brand} ${car.model}</div>
         <div class="meta">
-          <div>${car.year}</div>
-          <div>${formatPrice(car.mileage)} км</div>
-          ${car.engine ? `<div>${car.engine}</div>` : ''}
+          ${car.year ? `<div>${car.year}</div>` : ''}
+          ${car.mileage ? `<div>${formatPrice(car.mileage)} км</div>` : ''}
           ${car.gearbox ? `<div>${car.gearbox}</div>` : ''}
+          ${car.engine_volume ? `<div>${car.engine_volume} л</div>` : ''}
+          ${car.fuel_type ? `<div>${car.fuel_type}</div>` : ''}
         </div>
       </div>
 
