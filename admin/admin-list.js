@@ -3,13 +3,14 @@ const list = document.getElementById("carList");
 /* ================= HELPERS ================= */
 
 function formatPrice(n) {
+  if (!n && n !== 0) return "";
   return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
 /* ================= LOAD ================= */
 
 async function loadCars() {
-  const res = await fetch("/api/admin/cars");
+  const res = await fetch("/api/cars");
 
   if (!res.ok) {
     alert("Ошибка загрузки автомобилей");
@@ -18,6 +19,11 @@ async function loadCars() {
 
   const cars = await res.json();
   list.innerHTML = "";
+
+  if (!cars.length) {
+    list.innerHTML = "<p>Автомобили не найдены</p>";
+    return;
+  }
 
   cars.forEach(car => {
     const div = document.createElement("div");
