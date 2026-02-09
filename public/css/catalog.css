@@ -132,7 +132,6 @@
     border-color 0.28s ease;
 }
 
-/* 🔥 INTENT HOVER */
 .car-card:hover {
   transform: translateY(-6px);
   border-color: rgba(255,255,255,0.35);
@@ -164,37 +163,19 @@
   position: absolute;
   top: 14px;
   left: 14px;
-
   padding: 12px 26px;
   font-size: 16px;
   font-weight: 900;
   letter-spacing: 0.5px;
   color: #f2f2f2;
-
   background: linear-gradient(180deg, #2b2b2b, #1e1e1e);
   border-radius: 8px;
   border: 1px solid rgba(255,255,255,0.15);
-
   box-shadow:
     0 10px 26px rgba(0,0,0,0.7),
     inset 0 1px 0 rgba(255,255,255,0.08),
     inset 0 -1px 2px rgba(0,0,0,0.8);
-
-  transition:
-    background 0.25s ease,
-    box-shadow 0.25s ease;
-
-  white-space: nowrap;
   z-index: 5;
-}
-
-/* 🔥 PRICE INTENT */
-.car-card:hover .price-badge {
-  background: linear-gradient(180deg, #3a3a3a, #242424);
-  box-shadow:
-    0 14px 36px rgba(0,0,0,0.85),
-    inset 0 1px 0 rgba(255,255,255,0.12),
-    inset 0 -1px 2px rgba(0,0,0,0.9);
 }
 
 /* ================= INFO ================= */
@@ -202,7 +183,7 @@
   padding: 18px 20px 22px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .car-title {
@@ -210,11 +191,21 @@
   font-weight: 800;
 }
 
+/* ===== META (год / пробег / мотор / КПП) ===== */
 .meta {
   display: flex;
-  gap: 14px;
-  font-size: 14px;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  font-size: 13px;
   opacity: 0.85;
+}
+
+.meta div {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  white-space: nowrap;
 }
 
 /* ================= TEXT FIX ================= */

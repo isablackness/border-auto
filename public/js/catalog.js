@@ -119,6 +119,8 @@ function renderCars(list) {
         <div class="meta">
           <div>${car.year}</div>
           <div>${formatPrice(car.mileage)} км</div>
+          ${car.engine ? `<div>${car.engine}</div>` : ''}
+          ${car.gearbox ? `<div>${car.gearbox}</div>` : ''}
         </div>
       </div>
 

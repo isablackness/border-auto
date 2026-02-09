@@ -57,6 +57,7 @@ app.put("/api/cars/:id", async (req, res) => {
       year,
       price,
       mileage,
+      engine,
       gearbox,
       description,
       images
@@ -72,10 +73,11 @@ app.put("/api/cars/:id", async (req, res) => {
         year = $3,
         price = $4,
         mileage = $5,
-        gearbox = $6,
-        description = $7,
-        images = $8
-      WHERE id = $9
+        engine = $6,
+        gearbox = $7,
+        description = $8,
+        images = $9
+      WHERE id = $10
       RETURNING *
       `,
       [
@@ -84,6 +86,7 @@ app.put("/api/cars/:id", async (req, res) => {
         year ? Number(year) : null,
         price ? Number(price) : null,
         mileage ? Number(mileage) : null,
+        engine || null,
         gearbox || null,
         description || null,
         imagesArray,
