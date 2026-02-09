@@ -4,13 +4,27 @@ let filteredCars = [];
 let currentSort = 'position';
 let sortDir = 'desc';
 
+/* ================= HELPERS ================= */
+
+/* форматирование цены: 11111 -> 11 111 */
+function formatPrice(value) {
+  if (value == null) return '';
+  return value
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
+
+/* ================= LOAD ================= */
+
 async function loadCars() {
   const res = await fetch('/api/cars');
   cars = await res.json();
   filteredCars = [...cars];
   sortAndRender();
 }
- 
+
+/* ================= SORT ================= */
+
 function sortAndRender() {
   const sorted = [...filteredCars];
 
@@ -22,6 +36,8 @@ function sortAndRender() {
 
   renderCars(sorted);
 }
+
+/* ================= FILTER ================= */
 
 window.applyFilters = function () {
   const brand = document.getElementById('brand').value.toLowerCase();
@@ -42,7 +58,7 @@ window.applyFilters = function () {
   sortAndRender();
 };
 
-/* ================= SORT ================= */
+/* ================= SORT BUTTONS ================= */
 
 document.addEventListener('click', e => {
   const btn = e.target.closest('[data-sort]');
@@ -102,18 +118,18 @@ function renderCars(list) {
         <div class="car-title">${car.brand} ${car.model}</div>
         <div class="meta">
           <div>${car.year}</div>
-          <div>${car.mileage} км</div>
+          <div>${formatPrice(car.mileage)} км</div>
         </div>
       </div>
 
       <div class="price-badge">
-        ${car.price} €
+        ${formatPrice(car.price)} €
       </div>
     `;
 
     const img = card.querySelector('img');
 
-    /* 🔁 hover-перелистывание фото */
+    /* hover-перелистывание фото */
     card.querySelector('.image-wrapper').addEventListener('mousemove', e => {
       if (images.length < 2) return;
 
