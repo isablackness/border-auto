@@ -2,93 +2,56 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Автомобиль — Admin</title>
-  <link rel="stylesheet" href="/css/base.css">
+  <title>Редактирование авто</title>
   <link rel="stylesheet" href="/admin/admin.css">
 </head>
 <body>
 
-<main class="admin-page">
-  <form id="carForm" class="admin-card form-card">
+  <main class="admin-container">
+    <h1 id="formTitle">Загрузка...</h1>
 
-    <input name="brand" placeholder="Марка" required>
-    <input name="model" placeholder="Модель" required>
-    <input name="year" type="number" placeholder="Год" required>
-    <input name="price" type="number" placeholder="Цена (€)" required>
-    <input name="mileage" type="number" placeholder="Пробег (км)" required>
+    <form id="carForm">
+      <label>
+        Марка
+        <input type="text" name="brand" required>
+      </label>
 
-    <textarea name="description" placeholder="Описание"></textarea>
+      <label>
+        Модель
+        <input type="text" name="model" required>
+      </label>
 
-    <div id="dropZone" class="drop-zone">
-      Перетащи фото сюда или кликни
-      <input id="imageInput" type="file" multiple hidden>
-    </div>
+      <label>
+        Год
+        <input type="number" name="year" required>
+      </label>
 
-    <div id="imageList" class="image-list"></div>
+      <label>
+        Цена (€)
+        <input type="number" name="price" required>
+      </label>
 
-    <button type="submit" class="save-btn">Сохранить</button>
+      <label>
+        Пробег (км)
+        <input type="number" name="mileage" required>
+      </label>
 
-  </form>
-</main>
+      <label>
+        Описание
+        <textarea name="description" rows="4"></textarea>
+      </label>
 
-<script src="/admin/admin-edit.js"></script>
-<script>
-  (() => {
-    const data = sessionStorage.getItem("ig_import");
-    if (!data) return;
+      <div class="images-block">
+        <h3>Изображения</h3>
+        <input type="text" id="imageInput" placeholder="URL изображения">
+        <button type="button" id="addImage">Добавить</button>
+        <div id="imagesList"></div>
+      </div>
 
-    const { caption, images } = JSON.parse(data);
+      <button type="submit" class="save-btn">Сохранить</button>
+    </form>
+  </main>
 
-    const desc = document.querySelector("textarea");
-    if (desc && caption) {
-      desc.value = caption;
-    }
-
-    const dropZone = document.querySelector(".drop-zone");
-    if (dropZone && images.length) {
-      images.forEach(url => {
-        const img = document.createElement("img");
-        img.src = url;
-        img.style.width = "100px";
-        img.style.marginRight = "10px";
-        dropZone.appendChild(img);
-      });
-    }
-
-    sessionStorage.removeItem("ig_import");
-  })();
-</script>
-<script>
-  (() => {
-    const params = new URLSearchParams(location.search);
-    const ig = params.get("ig");
-    if (!ig) return;
-
-    try {
-      const { caption, images, source } = JSON.parse(decodeURIComponent(ig));
-
-      const textarea = document.querySelector("textarea");
-      if (textarea && caption) {
-        textarea.value = caption;
-      }
-
-      const dropZone = document.querySelector(".drop-zone");
-      if (dropZone && images.length) {
-        images.forEach(url => {
-          const img = document.createElement("img");
-          img.src = url;
-          img.style.width = "100px";
-          img.style.margin = "5px";
-          dropZone.appendChild(img);
-        });
-      }
-
-      history.replaceState({}, document.title, location.pathname);
-    } catch (e) {
-      console.error("IG import failed", e);
-    }
-  })();
-</script>
-
+  <script src="/admin/admin-edit.js"></script>
 </body>
 </html>
