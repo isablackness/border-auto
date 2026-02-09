@@ -29,11 +29,11 @@ function sortAndRender() {
 }
 
 window.applyFilters = function () {
-  const brand = brandInput().toLowerCase();
-  const model = modelInput().toLowerCase();
-  const year = yearInput();
-  const price = priceInput();
-  const mileage = mileageInput();
+  const brand = document.getElementById('brand').value.toLowerCase();
+  const model = document.getElementById('model').value.toLowerCase();
+  const year = document.getElementById('year').value;
+  const price = document.getElementById('price').value;
+  const mileage = document.getElementById('mileage').value;
 
   filteredCars = cars.filter(car => {
     if (brand && !car.brand.toLowerCase().includes(brand)) return false;
@@ -47,18 +47,63 @@ window.applyFilters = function () {
   sortAndRender();
 };
 
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-sort]');
+  if (!btn) return;
+
+  const sort = btn.dataset.sort;
+
+  if (currentSort === sort) {
+    sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+  } else {
+    currentSort = sort;
+    sortDir = 'desc';
+  }
+
+  document.querySelectorAll('[data-sort]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  sortAndRender();
+});
+
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-view]');
+  if (!btn) return;
+
+  const view = btn.dataset.view;
+  const catalog = document.getElementById('catalog');
+
+  catalog.className = view === 'list' ? 'view-list' : 'view-grid';
+  localStorage.setItem('catalogView', view);
+
+  document.querySelectorAll('[data-view]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+});
+
 function renderCars(list) {
   const catalog = document.getElementById('catalog');
   catalog.innerHTML = '';
 
   list.forEach(car => {
+    const images = car.images || [];
+    let currentIndex = 0;
+
     const card = document.createElement('a');
     card.className = 'car-card';
     card.href = `/car.html?id=${car.id}`;
 
     card.innerHTML = `
       <div class="image-wrapper">
-        <img src="${car.images?.[0] || ''}">
+        <img src="${images[0] || ''}" alt="">
+        ${
+          images.length > 1
+            ? `<div class="image-dots">
+                ${images.map((_, i) =>
+                  `<span class="dot ${i === 0 ? 'active' : ''}"></span>`
+                ).join('')}
+              </div>`
+            : ''
+        }
       </div>
 
       <div class="info">
@@ -75,14 +120,45 @@ function renderCars(list) {
       <div class="price-badge">${formatPrice(car.price)} €</div>
     `;
 
+    const wrapper = card.querySelector('.image-wrapper');
+    const img = wrapper.querySelector('img');
+    const dots = wrapper.querySelectorAll('.dot');
+
+    wrapper.addEventListener('mousemove', e => {
+      if (images.length < 2) return;
+
+      const rect = wrapper.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const index = Math.min(
+        images.length - 1,
+        Math.floor((x / rect.width) * images.length)
+      );
+
+      if (index !== currentIndex && images[index]) {
+        currentIndex = index;
+        img.src = images[index];
+
+        dots.forEach(d => d.classList.remove('active'));
+        dots[index]?.classList.add('active');
+      }
+    });
+
+    wrapper.addEventListener('mouseleave', () => {
+      currentIndex = 0;
+      img.src = images[0];
+      dots.forEach(d => d.classList.remove('active'));
+      dots[0]?.classList.add('active');
+    });
+
     catalog.appendChild(card);
   });
 }
 
-function brandInput() { return document.getElementById('brand').value || ''; }
-function modelInput() { return document.getElementById('model').value || ''; }
-function yearInput() { return document.getElementById('year').value || ''; }
-function priceInput() { return document.getElementById('price').value || ''; }
-function mileageInput() { return document.getElementById('mileage').value || ''; }
+document.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('catalogView') || 'grid';
+  const catalog = document.getElementById('catalog');
+  catalog.className = saved === 'list' ? 'view-list' : 'view-grid';
+  document.querySelector(`[data-view="${saved}"]`)?.classList.add('active');
+});
 
-document.addEventListener('DOMContentLoaded', loadCars);
+loadCars();
