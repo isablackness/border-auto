@@ -13,16 +13,13 @@ const PORT = process.env.PORT || 10000;
 
 app.use(express.json({ limit: "10mb" }));
 
-/* ===== STATIC ===== */
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/admin", express.static(path.join(__dirname, "admin")));
 
-/* ===== ROOT ===== */
 app.get("/", (req, res) => {
   res.redirect("/catalog.html");
 });
 
-/* ===== DB ===== */
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
@@ -30,15 +27,11 @@ const pool = new Pool({
 
 /* ===== API ===== */
 
-// Получить все машины
 app.get("/api/cars", async (req, res) => {
-  const r = await pool.query(
-    "SELECT * FROM cars ORDER BY position DESC"
-  );
+  const r = await pool.query("SELECT * FROM cars ORDER BY position DESC");
   res.json(r.rows);
 });
 
-// Получить одну машину
 app.get("/api/cars/:id", async (req, res) => {
   const r = await pool.query(
     "SELECT * FROM cars WHERE id = $1",
@@ -48,7 +41,6 @@ app.get("/api/cars/:id", async (req, res) => {
   res.json(r.rows[0]);
 });
 
-// Обновить машину (АДМИНКА)
 app.put("/api/cars/:id", async (req, res) => {
   try {
     const {
@@ -57,7 +49,8 @@ app.put("/api/cars/:id", async (req, res) => {
       year,
       price,
       mileage,
-      engine,
+      engine_volume,
+      fuel_type,
       gearbox,
       description,
       images
@@ -73,11 +66,12 @@ app.put("/api/cars/:id", async (req, res) => {
         year = $3,
         price = $4,
         mileage = $5,
-        engine = $6,
-        gearbox = $7,
-        description = $8,
-        images = $9
-      WHERE id = $10
+        engine_volume = $6,
+        fuel_type = $7,
+        gearbox = $8,
+        description = $9,
+        images = $10
+      WHERE id = $11
       RETURNING *
       `,
       [
@@ -86,7 +80,8 @@ app.put("/api/cars/:id", async (req, res) => {
         year ? Number(year) : null,
         price ? Number(price) : null,
         mileage ? Number(mileage) : null,
-        engine || null,
+        engine_volume ? Number(engine_volume) : null,
+        fuel_type || null,
         gearbox || null,
         description || null,
         imagesArray,
@@ -101,16 +96,6 @@ app.put("/api/cars/:id", async (req, res) => {
   }
 });
 
-// Удалить машину
-app.delete("/api/cars/:id", async (req, res) => {
-  await pool.query(
-    "DELETE FROM cars WHERE id = $1",
-    [Number(req.params.id)]
-  );
-  res.json({ ok: true });
-});
-
-/* ===== START ===== */
 app.listen(PORT, () => {
   console.log("Server running on", PORT);
 });

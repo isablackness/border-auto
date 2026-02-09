@@ -15,13 +15,15 @@ async function load() {
   const res = await fetch(`/api/cars/${id}`);
   const car = await res.json();
 
-  form.brand.value = car.brand;
-  form.model.value = car.model;
-  form.year.value = car.year;
-  form.mileage.value = car.mileage;
-  form.price.value = car.price;
-  form.gearbox.value = car.gearbox;
-  form.description.value = car.description;
+  form.brand.value = car.brand || "";
+  form.model.value = car.model || "";
+  form.year.value = car.year || "";
+  form.mileage.value = car.mileage || "";
+  form.price.value = car.price || "";
+  form.gearbox.value = car.gearbox || "";
+  form.engine_volume.value = car.engine_volume || "";
+  form.fuel_type.value = car.fuel_type || "";
+  form.description.value = car.description || "";
 
   images = car.images || [];
   render();
@@ -65,10 +67,12 @@ form.onsubmit = async e => {
   const data = {
     brand: form.brand.value,
     model: form.model.value,
-    year: +form.year.value,
-    mileage: +form.mileage.value,
-    price: +form.price.value,
+    year: +form.year.value || null,
+    mileage: +form.mileage.value || null,
+    price: +form.price.value || null,
     gearbox: form.gearbox.value,
+    engine_volume: form.engine_volume.value || null,
+    fuel_type: form.fuel_type.value || null,
     description: form.description.value,
     images
   };
