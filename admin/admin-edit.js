@@ -17,27 +17,47 @@ title.textContent = editId
 
 /* ================= LOAD ================= */
 
-if (editId) {
-  fetch(`/api/admin/cars/${editId}`)
-    .then(res => {
-      if (!res.ok) throw new Error();
-      return res.json();
-    })
-    .then(car => {
-      form.brand.value = car.brand || "";
-      form.model.value = car.model || "";
-      form.year.value = car.year || "";
-      form.price.value = car.price || "";
-      form.mileage.value = car.mileage || "";
-      form.description.value = car.description || "";
+async function loadCar() {
+  if (!editId) return;
 
-      images = car.images || [];
-      renderImages();
-    })
-    .catch(() => {
-      alert("Ошибка загрузки автомобиля");
-    });
+  // 1️⃣ пробуем admin-роут
+  try {
+    const res = await fetch(`/api/admin/cars/${editId}`);
+    if (res.ok) {
+      const car = await res.json();
+      fillForm(car);
+      return;
+    }
+  } catch {}
+
+  // 2️⃣ fallback: берём из общего списка
+  try {
+    const res = await fetch("/api/cars");
+    if (!res.ok) throw new Error();
+
+    const cars = await res.json();
+    const car = cars.find(c => String(c.id) === String(editId));
+
+    if (!car) throw new Error();
+    fillForm(car);
+  } catch {
+    alert("Ошибка загрузки автомобиля");
+  }
 }
+
+function fillForm(car) {
+  form.brand.value = car.brand || "";
+  form.model.value = car.model || "";
+  form.year.value = car.year || "";
+  form.price.value = car.price || "";
+  form.mileage.value = car.mileage || "";
+  form.description.value = car.description || "";
+
+  images = car.images || [];
+  renderImages();
+}
+
+loadCar();
 
 /* ================= IMAGES ================= */
 
