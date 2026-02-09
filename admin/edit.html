@@ -13,26 +13,46 @@
   }
 </script>
 
-<main class="admin-container">
+<main class="admin-container admin-edit">
+
   <h1 id="formTitle">Редактирование автомобиля</h1>
 
-  <form id="carForm" class="admin-form">
-    <input name="brand" placeholder="Марка" required>
-    <input name="model" placeholder="Модель" required>
-    <input name="year" type="number" placeholder="Год" required>
-    <input name="price" type="number" placeholder="Цена €" required>
-    <input name="mileage" type="number" placeholder="Пробег" required>
+  <form id="carForm" class="edit-form">
+
+    <div class="row">
+      <input name="brand" placeholder="Марка" required>
+      <input name="model" placeholder="Модель" required>
+    </div>
+
+    <div class="row">
+      <input name="year" type="number" placeholder="Год" required>
+      <input name="mileage" type="number" placeholder="Пробег" required>
+      <select name="gearbox" required>
+        <option value="">Коробка передач</option>
+        <option value="manual">Механика</option>
+        <option value="automatic">Автомат</option>
+      </select>
+    </div>
+
+    <div class="row">
+      <input name="price" type="number" placeholder="Цена €" required>
+    </div>
 
     <textarea name="description" placeholder="Описание"></textarea>
 
-    <div class="images-block">
-      <h3>Фото</h3>
-      <input type="text" id="imageInput" placeholder="URL изображения">
-      <button type="button" id="addImage">Добавить фото</button>
-      <div id="imagesList"></div>
+    <div class="images-section">
+      <h3>Фотографии</h3>
+
+      <div id="dropZone" class="drop-zone">
+        <span>Перетащи фото сюда или кликни</span>
+        <input type="file" id="fileInput" multiple accept="image/*">
+      </div>
+
+      <div id="imagesList" class="images-grid"></div>
     </div>
 
-    <button type="submit">Сохранить</button>
+    <button type="submit" class="save-btn">Сохранить</button>
+
   </form>
 </main>
 
