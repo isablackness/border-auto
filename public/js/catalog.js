@@ -24,13 +24,11 @@ async function loadCars() {
 
 function sortAndRender() {
   const sorted = [...filteredCars];
-
   sorted.sort((a, b) => {
     let valA = a[currentSort] ?? 0;
     let valB = b[currentSort] ?? 0;
     return sortDir === 'asc' ? valA - valB : valB - valA;
   });
-
   renderCars(sorted);
 }
 
@@ -54,27 +52,6 @@ window.applyFilters = function () {
 
   sortAndRender();
 };
-
-/* ================= SORT BUTTONS ================= */
-
-document.addEventListener('click', e => {
-  const btn = e.target.closest('[data-sort]');
-  if (!btn) return;
-
-  const sort = btn.dataset.sort;
-
-  if (currentSort === sort) {
-    sortDir = sortDir === 'asc' ? 'desc' : 'asc';
-  } else {
-    currentSort = sort;
-    sortDir = 'desc';
-  }
-
-  document.querySelectorAll('[data-sort]').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-
-  sortAndRender();
-});
 
 /* ================= VIEW SWITCH ================= */
 
@@ -109,14 +86,11 @@ function renderCars(list) {
     card.innerHTML = `
       <div class="image-wrapper">
         <img src="${images[0] || ''}" alt="">
-
         ${images.length > 1 ? `
           <div class="image-dots">
-            ${images.map((_, i) =>
-              `<span class="dot ${i === 0 ? 'active' : ''}"></span>`
-            ).join('')}
+            ${images.map((_, i) => `<span class="dot ${i === 0 ? 'active' : ''}"></span>`).join('')}
           </div>
-        ` : ''}
+        ` : ``}
       </div>
 
       <div class="info">
@@ -130,30 +104,23 @@ function renderCars(list) {
         </div>
       </div>
 
-      <div class="price-badge">
-        ${formatPrice(car.price)} €
-      </div>
+      <div class="price-badge">${formatPrice(car.price)} €</div>
     `;
 
     const img = card.querySelector('img');
     const dots = card.querySelectorAll('.dot');
     const wrapper = card.querySelector('.image-wrapper');
 
-    /* hover-перелистывание фото + кружочки */
     wrapper.addEventListener('mousemove', e => {
       if (images.length < 2) return;
 
       const rect = wrapper.getBoundingClientRect();
       const x = e.clientX - rect.left;
-      const index = Math.min(
-        images.length - 1,
-        Math.floor((x / rect.width) * images.length)
-      );
+      const index = Math.min(images.length - 1, Math.floor((x / rect.width) * images.length));
 
       if (index !== currentIndex && images[index]) {
         currentIndex = index;
         img.src = images[index];
-
         dots.forEach(d => d.classList.remove('active'));
         dots[index]?.classList.add('active');
       }
@@ -162,7 +129,6 @@ function renderCars(list) {
     wrapper.addEventListener('mouseleave', () => {
       currentIndex = 0;
       img.src = images[0];
-
       dots.forEach(d => d.classList.remove('active'));
       dots[0]?.classList.add('active');
     });
@@ -177,7 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const saved = localStorage.getItem('catalogView') || 'grid';
   const catalog = document.getElementById('catalog');
   catalog.className = saved === 'list' ? 'view-list' : 'view-grid';
-
   document.querySelector(`[data-view="${saved}"]`)?.classList.add('active');
 });
 
