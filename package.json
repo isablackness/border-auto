@@ -2,9 +2,9 @@
   "name": "car-catalog",
   "version": "1.0.0",
   "type": "commonjs",
-  "main": "server.js",
+  "main": "server.ñjs",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.ñjs"
   },
   "dependencies": {
     "cloudinary": "^2.9.0",
