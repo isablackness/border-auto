@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Каталог — Border Auto</title>
 
   <link rel="stylesheet" href="/css/base.css">
@@ -12,71 +12,98 @@
 
 <header class="site-header">
   <div class="header-inner">
-    <div class="logo-wrapper">
-      <img src="/images/logo1.png" alt="Border Auto">
+    <div class="logo">
+      <img src="/img/logo.png" alt="Border Auto">
     </div>
 
-    <div class="header-social">
-      <a class="instagram" href="https://www.instagram.com/border.auto/" target="_blank">Instagram</a>
-      <a class="whatsapp" href="https://api.whatsapp.com/send?phone=48668989731" target="_blank">WhatsApp</a>
+    <div class="social">
+      <a href="#" class="btn instagram">Instagram</a>
+      <a href="#" class="btn whatsapp">WhatsApp</a>
     </div>
 
-    <nav class="main-nav">
-      <a href="/catalog.html">Главная</a>
+    <nav class="nav">
+      <a href="/">Главная</a>
       <a href="/contacts.html">Контакты</a>
     </nav>
   </div>
 </header>
 
-<div class="sort-bar">
-  <span class="sort-label">Сортировка:</span>
-  <button data-sort="price">По цене ↓</button>
-  <button data-sort="mileage">По пробегу ↓</button>
-  <button data-sort="position" class="active">По дате публикации ↓</button>
-  <button data-sort="year">По дате производства ↓</button>
+<main class="catalog-page">
 
-  <div class="view-switch">
-    <button data-view="grid" class="active">⬛⬛⬛</button>
-    <button data-view="list">☰</button>
-  </div>
-</div>
+  <!-- ===== TOP CONTROLS ===== -->
+  <div class="catalog-controls">
 
-<main class="page-content">
+    <div class="sorting">
+      <span>Сортировка:</span>
+      <button data-sort="price">По цене ↓</button>
+      <button data-sort="mileage">По пробегу ↓</button>
+      <button data-sort="position" class="active">По дате публикации ↓</button>
+      <button data-sort="year">По дате производства ↓</button>
+    </div>
 
-  <!-- === ВАЖНЫЙ WRAPPER ДЛЯ КАТАЛОГА === -->
-  <div class="catalog-page">
-
-    <div class="catalog-layout">
-
-      <aside class="filter-panel">
-        <h3>Фильтр</h3>
-
-        <input type="text" id="brand" placeholder="Марка">
-        <input type="text" id="model" placeholder="Модель">
-
-        <select id="year">
-          <option value="">Год</option>
-          <script>
-            for (let y = 2025; y >= 2000; y--) {
-              document.write(`<option value="${y}">${y}</option>`);
-            }
-          </script>
-        </select>
-
-        <input type="number" id="price" placeholder="Цена до (€)">
-        <input type="number" id="mileage" placeholder="Пробег до (км)">
-        <button onclick="applyFilters()">Применить</button>
-      </aside>
-
-      <section id="catalog" class="view-grid"></section>
-
+    <div class="view-switch">
+      <button data-view="grid" class="active" title="Сетка">⬛⬛⬛</button>
+      <button data-view="list" title="Список">☰</button>
     </div>
 
   </div>
-  <!-- === /catalog-page === -->
+  <!-- ===== /TOP CONTROLS ===== -->
+
+  <div class="catalog-layout">
+
+    <!-- ===== FILTER ===== -->
+    <aside class="filter">
+      <h3>Фильтр</h3>
+
+      <input type="text" placeholder="Марка">
+      <input type="text" placeholder="Модель">
+
+      <select>
+        <option>Год</option>
+      </select>
+
+      <input type="number" placeholder="Цена до (€)">
+      <input type="number" placeholder="Пробег до (км)">
+
+      <button class="apply">Применить</button>
+    </aside>
+    <!-- ===== /FILTER ===== -->
+
+    <!-- ===== CARS ===== -->
+    <section class="cars grid-view">
+
+      <article class="car-card">
+        <div class="car-image">
+          <span class="price">111111 €</span>
+          <img src="/img/car1.jpg" alt="">
+        </div>
+
+        <div class="car-info">
+          <div class="car-title">Citroen C4 Picasso</div>
+          <div class="car-meta">2017</div>
+          <div class="car-meta">1111111 км</div>
+        </div>
+      </article>
+
+      <article class="car-card">
+        <div class="car-image">
+          <span class="price">123 €</span>
+          <img src="/img/car2.jpg" alt="">
+        </div>
+
+        <div class="car-info">
+          <div class="car-title">123 123</div>
+          <div class="car-meta">123</div>
+          <div class="car-meta">123 км</div>
+        </div>
+      </article>
+
+    </section>
+    <!-- ===== /CARS ===== -->
+
+  </div>
 
 </main>
 
-<script src="/js/catalog.js"></script>
 </body>
 </html>
