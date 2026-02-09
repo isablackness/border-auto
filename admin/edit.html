@@ -14,8 +14,7 @@
 </script>
 
 <main class="admin-container admin-edit">
-
-  <h1 id="formTitle">Редактирование автомобиля</h1>
+  <h1>Редактирование автомобиля</h1>
 
   <form id="carForm" class="edit-form">
 
@@ -44,8 +43,13 @@
       placeholder="Подробное описание автомобиля">
     </textarea>
 
-    <div class="images-section">
-      <h3>Фотографии (перетаскивай для сортировки)</h3>
+    <section class="images-section">
+      <h3>Фотографии</h3>
+
+      <!-- DROP ZONE -->
+      <div id="dropZone" class="drop-zone">
+        Перетаскивай фото сюда для изменения порядка
+      </div>
 
       <div class="add-image-row">
         <input type="text" id="imageInput" placeholder="URL изображения">
@@ -53,7 +57,7 @@
       </div>
 
       <div id="imagesList" class="images-grid"></div>
-    </div>
+    </section>
 
     <button type="submit" class="save-btn">Сохранить</button>
 
