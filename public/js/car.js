@@ -2,17 +2,17 @@ const id = new URLSearchParams(location.search).get("id");
 
 let images = [];
 let index = 0;
-let zoom = 2.5;
 let zoomEnabled = false;
+let zoom = 2.5;
 
-/* ===== HELPERS ===== */
+/* ================= HELPERS ================= */
 
 function formatPrice(value) {
   if (!value) return "";
   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
-/* ===== ELEMENTS ===== */
+/* ================= ELEMENTS ================= */
 
 const mainImg = document.getElementById("mainImage");
 const thumbs = document.getElementById("thumbnails");
@@ -36,7 +36,7 @@ const lens = document.createElement("div");
 lens.className = "zoom-lens";
 viewerWrapper.appendChild(lens);
 
-/* ===== LOAD ===== */
+/* ================= LOAD ================= */
 
 async function loadCar() {
   const car = await (await fetch(`/api/cars/${id}`)).json();
@@ -66,9 +66,11 @@ async function loadCar() {
   setMain(0);
 }
 
-/* ===== MAIN GALLERY ===== */
+/* ================= MAIN GALLERY ================= */
 
 function setMain(i) {
+  if (!images.length) return;
+
   index = i;
   mainImg.src = images[i];
   counter.textContent = `${i + 1} / ${images.length}`;
@@ -88,13 +90,25 @@ function renderThumbs() {
   });
 }
 
+/* arrows on page */
 prevBtn.onclick = () =>
   setMain((index - 1 + images.length) % images.length);
 
 nextBtn.onclick = () =>
   setMain((index + 1) % images.length);
 
-/* ===== FULLSCREEN ===== */
+/* keyboard on page */
+document.addEventListener("keydown", e => {
+  if (viewer.classList.contains("open")) return;
+
+  if (e.key === "ArrowLeft")
+    setMain((index - 1 + images.length) % images.length);
+
+  if (e.key === "ArrowRight")
+    setMain((index + 1) % images.length);
+});
+
+/* ================= FULLSCREEN ================= */
 
 function openFullscreen() {
   viewer.classList.add("open");
@@ -110,7 +124,30 @@ function openFullscreen() {
 openFullscreenBtn.onclick = openFullscreen;
 mainImg.onclick = openFullscreen;
 
+function closeFullscreen() {
+  viewer.classList.remove("open");
+  document.body.style.overflow = "";
+  zoomEnabled = false;
+  lens.style.display = "none";
+  viewerImg.style.transform = "scale(1)";
+}
+
+viewer.onclick = closeFullscreen;
+
+/* fullscreen arrows */
+viewerPrev.onclick = e => {
+  e.stopPropagation();
+  setViewer((index - 1 + images.length) % images.length);
+};
+
+viewerNext.onclick = e => {
+  e.stopPropagation();
+  setViewer((index + 1) % images.length);
+};
+
 function setViewer(i) {
+  if (!images.length) return;
+
   index = i;
   viewerImg.src = images[i];
   viewerCounter.textContent = `${i + 1} / ${images.length}`;
@@ -133,26 +170,54 @@ function renderViewerThumbs() {
   });
 }
 
-viewerPrev.onclick = e => {
+/* keyboard in fullscreen */
+document.addEventListener("keydown", e => {
+  if (!viewer.classList.contains("open")) return;
+
+  if (e.key === "ArrowLeft")
+    setViewer((index - 1 + images.length) % images.length);
+
+  if (e.key === "ArrowRight")
+    setViewer((index + 1) % images.length);
+
+  if (e.key === "Escape")
+    closeFullscreen();
+});
+
+/* ================= ZOOM (LENS) ================= */
+
+viewerImg.onclick = e => {
   e.stopPropagation();
-  setViewer((index - 1 + images.length) % images.length);
+  zoomEnabled = !zoomEnabled;
+
+  if (!zoomEnabled) {
+    lens.style.display = "none";
+    viewerImg.style.transform = "scale(1)";
+  }
 };
 
-viewerNext.onclick = e => {
-  e.stopPropagation();
-  setViewer((index + 1) % images.length);
+viewerWrapper.onmousemove = e => {
+  if (!zoomEnabled) return;
+
+  const rect = viewerWrapper.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  lens.style.display = "block";
+  lens.style.left = `${x - lens.offsetWidth / 2}px`;
+  lens.style.top = `${y - lens.offsetHeight / 2}px`;
+
+  viewerImg.style.transformOrigin =
+    `${(x / rect.width) * 100}% ${(y / rect.height) * 100}%`;
+  viewerImg.style.transform = `scale(${zoom})`;
 };
 
-viewer.onclick = () => closeFullscreen();
-
-function closeFullscreen() {
-  viewer.classList.remove("open");
-  document.body.style.overflow = "";
-  zoomEnabled = false;
+viewerWrapper.onmouseleave = () => {
+  if (!zoomEnabled) return;
   lens.style.display = "none";
   viewerImg.style.transform = "scale(1)";
-}
+};
 
-/* ===== INIT ===== */
+/* ================= INIT ================= */
 
 loadCar();

@@ -184,18 +184,20 @@
 .car-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px 14px;
-  margin-bottom: 28px;
+  gap: 8px 10px;
+  margin-bottom: 24px;
 }
 
 .car-meta div {
-  padding: 6px 14px;
+  padding: 4px 10px;           /* ⬅️ уже */
   border-radius: 999px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
-  font-size: 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  font-size: 13px;             /* ⬅️ меньше */
+  line-height: 1.2;
   color: #e0e0e0;
 }
+
 
 /* ================= DESCRIPTION ================= */
 
