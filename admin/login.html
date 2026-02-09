@@ -12,42 +12,32 @@
 
   <form id="loginForm">
     <input
-      type="text"
-      id="login"
-      placeholder="Логин"
-      autocomplete="username"
-    >
-
-    <input
       type="password"
       id="password"
       placeholder="Пароль"
-      autocomplete="current-password"
       required
     >
-
     <button type="submit">Войти</button>
   </form>
 </main>
 
 <script>
-  // если уже авторизован — сразу в админку
+  // если уже вошли — сразу в админку
   if (localStorage.getItem("adminAuth") === "true") {
     location.replace("/admin/");
   }
 
-  document.getElementById("loginForm").onsubmit = async e => {
+  // ⛔ ВАЖНО:
+  // пароль здесь должен совпадать с тем, который ТЫ ХОЧЕШЬ
+  // временно, до нормальной backend-авторизации
+  const ADMIN_PASSWORD = "1234"; // ← поставь свой
+
+  document.getElementById("loginForm").onsubmit = e => {
     e.preventDefault();
 
     const password = document.getElementById("password").value;
 
-    const res = await fetch("/api/admin/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password })
-    });
-
-    if (res.ok) {
+    if (password === ADMIN_PASSWORD) {
       localStorage.setItem("adminAuth", "true");
       location.replace("/admin/");
     } else {
