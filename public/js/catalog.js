@@ -8,9 +8,7 @@ let sortDir = 'desc';
 
 function formatPrice(value) {
   if (value == null) return '';
-  return value
-    .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
 /* ================= LOAD ================= */
@@ -124,14 +122,11 @@ function renderCars(list) {
         </div>
       </div>
 
-      <div class="price-badge">
-        ${formatPrice(car.price)} €
-      </div>
+      <div class="price-badge">${formatPrice(car.price)} €</div>
     `;
 
     const img = card.querySelector('img');
 
-    /* hover-перелистывание фото */
     card.querySelector('.image-wrapper').addEventListener('mousemove', e => {
       if (images.length < 2) return;
 
