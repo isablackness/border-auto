@@ -1,53 +1,43 @@
 const list = document.getElementById("carList");
 
-function formatPrice(n) {
-  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-}
-
-async function loadCars() {
+async function load() {
   const res = await fetch("/api/cars");
   const cars = await res.json();
-
   list.innerHTML = "";
 
   cars.forEach(car => {
-    const img = car.images && car.images.length
-      ? car.images[0]
-      : "";
+    const div = document.createElement("div");
+    div.className = "admin-car";
 
-    const card = document.createElement("div");
-    card.className = "admin-car";
-
-    card.innerHTML = `
-      <img src="${img}" alt="">
+    div.innerHTML = `
+      <img src="${car.images?.[0] || ""}">
       <div class="info">
         <strong>${car.brand} ${car.model}</strong>
-        <div>${car.year}</div>
-        <div class="price">${formatPrice(car.price)} €</div>
+        <span>${car.year}</span>
+        <span>${car.price} €</span>
       </div>
       <div class="actions">
-        <button class="edit" onclick="editCar('${car.id}')">Редактировать</button>
-        <button class="delete" onclick="deleteCar('${car.id}')">Удалить</button>
+        <button onclick="edit(${car.id})">✏️</button>
+        <button onclick="del(${car.id})">🗑</button>
       </div>
     `;
-
-    list.appendChild(card);
+    list.appendChild(div);
   });
 }
 
-loadCars();
+function edit(id) {
+  location.href = `edit.html?id=${id}`;
+}
 
-window.editCar = id => {
-  location.href = `/admin/edit.html?id=${id}`;
-};
+async function del(id) {
+  if (!confirm("Удалить?")) return;
+  await fetch(`/api/cars/${id}`, { method: "DELETE" });
+  load();
+}
 
-window.deleteCar = async id => {
-  if (!confirm("Удалить автомобиль?")) return;
+function logout() {
+  localStorage.removeItem("adminAuth");
+  location.href = "login.html";
+}
 
-  const res = await fetch(`/api/admin/cars/${id}`, {
-    method: "DELETE"
-  });
-
-  if (res.ok) loadCars();
-  else alert("Ошибка удаления");
-};
+load();

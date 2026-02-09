@@ -1,49 +1,47 @@
 import express from "express";
 import pkg from "pg";
-import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const { Pool } = pkg;
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
-app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 
+/* ===== STATIC ===== */
+app.use(express.static(path.join(__dirname, "public")));
+
+app.get("/admin", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/admin/index.html"));
+});
+
+/* ===== DB ===== */
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
 });
 
-/* ================= GET ALL ================= */
+/* ===== API ===== */
+
 app.get("/api/cars", async (req, res) => {
-  try {
-    const r = await pool.query("SELECT * FROM cars ORDER BY id DESC");
-    res.json(r.rows);
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "get cars failed" });
-  }
+  const r = await pool.query("SELECT * FROM cars ORDER BY id DESC");
+  res.json(r.rows);
 });
 
-/* ================= GET ONE ================= */
 app.get("/api/cars/:id", async (req, res) => {
-  try {
-    const r = await pool.query(
-      "SELECT * FROM cars WHERE id = $1",
-      [req.params.id]
-    );
-    if (!r.rows.length) return res.status(404).end();
-    res.json(r.rows[0]);
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "get car failed" });
-  }
+  const r = await pool.query(
+    "SELECT * FROM cars WHERE id = $1",
+    [req.params.id]
+  );
+  if (!r.rows.length) return res.status(404).end();
+  res.json(r.rows[0]);
 });
 
-/* ================= UPDATE ================= */
 app.put("/api/cars/:id", async (req, res) => {
   try {
-    const id = req.params.id;
-
     const {
       brand,
       model,
@@ -54,8 +52,6 @@ app.put("/api/cars/:id", async (req, res) => {
       description,
       images
     } = req.body;
-
-    console.log("UPDATE CAR", id, req.body); // 🔴 ВАЖНО
 
     const r = await pool.query(
       `
@@ -79,30 +75,24 @@ app.put("/api/cars/:id", async (req, res) => {
         mileage,
         gearbox || null,
         description || null,
-        JSON.stringify(images || []), // 🔴 КРИТИЧНО
-        id
+        JSON.stringify(images || []),
+        req.params.id
       ]
     );
 
     res.json(r.rows[0]);
   } catch (e) {
-    console.error("UPDATE ERROR:", e); // 🔴 увидишь точную ошибку
+    console.error(e);
     res.status(500).json({ error: "update failed" });
   }
 });
 
-/* ================= DELETE ================= */
 app.delete("/api/cars/:id", async (req, res) => {
-  try {
-    await pool.query("DELETE FROM cars WHERE id = $1", [req.params.id]);
-    res.json({ ok: true });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "delete failed" });
-  }
+  await pool.query("DELETE FROM cars WHERE id = $1", [req.params.id]);
+  res.json({ ok: true });
 });
 
-/* ================= START ================= */
+/* ===== START ===== */
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on", PORT);

@@ -2,68 +2,54 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Редактирование автомобиля</title>
-  <link rel="stylesheet" href="/admin/admin.css">
+  <title>Редактирование</title>
+  <link rel="stylesheet" href="admin.css">
 </head>
 <body>
 
 <script>
   if (localStorage.getItem("adminAuth") !== "true") {
-    location.replace("/admin/login.html");
+    location.replace("login.html");
   }
 </script>
 
-<main class="admin-container admin-edit">
+<div class="admin-container admin-edit">
   <h1>Редактирование автомобиля</h1>
 
   <form id="carForm" class="edit-form">
-
     <div class="row">
       <input name="brand" placeholder="Марка" required>
       <input name="model" placeholder="Модель" required>
     </div>
 
     <div class="row">
-      <input name="year" type="number" placeholder="Год" required>
-      <input name="mileage" type="number" placeholder="Пробег" required>
-      <select name="gearbox" required>
-        <option value="">Коробка передач</option>
+      <input name="year" type="number" placeholder="Год">
+      <input name="mileage" type="number" placeholder="Пробег">
+      <select name="gearbox">
+        <option value="">КПП</option>
         <option value="manual">Механика</option>
         <option value="automatic">Автомат</option>
       </select>
     </div>
 
-    <div class="row">
-      <input name="price" type="number" placeholder="Цена €" required>
+    <input name="price" type="number" placeholder="Цена €">
+
+    <textarea name="description" class="big-textarea" placeholder="Описание"></textarea>
+
+    <h3>Фотографии</h3>
+    <div class="drop-zone">Перетаскивай фото для сортировки</div>
+
+    <div class="add-image-row">
+      <input id="imageInput" placeholder="URL изображения">
+      <button type="button" id="addImage">Добавить</button>
     </div>
 
-    <textarea
-      name="description"
-      class="big-textarea"
-      placeholder="Подробное описание автомобиля">
-    </textarea>
+    <div id="imagesList" class="images-grid"></div>
 
-    <section class="images-section">
-      <h3>Фотографии</h3>
-
-      <!-- DROP ZONE -->
-      <div id="dropZone" class="drop-zone">
-        Перетаскивай фото сюда для изменения порядка
-      </div>
-
-      <div class="add-image-row">
-        <input type="text" id="imageInput" placeholder="URL изображения">
-        <button type="button" id="addImage">Добавить</button>
-      </div>
-
-      <div id="imagesList" class="images-grid"></div>
-    </section>
-
-    <button type="submit" class="save-btn">Сохранить</button>
-
+    <button class="save-btn">Сохранить</button>
   </form>
-</main>
+</div>
 
-<script src="/admin/admin-edit.js"></script>
+<script src="admin-edit.js"></script>
 </body>
 </html>

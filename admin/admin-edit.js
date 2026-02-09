@@ -1,128 +1,83 @@
 const form = document.getElementById("carForm");
-const imageInput = document.getElementById("imageInput");
-const addImageBtn = document.getElementById("addImage");
-const imagesList = document.getElementById("imagesList");
-const dropZone = document.getElementById("dropZone");
-
 const params = new URLSearchParams(location.search);
-const editId = params.get("id");
+const id = params.get("id");
+
+const imagesList = document.getElementById("imagesList");
+const imageInput = document.getElementById("imageInput");
+const addBtn = document.getElementById("addImage");
 
 let images = [];
-let draggedIndex = null;
+let drag = null;
 
-/* ================= LOAD ================= */
+if (id) load();
 
-async function loadCar() {
-  if (!editId) return;
+async function load() {
+  const res = await fetch(`/api/cars/${id}`);
+  const car = await res.json();
 
-  try {
-    const res = await fetch(`/api/cars/${editId}`);
-    if (!res.ok) throw new Error();
+  form.brand.value = car.brand;
+  form.model.value = car.model;
+  form.year.value = car.year;
+  form.mileage.value = car.mileage;
+  form.price.value = car.price;
+  form.gearbox.value = car.gearbox;
+  form.description.value = car.description;
 
-    const car = await res.json();
-
-    form.brand.value = car.brand || "";
-    form.model.value = car.model || "";
-    form.year.value = car.year || "";
-    form.price.value = car.price || "";
-    form.mileage.value = car.mileage || "";
-    form.gearbox.value = car.gearbox || "";
-    form.description.value = car.description || "";
-
-    images = Array.isArray(car.images) ? [...car.images] : [];
-    renderImages();
-  } catch {
-    alert("Ошибка загрузки автомобиля");
-  }
+  images = car.images || [];
+  render();
 }
 
-loadCar();
-
-/* ================= IMAGES ================= */
-
-addImageBtn.onclick = () => {
-  const url = imageInput.value.trim();
-  if (!url) return;
-
-  images.push(url);
+addBtn.onclick = () => {
+  if (!imageInput.value) return;
+  images.push(imageInput.value);
   imageInput.value = "";
-  renderImages();
+  render();
 };
 
-function renderImages() {
+function render() {
   imagesList.innerHTML = "";
+  images.forEach((src, i) => {
+    const d = document.createElement("div");
+    d.className = "image-thumb";
+    d.draggable = true;
+    d.innerHTML = `<img src="${src}"><button>✕</button>`;
 
-  images.forEach((src, index) => {
-    const item = document.createElement("div");
-    item.className = "image-thumb";
-    item.draggable = true;
-
-    item.innerHTML = `
-      <img src="${src}">
-      <button type="button">✕</button>
-    `;
-
-    item.ondragstart = () => draggedIndex = index;
-    item.ondragover = e => e.preventDefault();
-
-    item.ondrop = () => {
-      if (draggedIndex === null || draggedIndex === index) return;
-      const moved = images.splice(draggedIndex, 1)[0];
-      images.splice(index, 0, moved);
-      draggedIndex = null;
-      renderImages();
+    d.ondragstart = () => drag = i;
+    d.ondragover = e => e.preventDefault();
+    d.ondrop = () => {
+      const m = images.splice(drag, 1)[0];
+      images.splice(i, 0, m);
+      render();
     };
 
-    item.querySelector("button").onclick = () => {
-      images.splice(index, 1);
-      renderImages();
+    d.querySelector("button").onclick = () => {
+      images.splice(i, 1);
+      render();
     };
 
-    imagesList.appendChild(item);
+    imagesList.appendChild(d);
   });
 }
-
-/* ================= DROP ZONE (VISUAL) ================= */
-
-dropZone.ondragover = e => {
-  e.preventDefault();
-  dropZone.classList.add("hover");
-};
-
-dropZone.ondragleave = () => dropZone.classList.remove("hover");
-
-dropZone.ondrop = e => {
-  e.preventDefault();
-  dropZone.classList.remove("hover");
-};
-
-/* ================= SAVE ================= */
 
 form.onsubmit = async e => {
   e.preventDefault();
 
   const data = {
-    brand: form.brand.value.trim(),
-    model: form.model.value.trim(),
-    year: Number(form.year.value),
-    price: Number(form.price.value),
-    mileage: Number(form.mileage.value),
+    brand: form.brand.value,
+    model: form.model.value,
+    year: +form.year.value,
+    mileage: +form.mileage.value,
+    price: +form.price.value,
     gearbox: form.gearbox.value,
-    description: form.description.value.trim(),
+    description: form.description.value,
     images
   };
 
-  try {
-    const res = await fetch(`/api/cars/${editId}`, {
-      method: "PUT",              // ✅ ЕДИНСТВЕННО ВЕРНО
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
+  await fetch(`/api/cars/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
 
-    if (!res.ok) throw new Error();
-
-    location.href = "/admin/";
-  } catch {
-    alert("Ошибка сохранения");
-  }
+  location.href = "index.html";
 };
