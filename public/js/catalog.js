@@ -6,12 +6,9 @@ let sortDir = 'desc';
 
 /* ================= HELPERS ================= */
 
-/* форматирование цены: 11111 -> 11 111 */
 function formatPrice(value) {
   if (value == null) return '';
-  return value
-    .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
 /* ================= LOAD ================= */
@@ -112,6 +109,14 @@ function renderCars(list) {
     card.innerHTML = `
       <div class="image-wrapper">
         <img src="${images[0] || ''}" alt="">
+
+        ${images.length > 1 ? `
+          <div class="image-dots">
+            ${images.map((_, i) =>
+              `<span class="dot ${i === 0 ? 'active' : ''}"></span>`
+            ).join('')}
+          </div>
+        ` : ''}
       </div>
 
       <div class="info">
@@ -131,24 +136,35 @@ function renderCars(list) {
     `;
 
     const img = card.querySelector('img');
+    const dots = card.querySelectorAll('.dot');
+    const wrapper = card.querySelector('.image-wrapper');
 
-    /* hover-перелистывание фото */
-    card.querySelector('.image-wrapper').addEventListener('mousemove', e => {
+    /* hover-перелистывание фото + кружочки */
+    wrapper.addEventListener('mousemove', e => {
       if (images.length < 2) return;
 
-      const rect = e.currentTarget.getBoundingClientRect();
+      const rect = wrapper.getBoundingClientRect();
       const x = e.clientX - rect.left;
-      const index = Math.floor((x / rect.width) * images.length);
+      const index = Math.min(
+        images.length - 1,
+        Math.floor((x / rect.width) * images.length)
+      );
 
       if (index !== currentIndex && images[index]) {
         currentIndex = index;
         img.src = images[index];
+
+        dots.forEach(d => d.classList.remove('active'));
+        dots[index]?.classList.add('active');
       }
     });
 
-    card.querySelector('.image-wrapper').addEventListener('mouseleave', () => {
+    wrapper.addEventListener('mouseleave', () => {
       currentIndex = 0;
       img.src = images[0];
+
+      dots.forEach(d => d.classList.remove('active'));
+      dots[0]?.classList.add('active');
     });
 
     catalog.appendChild(card);
