@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Каталог — Border Auto</title>
 
   <link rel="stylesheet" href="/css/base.css">
@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="/css/catalog.css">
 </head>
 <body>
- 
+
 <header class="site-header">
   <div class="header-inner">
     <div class="logo-wrapper">
@@ -22,7 +22,7 @@
     </div>
 
     <nav class="main-nav">
-      <a href="/catalog.html">Главная</a>
+      <a href="/catalog.html" class="active">Главная</a>
       <a href="/contacts.html">Контакты</a>
     </nav>
   </div>
@@ -35,7 +35,6 @@
   <button data-sort="position" class="active">По дате публикации ↓</button>
   <button data-sort="year">По дате производства ↓</button>
 
-  <!-- переключатель вида -->
   <div class="view-switch">
     <button data-view="grid" class="active">⬛⬛⬛</button>
     <button data-view="list">☰</button>
@@ -62,10 +61,10 @@
 
       <input type="number" id="price" placeholder="Цена до (€)">
       <input type="number" id="mileage" placeholder="Пробег до (км)">
+
       <button onclick="applyFilters()">Применить</button>
     </aside>
 
-    <!-- по умолчанию GRID -->
     <section id="catalog" class="view-grid"></section>
 
   </div>
