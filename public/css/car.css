@@ -1,236 +1,163 @@
-.page-content {
-  padding-top: 120px;
-}
+/* ================= LAYOUT ================= */
 
 .car-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px 20px 60px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 36px;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 40px;
+  align-items: flex-start;
 }
 
-/* ===== GALLERY ===== */
-.car-gallery {
-  background: #0c0c0c;
-  border-radius: 20px;
+/* ================= GALLERY ================= */
+
+.gallery-card {
+  background: linear-gradient(180deg, #1c1c1c, #141414);
+  border-radius: 26px;
   padding: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.75);
 }
 
 .gallery-main {
   position: relative;
-  height: 420px;
-  background: #000;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-radius: 20px;
+  overflow: hidden;
 }
 
 .gallery-main img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  cursor: zoom-in;
+  width: 100%;
+  height: 520px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
 }
 
-/* arrows */
+.gallery-main:hover img {
+  transform: scale(1.04);
+}
+
 .gallery-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.15);
   color: #fff;
-  border: none;
   font-size: 26px;
   cursor: pointer;
+  transition: all 0.25s ease;
+  z-index: 3;
 }
 
-.gallery-btn.left { left: 12px; }
-.gallery-btn.right { right: 12px; }
+.gallery-btn.left { left: 14px; }
+.gallery-btn.right { right: 14px; }
+
+.gallery-btn:hover {
+  background: rgba(220,0,0,0.85);
+  border-color: transparent;
+}
 
 .fullscreen-trigger {
   position: absolute;
-  right: 14px;
   bottom: 14px;
-  background: rgba(0,0,0,0.7);
+  right: 14px;
+  width: 38px;
+  height: 38px;
   border-radius: 10px;
-  padding: 8px 10px;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: all 0.25s ease;
 }
 
-/* thumbs */
+.fullscreen-trigger:hover {
+  background: rgba(220,0,0,0.85);
+  border-color: transparent;
+}
+
+/* ================= THUMBNAILS ================= */
+
 .gallery-footer {
-  margin-top: 12px;
+  margin-top: 14px;
 }
 
 .gallery-thumbs {
   display: flex;
   gap: 10px;
   overflow-x: auto;
+  padding-bottom: 6px;
+}
+
+.gallery-thumbs::-webkit-scrollbar {
+  height: 4px;
+}
+
+.gallery-thumbs::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 4px;
 }
 
 .gallery-thumbs img {
-  width: 90px;
+  width: 84px;
   height: 64px;
   object-fit: cover;
-  opacity: 0.45;
   border-radius: 10px;
-  border: 2px solid transparent;
+  opacity: 0.55;
   cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.25s ease;
+}
+
+.gallery-thumbs img:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
 }
 
 .gallery-thumbs img.active {
   opacity: 1;
-  border-color: #d8d8d8;
+  border-color: #d60000;
+  transform: none;
 }
 
 .gallery-counter {
   margin-top: 6px;
-  text-align: right;
-  color: #8c8c8c;
   font-size: 13px;
+  opacity: 0.7;
 }
 
-/* ===== INFO ===== */
+/* ================= INFO ================= */
+
 .car-info {
-  background: #0c0c0c;
-  border-radius: 20px;
-  padding: 28px;
-}
-
-/* ===== PRICE (PREMIUM STYLE) ===== */
-.car-price {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 8px;
-
-  padding: 14px 26px;
-  margin: 18px 0 26px;
-
-  background: linear-gradient(
-    145deg,
-    #1a1a1a,
-    #0e0e0e
-  );
-
-  border-radius: 18px;
-
+  background: linear-gradient(180deg, #1f1f1f, #171717);
+  border-radius: 26px;
+  padding: 26px;
   border: 1px solid rgba(255,255,255,0.08);
-
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.06),
-    0 10px 24px rgba(0,0,0,0.6);
-
-  font-weight: 700;
-  font-size: 34px;
-  letter-spacing: 0.3px;
-  color: #f2f2f2;
 }
 
-.car-price span.currency {
-  font-size: 18px;
-  font-weight: 500;
-  opacity: 0.6;
+.car-info h1 {
+  font-size: 28px;
+  font-weight: 900;
+  margin-bottom: 16px;
 }
 
-/* ===== DESCRIPTION ===== */
-.car-description {
-  color: #d6d6d6;
-  line-height: 1.55;
-  font-size: 15px;
+.car-price {
+  font-size: 32px;
+  font-weight: 900;
+  margin-bottom: 18px;
 }
 
-/* ===== FULLSCREEN ===== */
-.image-viewer {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.96);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-.viewer-image-wrapper {
-  position: relative;
-  width: 90vw;
-  height: 90vh;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.viewer-image-wrapper img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-/* ===== RECT ZOOM ===== */
-.zoom-lens {
-  position: absolute;
-  width: 240px;
-  height: 160px;
-  border: 2px solid rgba(255,255,255,0.7);
-  pointer-events: none;
-  display: none;
-  background-repeat: no-repeat;
-  box-shadow: 0 0 18px rgba(0,0,0,0.8);
-}
-
-/* fullscreen arrows */
-.viewer-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 40px;
-  background: none;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-}
-
-.viewer-btn.left { left: 30px; }
-.viewer-btn.right { right: 30px; }
-
-.viewer-footer {
-  position: absolute;
-  bottom: 20px;
-  width: 100%;
-  padding: 0 20px;
-}
-
-.viewer-thumbs {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-}
-
-.viewer-thumbs img {
-  width: 80px;
-  height: 60px;
-  object-fit: cover;
-  opacity: 0.45;
-  border: 2px solid transparent;
-  cursor: pointer;
-}
-
-.viewer-thumbs img.active {
-  opacity: 1;
-  border-color: #e0e0e0;
-}
-
-.viewer-counter {
-  margin-top: 6px;
-  text-align: right;
-  color: #8c8c8c;
-  font-size: 13px;
-}
-
-/* ===== META (ПАРАМЕТРЫ КАК В КАТАЛОГЕ) ===== */
+/* ================= META ================= */
 
 .car-meta {
   display: flex;
@@ -247,4 +174,24 @@
   font-size: 14px;
   color: #e6e6e6;
   white-space: nowrap;
+}
+
+/* ================= DESCRIPTION ================= */
+
+.car-description {
+  font-size: 15px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1000px) {
+  .car-page {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-main img {
+    height: 420px;
+  }
 }
