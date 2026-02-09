@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Редактирование авто</title>
+  <title>Редактирование автомобиля</title>
   <link rel="stylesheet" href="/admin/admin.css">
 </head>
 <body>
@@ -14,15 +14,23 @@
 </script>
 
 <main class="admin-container">
-  <h1 id="formTitle">Загрузка…</h1>
+  <h1 id="formTitle">Редактирование автомобиля</h1>
 
-  <form id="carForm">
+  <form id="carForm" class="admin-form">
     <input name="brand" placeholder="Марка" required>
     <input name="model" placeholder="Модель" required>
     <input name="year" type="number" placeholder="Год" required>
     <input name="price" type="number" placeholder="Цена €" required>
     <input name="mileage" type="number" placeholder="Пробег" required>
+
     <textarea name="description" placeholder="Описание"></textarea>
+
+    <div class="images-block">
+      <h3>Фото</h3>
+      <input type="text" id="imageInput" placeholder="URL изображения">
+      <button type="button" id="addImage">Добавить фото</button>
+      <div id="imagesList"></div>
+    </div>
 
     <button type="submit">Сохранить</button>
   </form>

@@ -18,8 +18,11 @@ title.textContent = editId
 /* ================= LOAD ================= */
 
 if (editId) {
-  fetch(`/api/cars/${editId}`)
-    .then(res => res.json())
+  fetch(`/api/admin/cars/${editId}`)
+    .then(res => {
+      if (!res.ok) throw new Error();
+      return res.json();
+    })
     .then(car => {
       form.brand.value = car.brand || "";
       form.model.value = car.model || "";
@@ -31,7 +34,9 @@ if (editId) {
       images = car.images || [];
       renderImages();
     })
-    .catch(() => alert("Ошибка загрузки автомобиля"));
+    .catch(() => {
+      alert("Ошибка загрузки автомобиля");
+    });
 }
 
 /* ================= IMAGES ================= */
@@ -96,7 +101,6 @@ form.onsubmit = async e => {
 
     if (!res.ok) throw new Error();
 
-    alert("Автомобиль сохранён");
     location.href = "/admin/";
   } catch {
     alert("Ошибка сохранения");
