@@ -8,22 +8,23 @@
 <body>
 
 <script>
-  // ЖЁСТКАЯ ЗАЩИТА
   if (localStorage.getItem("adminAuth") !== "true") {
     location.replace("/admin/login.html");
   }
 </script>
 
 <main class="admin-container">
+
   <header class="admin-header">
     <h1>Автомобили</h1>
     <div>
-      <button onclick="location.href='/admin/edit.html'">➕ Добавить</button>
+      <button onclick="location.href='/admin/edit.html'">＋ Добавить</button>
       <button id="logout">Выйти</button>
     </div>
   </header>
 
-  <div id="carList"></div>
+  <section id="carList"></section>
+
 </main>
 
 <script src="/admin/admin-list.js"></script>
