@@ -12,36 +12,47 @@
 
   <form id="loginForm">
     <input
+      type="text"
+      id="login"
+      placeholder="Логин"
+      autocomplete="username"
+      required
+    >
+
+    <input
       type="password"
       id="password"
       placeholder="Пароль"
+      autocomplete="current-password"
       required
     >
+
     <button type="submit">Войти</button>
   </form>
 </main>
 
 <script>
-  // если уже вошли — сразу в админку
+  // если уже авторизован — сразу в админку
   if (localStorage.getItem("adminAuth") === "true") {
     location.replace("/admin/");
   }
 
-  // ⛔ ВАЖНО:
-  // пароль здесь должен совпадать с тем, который ТЫ ХОЧЕШЬ
-  // временно, до нормальной backend-авторизации
-  const ADMIN_PASSWORD = "1234"; // ← поставь свой
+  // 🔐 ВРЕМЕННЫЕ ДАННЫЕ (MVP)
+  // МЕНЯЕШЬ ТОЛЬКО ЗДЕСЬ
+  const ADMIN_LOGIN = "admin";
+  const ADMIN_PASSWORD = "1234";
 
   document.getElementById("loginForm").onsubmit = e => {
     e.preventDefault();
 
+    const login = document.getElementById("login").value.trim();
     const password = document.getElementById("password").value;
 
-    if (password === ADMIN_PASSWORD) {
+    if (login === ADMIN_LOGIN && password === ADMIN_PASSWORD) {
       localStorage.setItem("adminAuth", "true");
       location.replace("/admin/");
     } else {
-      alert("Неверный пароль");
+      alert("Неверный логин или пароль");
     }
   };
 </script>
