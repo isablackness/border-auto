@@ -145,3 +145,56 @@ app.use("/admin", express.static(path.join(__dirname, "admin")));
 app.listen(PORT, () => {
   console.log("🚀 Server running on port", PORT);
 });
+
+/* ===== UPDATE CAR ===== */
+app.put("/api/cars/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const {
+      brand,
+      model,
+      year,
+      price,
+      mileage,
+      gearbox,
+      description,
+      images
+    } = req.body;
+
+    const r = await pool.query(
+      `
+      UPDATE cars SET
+        brand = $1,
+        model = $2,
+        year = $3,
+        price = $4,
+        mileage = $5,
+        gearbox = $6,
+        description = $7,
+        images = $8
+      WHERE id = $9
+      RETURNING *
+      `,
+      [
+        brand,
+        model,
+        year,
+        price,
+        mileage,
+        gearbox,
+        description,
+        images,
+        id
+      ]
+    );
+
+    if (r.rowCount === 0) {
+      return res.status(404).json({ error: "car not found" });
+    }
+
+    res.json(r.rows[0]);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "car update failed" });
+  }
+});
