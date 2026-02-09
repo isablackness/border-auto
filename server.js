@@ -14,6 +14,12 @@ app.use(express.json({ limit: "10mb" }));
 /* ===== STATIC ===== */
 app.use(express.static(path.join(__dirname, "public")));
 
+/* ===== ROOT ===== */
+app.get("/", (req, res) => {
+  res.redirect("/catalog.html");
+});
+
+/* ===== ADMIN ===== */
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "public/admin/index.html"));
 });
