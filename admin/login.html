@@ -7,37 +7,42 @@
 </head>
 <body>
 
-  <main class="admin-container">
-    <h1>Вход в админку</h1>
+<main class="admin-container">
+  <h1>Вход в админку</h1>
 
-    <form id="loginForm">
-      <input type="password" id="password" placeholder="Пароль" required>
-      <button type="submit">Войти</button>
-    </form>
-  </main>
+  <form id="loginForm">
+    <input
+      type="password"
+      id="password"
+      placeholder="Пароль"
+      required
+    >
+    <button type="submit">Войти</button>
+  </form>
+</main>
 
-  <script>
-    const form = document.getElementById("loginForm");
+<script>
+  const form = document.getElementById("loginForm");
 
-    form.onsubmit = async e => {
-      e.preventDefault();
+  form.onsubmit = async e => {
+    e.preventDefault();
 
-      const password = document.getElementById("password").value;
+    const password = document.getElementById("password").value;
 
-      const res = await fetch("/api/admin/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password })
-      });
+    const res = await fetch("/api/admin/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password })
+    });
 
-      if (res.ok) {
-        localStorage.setItem("adminAuth", "true");
-        location.href = "/admin/";
-      } else {
-        alert("Неверный пароль");
-      }
-    };
-  </script>
+    if (res.ok) {
+      localStorage.setItem("adminAuth", "true");
+      location.href = "/admin/";
+    } else {
+      alert("Неверный пароль");
+    }
+  };
+</script>
 
 </body>
 </html>

@@ -9,7 +9,7 @@
 
 <script>
   if (localStorage.getItem("adminAuth") !== "true") {
-    location.href = "/login.html";
+    location.href = "/admin/login.html";
   }
 </script>
 
@@ -29,7 +29,7 @@
 <script>
   document.getElementById("logout").onclick = () => {
     localStorage.removeItem("adminAuth");
-    location.href = "/login.html";
+    location.href = "/admin/login.html";
   };
 </script>
 
