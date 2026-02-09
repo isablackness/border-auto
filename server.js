@@ -30,11 +30,15 @@ const pool = new Pool({
 
 /* ===== API ===== */
 
+// Получить все машины
 app.get("/api/cars", async (req, res) => {
-  const r = await pool.query("SELECT * FROM cars ORDER BY id DESC");
+  const r = await pool.query(
+    "SELECT * FROM cars ORDER BY position DESC"
+  );
   res.json(r.rows);
 });
 
+// Получить одну машину
 app.get("/api/cars/:id", async (req, res) => {
   const r = await pool.query(
     "SELECT * FROM cars WHERE id = $1",
@@ -44,6 +48,7 @@ app.get("/api/cars/:id", async (req, res) => {
   res.json(r.rows[0]);
 });
 
+// Обновить машину (АДМИНКА)
 app.put("/api/cars/:id", async (req, res) => {
   try {
     const {
@@ -56,6 +61,9 @@ app.put("/api/cars/:id", async (req, res) => {
       description,
       images
     } = req.body;
+
+    // images ДОЛЖЕН БЫТЬ массивом строк
+    const imagesArray = Array.isArray(images) ? images : [];
 
     const r = await pool.query(
       `
@@ -75,11 +83,12 @@ app.put("/api/cars/:id", async (req, res) => {
         brand,
         model,
         year,
-        price,
-        mileage,
+        year ? Number(year) : null,
+        price ? Number(price) : null,
+        mileage ? Number(mileage) : null,
         gearbox || null,
         description || null,
-        JSON.stringify(images || []),
+        imagesArray,
         req.params.id
       ]
     );
@@ -91,8 +100,12 @@ app.put("/api/cars/:id", async (req, res) => {
   }
 });
 
+// Удалить машину
 app.delete("/api/cars/:id", async (req, res) => {
-  await pool.query("DELETE FROM cars WHERE id = $1", [req.params.id]);
+  await pool.query(
+    "DELETE FROM cars WHERE id = $1",
+    [req.params.id]
+  );
   res.json({ ok: true });
 });
 
