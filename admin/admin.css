@@ -1,3 +1,119 @@
+/* ================= RESET ================= */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #2a2a2a, #111);
+  color: #fff;
+  font-family: Inter, Arial, sans-serif;
+}
+
+/* ================= LAYOUT ================= */
+.admin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 30px;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.admin-header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+/* ================= BUTTONS ================= */
+button {
+  cursor: pointer;
+}
+
+.admin-header button,
+.save-btn {
+  margin-left: 10px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #c30000, #ff0000);
+  border: none;
+  color: #fff;
+  font-weight: 700;
+}
+
+.admin-header button:last-child {
+  background: #2f2f2f;
+}
+
+/* ================= LIST PAGE ================= */
+#carList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+/* карточка авто */
+.admin-car {
+  background: linear-gradient(180deg, #1f1f1f, #141414);
+  border-radius: 18px;
+  border: 1px solid #333;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-car img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  background: #000;
+}
+
+.admin-car .info {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-car .info strong {
+  font-size: 18px;
+}
+
+.admin-car .price {
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+/* действия */
+.admin-car .actions {
+  display: flex;
+  gap: 10px;
+  padding: 14px 18px 18px;
+}
+
+.admin-car .actions button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 700;
+  color: #fff;
+}
+
+.admin-car .actions .edit {
+  background: #2f2f2f;
+}
+
+.admin-car .actions .delete {
+  background: #4a0000;
+}
+
+/* ================= EDIT PAGE ================= */
 .admin-edit {
   max-width: 1000px;
 }
@@ -24,6 +140,7 @@
   border: 1px solid #333;
   background: #0f0f0f;
   color: #fff;
+  font-size: 14px;
 }
 
 .edit-form textarea {
@@ -32,6 +149,7 @@
   margin-bottom: 20px;
 }
 
+/* ================= IMAGES ================= */
 .images-section h3 {
   margin: 20px 0 10px;
 }
@@ -84,6 +202,7 @@
   cursor: pointer;
 }
 
+/* ================= SAVE ================= */
 .save-btn {
   margin-top: 30px;
   padding: 14px;
@@ -93,5 +212,15 @@
   background: linear-gradient(135deg, #c30000, #ff0000);
   color: #fff;
   font-weight: 800;
-  cursor: pointer;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 900px) {
+  .edit-form .row {
+    grid-template-columns: 1fr;
+  }
+
+  #carList {
+    grid-template-columns: 1fr;
+  }
 }
