@@ -7,7 +7,6 @@
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   gap: 40px;
-  align-items: flex-start;
 }
 
 /* ================= GALLERY ================= */
@@ -17,7 +16,6 @@
   border-radius: 26px;
   padding: 18px;
   border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: 0 30px 80px rgba(0,0,0,0.75);
 }
 
 .gallery-main {
@@ -30,11 +28,6 @@
   width: 100%;
   height: 520px;
   object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.gallery-main:hover img {
-  transform: scale(1.04);
 }
 
 .gallery-btn {
@@ -44,90 +37,57 @@
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(0,0,0,0.6);
   color: #fff;
   font-size: 26px;
+  border: none;
   cursor: pointer;
-  transition: all 0.25s ease;
-  z-index: 3;
+  z-index: 2;
 }
 
 .gallery-btn.left { left: 14px; }
 .gallery-btn.right { right: 14px; }
 
-.gallery-btn:hover {
-  background: rgba(220,0,0,0.85);
-  border-color: transparent;
-}
-
 .fullscreen-trigger {
   position: absolute;
   bottom: 14px;
   right: 14px;
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255,255,255,0.15);
+  width: 36px;
+  height: 36px;
+  background: rgba(0,0,0,0.6);
   color: #fff;
-  font-size: 18px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.25s ease;
 }
 
-.fullscreen-trigger:hover {
-  background: rgba(220,0,0,0.85);
-  border-color: transparent;
-}
-
-/* ================= THUMBNAILS ================= */
+/* ================= THUMBS ================= */
 
 .gallery-footer {
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
 .gallery-thumbs {
   display: flex;
   gap: 10px;
   overflow-x: auto;
-  padding-bottom: 6px;
-}
-
-.gallery-thumbs::-webkit-scrollbar {
-  height: 4px;
-}
-
-.gallery-thumbs::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.2);
-  border-radius: 4px;
 }
 
 .gallery-thumbs img {
-  width: 84px;
-  height: 64px;
+  width: 80px;
+  height: 60px;
   object-fit: cover;
-  border-radius: 10px;
-  opacity: 0.55;
+  border-radius: 8px;
+  opacity: 0.6;
   cursor: pointer;
   border: 2px solid transparent;
-  transition: all 0.25s ease;
-}
-
-.gallery-thumbs img:hover {
-  opacity: 0.85;
-  transform: translateY(-2px);
 }
 
 .gallery-thumbs img.active {
   opacity: 1;
   border-color: #d60000;
-  transform: none;
 }
 
 .gallery-counter {
@@ -139,16 +99,9 @@
 /* ================= INFO ================= */
 
 .car-info {
-  background: linear-gradient(180deg, #1f1f1f, #171717);
+  background: #1b1b1b;
   border-radius: 26px;
   padding: 26px;
-  border: 1px solid rgba(255,255,255,0.08);
-}
-
-.car-info h1 {
-  font-size: 28px;
-  font-weight: 900;
-  margin-bottom: 16px;
 }
 
 .car-price {
@@ -156,8 +109,6 @@
   font-weight: 900;
   margin-bottom: 18px;
 }
-
-/* ================= META ================= */
 
 .car-meta {
   display: flex;
@@ -170,18 +121,81 @@
   padding: 6px 14px;
   border-radius: 999px;
   background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.12);
-  font-size: 14px;
-  color: #e6e6e6;
-  white-space: nowrap;
 }
 
-/* ================= DESCRIPTION ================= */
+/* ================= FULLSCREEN ================= */
 
-.car-description {
-  font-size: 15px;
-  line-height: 1.6;
-  opacity: 0.9;
+.image-viewer {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  display: none;
+  flex-direction: column;
+  z-index: 1000;
+}
+
+.image-viewer.open {
+  display: flex;
+}
+
+.viewer-image-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.viewer-image-wrapper img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+.viewer-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  font-size: 32px;
+  border: none;
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
+}
+
+.viewer-btn.left { left: 20px; }
+.viewer-btn.right { right: 20px; }
+
+.viewer-footer {
+  padding: 12px;
+}
+
+.viewer-thumbs {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.viewer-thumbs img {
+  width: 70px;
+  height: 50px;
+  object-fit: cover;
+  opacity: 0.5;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.viewer-thumbs img.active {
+  opacity: 1;
+  border-color: #d60000;
+}
+
+.viewer-counter {
+  text-align: center;
+  margin-top: 6px;
+  font-size: 13px;
+  opacity: 0.7;
 }
 
 /* ================= RESPONSIVE ================= */
