@@ -10,7 +10,7 @@ async function loadCars() {
   filteredCars = [...cars];
   sortAndRender();
 }
-
+ 
 function sortAndRender() {
   const sorted = [...filteredCars];
 
