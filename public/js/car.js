@@ -5,6 +5,13 @@ let index = 0;
 let zoom = 2.5;
 let zoomEnabled = false;
 
+/* ===== HELPERS ===== */
+
+function formatPrice(value) {
+  if (!value) return "";
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
 /* ===== ELEMENTS ===== */
 
 const mainImg = document.getElementById("mainImage");
@@ -37,7 +44,8 @@ async function loadCar() {
   document.getElementById("carTitle").textContent =
     `${car.brand} ${car.model}`;
 
-  document.getElementById("carPrice").textContent = car.price;
+  document.getElementById("carPrice").textContent =
+    formatPrice(car.price);
 
   document.getElementById("carDescription").innerHTML =
     (car.description || "").replace(/\n/g, "<br>");
@@ -86,20 +94,7 @@ prevBtn.onclick = () =>
 nextBtn.onclick = () =>
   setMain((index + 1) % images.length);
 
-/* ===== KEYBOARD NAVIGATION (PAGE) ===== */
-
-document.addEventListener("keydown", e => {
-  if (viewer.classList.contains("open")) return;
-
-  if (e.key === "ArrowLeft") {
-    setMain((index - 1 + images.length) % images.length);
-  }
-  if (e.key === "ArrowRight") {
-    setMain((index + 1) % images.length);
-  }
-});
-
-/* ===== FULLSCREEN OPEN ===== */
+/* ===== FULLSCREEN ===== */
 
 function openFullscreen() {
   viewer.classList.add("open");
@@ -114,8 +109,6 @@ function openFullscreen() {
 
 openFullscreenBtn.onclick = openFullscreen;
 mainImg.onclick = openFullscreen;
-
-/* ===== FULLSCREEN LOGIC ===== */
 
 function setViewer(i) {
   index = i;
@@ -150,68 +143,15 @@ viewerNext.onclick = e => {
   setViewer((index + 1) % images.length);
 };
 
-/* ===== KEYBOARD (FULLSCREEN) ===== */
-
-document.addEventListener("keydown", e => {
-  if (!viewer.classList.contains("open")) return;
-
-  if (e.key === "ArrowLeft") {
-    setViewer((index - 1 + images.length) % images.length);
-  }
-  if (e.key === "ArrowRight") {
-    setViewer((index + 1) % images.length);
-  }
-  if (e.key === "Escape") {
-    closeFullscreen();
-  }
-});
-
-/* ===== ZOOM (SECOND CLICK) ===== */
-
-viewerImg.addEventListener("click", e => {
-  e.stopPropagation();
-  zoomEnabled = !zoomEnabled;
-
-  if (!zoomEnabled) {
-    lens.style.display = "none";
-    viewerImg.style.transform = "scale(1)";
-  }
-});
-
-viewerWrapper.addEventListener("mousemove", e => {
-  if (!zoomEnabled) return;
-
-  const rect = viewerWrapper.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-
-  lens.style.display = "block";
-  lens.style.left = `${x - lens.offsetWidth / 2}px`;
-  lens.style.top = `${y - lens.offsetHeight / 2}px`;
-
-  viewerImg.style.transformOrigin =
-    `${(x / rect.width) * 100}% ${(y / rect.height) * 100}%`;
-  viewerImg.style.transform = `scale(${zoom})`;
-});
-
-viewerWrapper.addEventListener("mouseleave", () => {
-  if (!zoomEnabled) return;
-  lens.style.display = "none";
-  viewerImg.style.transform = "scale(1)";
-});
-
-/* ===== CLOSE FULLSCREEN ===== */
+viewer.onclick = () => closeFullscreen();
 
 function closeFullscreen() {
   viewer.classList.remove("open");
   document.body.style.overflow = "";
-
   zoomEnabled = false;
   lens.style.display = "none";
   viewerImg.style.transform = "scale(1)";
 }
-
-viewer.onclick = closeFullscreen;
 
 /* ===== INIT ===== */
 
