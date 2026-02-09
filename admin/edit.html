@@ -7,51 +7,27 @@
 </head>
 <body>
 
-  <main class="admin-container">
-    <h1 id="formTitle">Загрузка...</h1>
+<script>
+  if (localStorage.getItem("adminAuth") !== "true") {
+    location.replace("/admin/login.html");
+  }
+</script>
 
-    <form id="carForm">
-      <label>
-        Марка
-        <input type="text" name="brand" required>
-      </label>
+<main class="admin-container">
+  <h1 id="formTitle">Загрузка…</h1>
 
-      <label>
-        Модель
-        <input type="text" name="model" required>
-      </label>
+  <form id="carForm">
+    <input name="brand" placeholder="Марка" required>
+    <input name="model" placeholder="Модель" required>
+    <input name="year" type="number" placeholder="Год" required>
+    <input name="price" type="number" placeholder="Цена €" required>
+    <input name="mileage" type="number" placeholder="Пробег" required>
+    <textarea name="description" placeholder="Описание"></textarea>
 
-      <label>
-        Год
-        <input type="number" name="year" required>
-      </label>
+    <button type="submit">Сохранить</button>
+  </form>
+</main>
 
-      <label>
-        Цена (€)
-        <input type="number" name="price" required>
-      </label>
-
-      <label>
-        Пробег (км)
-        <input type="number" name="mileage" required>
-      </label>
-
-      <label>
-        Описание
-        <textarea name="description" rows="4"></textarea>
-      </label>
-
-      <div class="images-block">
-        <h3>Изображения</h3>
-        <input type="text" id="imageInput" placeholder="URL изображения">
-        <button type="button" id="addImage">Добавить</button>
-        <div id="imagesList"></div>
-      </div>
-
-      <button type="submit" class="save-btn">Сохранить</button>
-    </form>
-  </main>
-
-  <script src="/admin/admin-edit.js"></script>
+<script src="/admin/admin-edit.js"></script>
 </body>
 </html>

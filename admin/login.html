@@ -11,20 +11,18 @@
   <h1>Вход в админку</h1>
 
   <form id="loginForm">
-    <input
-      type="password"
-      id="password"
-      placeholder="Пароль"
-      required
-    >
+    <input type="password" id="password" placeholder="Пароль" required>
     <button type="submit">Войти</button>
   </form>
 </main>
 
 <script>
-  const form = document.getElementById("loginForm");
+  // если уже залогинен — сразу в админку
+  if (localStorage.getItem("adminAuth") === "true") {
+    location.replace("/admin/");
+  }
 
-  form.onsubmit = async e => {
+  document.getElementById("loginForm").onsubmit = async e => {
     e.preventDefault();
 
     const password = document.getElementById("password").value;
@@ -37,7 +35,7 @@
 
     if (res.ok) {
       localStorage.setItem("adminAuth", "true");
-      location.href = "/admin/";
+      location.replace("/admin/");
     } else {
       alert("Неверный пароль");
     }

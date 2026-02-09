@@ -8,8 +8,9 @@
 <body>
 
 <script>
+  // ЖЁСТКАЯ ЗАЩИТА
   if (localStorage.getItem("adminAuth") !== "true") {
-    location.href = "/admin/login.html";
+    location.replace("/admin/login.html");
   }
 </script>
 
@@ -29,7 +30,7 @@
 <script>
   document.getElementById("logout").onclick = () => {
     localStorage.removeItem("adminAuth");
-    location.href = "/admin/login.html";
+    location.replace("/admin/login.html");
   };
 </script>
 
