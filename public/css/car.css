@@ -35,7 +35,7 @@
 .gallery-btn {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%); /* фиксировано */
+  transform: translateY(-50%);
   width: 46px;
   height: 46px;
   border-radius: 50%;
@@ -45,7 +45,7 @@
   border: none;
   cursor: pointer;
   z-index: 2;
-  transition: none; /* 🔴 убрана анимация */
+  transition: none;
 }
 
 .gallery-btn.left { left: 14px; }
@@ -150,10 +150,23 @@
 }
 
 .viewer-image-wrapper img {
-  max-width: 80%;   /* 🔴 уменьшено */
-  max-height: 80%;  /* 🔴 уменьшено */
+  max-width: 80%;
+  max-height: 80%;
   object-fit: contain;
-  transition: transform 0.15s linear;
+  transition: transform 0.1s linear;
+}
+
+/* ===== ZOOM LENS ===== */
+
+.zoom-lens {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.5);
+  pointer-events: none;
+  display: none;
+  box-shadow: 0 0 30px rgba(0,0,0,0.6);
 }
 
 .viewer-btn {
@@ -171,19 +184,6 @@
 
 .viewer-btn.left { left: 20px; }
 .viewer-btn.right { right: 20px; }
-
-/* ================= ZOOM LENS ================= */
-
-.zoom-lens {
-  position: absolute;
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.5);
-  pointer-events: none;
-  display: none;
-  box-shadow: 0 0 30px rgba(0,0,0,0.6);
-}
 
 /* ================= RESPONSIVE ================= */
 

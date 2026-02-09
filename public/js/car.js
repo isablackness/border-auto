@@ -3,6 +3,7 @@ const id = new URLSearchParams(location.search).get("id");
 let images = [];
 let index = 0;
 let zoom = 2.5;
+let zoomEnabled = false;
 
 /* ===== ELEMENTS ===== */
 
@@ -85,10 +86,27 @@ prevBtn.onclick = () =>
 nextBtn.onclick = () =>
   setMain((index + 1) % images.length);
 
+/* ===== KEYBOARD NAVIGATION (PAGE) ===== */
+
+document.addEventListener("keydown", e => {
+  if (viewer.classList.contains("open")) return;
+
+  if (e.key === "ArrowLeft") {
+    setMain((index - 1 + images.length) % images.length);
+  }
+
+  if (e.key === "ArrowRight") {
+    setMain((index + 1) % images.length);
+  }
+});
+
 /* ===== FULLSCREEN ===== */
 
 openFullscreen.onclick = () => {
   viewer.classList.add("open");
+  zoomEnabled = false;      // ❗ лупа ВЫКЛ
+  lens.style.display = "none";
+  viewerImg.style.transform = "scale(1)";
   setViewer(index);
 };
 
@@ -125,12 +143,42 @@ viewerNext.onclick = e => {
   setViewer((index + 1) % images.length);
 };
 
-/* close fullscreen */
-viewer.onclick = () => viewer.classList.remove("open");
+/* ===== KEYBOARD NAVIGATION (FULLSCREEN) ===== */
 
-/* ===== ZOOM LENS ===== */
+document.addEventListener("keydown", e => {
+  if (!viewer.classList.contains("open")) return;
+
+  if (e.key === "ArrowLeft") {
+    setViewer((index - 1 + images.length) % images.length);
+  }
+
+  if (e.key === "ArrowRight") {
+    setViewer((index + 1) % images.length);
+  }
+
+  if (e.key === "Escape") {
+    viewer.classList.remove("open");
+    zoomEnabled = false;
+    lens.style.display = "none";
+    viewerImg.style.transform = "scale(1)";
+  }
+});
+
+/* ===== ZOOM: SECOND CLICK ONLY ===== */
+
+viewerImg.addEventListener("click", e => {
+  e.stopPropagation();
+  zoomEnabled = !zoomEnabled;
+
+  if (!zoomEnabled) {
+    lens.style.display = "none";
+    viewerImg.style.transform = "scale(1)";
+  }
+});
 
 viewerWrapper.addEventListener("mousemove", e => {
+  if (!zoomEnabled) return;
+
   const rect = viewerWrapper.getBoundingClientRect();
   const x = e.clientX - rect.left;
   const y = e.clientY - rect.top;
@@ -139,14 +187,24 @@ viewerWrapper.addEventListener("mousemove", e => {
   lens.style.left = `${x - lens.offsetWidth / 2}px`;
   lens.style.top = `${y - lens.offsetHeight / 2}px`;
 
-  viewerImg.style.transformOrigin = `${(x / rect.width) * 100}% ${(y / rect.height) * 100}%`;
+  viewerImg.style.transformOrigin =
+    `${(x / rect.width) * 100}% ${(y / rect.height) * 100}%`;
   viewerImg.style.transform = `scale(${zoom})`;
 });
 
 viewerWrapper.addEventListener("mouseleave", () => {
+  if (!zoomEnabled) return;
   lens.style.display = "none";
   viewerImg.style.transform = "scale(1)";
 });
+
+/* close fullscreen on background click */
+viewer.onclick = () => {
+  viewer.classList.remove("open");
+  zoomEnabled = false;
+  lens.style.display = "none";
+  viewerImg.style.transform = "scale(1)";
+};
 
 /* ===== INIT ===== */
 
