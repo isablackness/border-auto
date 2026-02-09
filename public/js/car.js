@@ -13,7 +13,7 @@ const counter = document.getElementById("galleryCounter");
 
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
-const openFullscreen = document.getElementById("openFullscreen");
+const openFullscreenBtn = document.getElementById("openFullscreen");
 
 /* fullscreen */
 const viewer = document.getElementById("imageViewer");
@@ -94,21 +94,28 @@ document.addEventListener("keydown", e => {
   if (e.key === "ArrowLeft") {
     setMain((index - 1 + images.length) % images.length);
   }
-
   if (e.key === "ArrowRight") {
     setMain((index + 1) % images.length);
   }
 });
 
-/* ===== FULLSCREEN ===== */
+/* ===== FULLSCREEN OPEN ===== */
 
-openFullscreen.onclick = () => {
+function openFullscreen() {
   viewer.classList.add("open");
-  zoomEnabled = false;      // ❗ лупа ВЫКЛ
+  document.body.style.overflow = "hidden";
+
+  zoomEnabled = false;
   lens.style.display = "none";
   viewerImg.style.transform = "scale(1)";
+
   setViewer(index);
-};
+}
+
+openFullscreenBtn.onclick = openFullscreen;
+mainImg.onclick = openFullscreen;
+
+/* ===== FULLSCREEN LOGIC ===== */
 
 function setViewer(i) {
   index = i;
@@ -143,7 +150,7 @@ viewerNext.onclick = e => {
   setViewer((index + 1) % images.length);
 };
 
-/* ===== KEYBOARD NAVIGATION (FULLSCREEN) ===== */
+/* ===== KEYBOARD (FULLSCREEN) ===== */
 
 document.addEventListener("keydown", e => {
   if (!viewer.classList.contains("open")) return;
@@ -151,20 +158,15 @@ document.addEventListener("keydown", e => {
   if (e.key === "ArrowLeft") {
     setViewer((index - 1 + images.length) % images.length);
   }
-
   if (e.key === "ArrowRight") {
     setViewer((index + 1) % images.length);
   }
-
   if (e.key === "Escape") {
-    viewer.classList.remove("open");
-    zoomEnabled = false;
-    lens.style.display = "none";
-    viewerImg.style.transform = "scale(1)";
+    closeFullscreen();
   }
 });
 
-/* ===== ZOOM: SECOND CLICK ONLY ===== */
+/* ===== ZOOM (SECOND CLICK) ===== */
 
 viewerImg.addEventListener("click", e => {
   e.stopPropagation();
@@ -198,13 +200,18 @@ viewerWrapper.addEventListener("mouseleave", () => {
   viewerImg.style.transform = "scale(1)";
 });
 
-/* close fullscreen on background click */
-viewer.onclick = () => {
+/* ===== CLOSE FULLSCREEN ===== */
+
+function closeFullscreen() {
   viewer.classList.remove("open");
+  document.body.style.overflow = "";
+
   zoomEnabled = false;
   lens.style.display = "none";
   viewerImg.style.transform = "scale(1)";
-};
+}
+
+viewer.onclick = closeFullscreen;
 
 /* ===== INIT ===== */
 
