@@ -9,9 +9,14 @@ function formatPrice(n) {
 /* ================= LOAD ================= */
 
 async function loadCars() {
-  const res = await fetch("/api/cars");
-  const cars = await res.json();
+  const res = await fetch("/api/admin/cars");
 
+  if (!res.ok) {
+    alert("Ошибка загрузки автомобилей");
+    return;
+  }
+
+  const cars = await res.json();
   list.innerHTML = "";
 
   cars.forEach(car => {
@@ -50,6 +55,9 @@ window.deleteCar = async id => {
     method: "DELETE"
   });
 
-  if (res.ok) loadCars();
-  else alert("Ошибка удаления");
+  if (res.ok) {
+    loadCars();
+  } else {
+    alert("Ошибка удаления");
+  }
 };

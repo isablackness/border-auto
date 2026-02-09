@@ -2,38 +2,36 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Admin — Border Auto</title>
-  <link rel="stylesheet" href="/css/base.css">
+  <title>Админка</title>
   <link rel="stylesheet" href="/admin/admin.css">
 </head>
 <body>
 
-<header class="site-header">
-  <div class="logo-wrapper">
-    <img src="/images/logo1.png" alt="Border Auto">
-  </div>
-  <nav class="main-nav">
-    <a href="/admin/index.html">Автомобили</a>
-    <a href="/admin/instagram.html">Импорт из Instagram</a>
-    <a href="/catalog.html" target="_blank">Сайт</a>
-    <form method="POST" action="/admin/logout">
-      <button class="logout-btn">Выйти</button>
-    </form>
-  </nav>
-</header>
+<script>
+  if (localStorage.getItem("adminAuth") !== "true") {
+    location.href = "/login.html";
+  }
+</script>
 
-<main class="page-content admin-page">
-
-  <div class="admin-top">
+<main class="admin-container">
+  <header class="admin-header">
     <h1>Автомобили</h1>
-    <button class="add-btn">➕ Добавить автомобиль</button>
-  </div>
+    <div>
+      <button onclick="location.href='/admin/edit.html'">➕ Добавить</button>
+      <button id="logout">Выйти</button>
+    </div>
+  </header>
 
-  <section id="adminCatalog" class="admin-catalog"></section>
-
+  <div id="carList"></div>
 </main>
 
 <script src="/admin/admin-list.js"></script>
+<script>
+  document.getElementById("logout").onclick = () => {
+    localStorage.removeItem("adminAuth");
+    location.href = "/login.html";
+  };
+</script>
 
 </body>
 </html>
