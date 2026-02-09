@@ -1,190 +1,32 @@
-/* ================= RESET ================= */
-* {
-  box-sizing: border-box;
+.big-textarea {
+  min-height: 220px;
+  font-size: 15px;
 }
 
-body {
-  margin: 0;
-  background: radial-gradient(circle at top, #2a2a2a, #111);
-  color: #fff;
-  font-family: Inter, Arial, sans-serif;
-}
-
-/* ================= LAYOUT ================= */
-.admin-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 30px;
-}
-
-.admin-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-}
-
-.admin-header h1 {
-  margin: 0;
-  font-size: 32px;
-}
-
-/* ================= BUTTONS ================= */
-button {
-  cursor: pointer;
-}
-
-.admin-header button,
-.save-btn {
-  margin-left: 10px;
-  padding: 10px 20px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #c30000, #ff0000);
-  border: none;
-  color: #fff;
-  font-weight: 700;
-}
-
-.admin-header button:last-child {
-  background: #2f2f2f;
-}
-
-/* ================= LIST PAGE ================= */
-#carList {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 24px;
-}
-
-/* карточка авто */
-.admin-car {
-  background: linear-gradient(180deg, #1f1f1f, #141414);
-  border-radius: 18px;
-  border: 1px solid #333;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.admin-car img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  background: #000;
-}
-
-.admin-car .info {
-  padding: 16px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.admin-car .info strong {
-  font-size: 18px;
-}
-
-.admin-car .price {
-  font-weight: 800;
-  letter-spacing: 0.5px;
-}
-
-/* действия */
-.admin-car .actions {
+.add-image-row {
   display: flex;
   gap: 10px;
-  padding: 14px 18px 18px;
+  margin-bottom: 16px;
 }
 
-.admin-car .actions button {
+.add-image-row input {
   flex: 1;
-  padding: 10px;
-  border-radius: 12px;
-  border: none;
-  font-weight: 700;
-  color: #fff;
-}
-
-.admin-car .actions .edit {
-  background: #2f2f2f;
-}
-
-.admin-car .actions .delete {
-  background: #4a0000;
-}
-
-/* ================= EDIT PAGE ================= */
-.admin-edit {
-  max-width: 1000px;
-}
-
-.edit-form {
-  background: linear-gradient(180deg, #1e1e1e, #141414);
-  padding: 30px;
-  border-radius: 24px;
-  border: 1px solid #333;
-}
-
-.edit-form .row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-.edit-form input,
-.edit-form select,
-.edit-form textarea {
-  padding: 14px 16px;
-  border-radius: 14px;
-  border: 1px solid #333;
-  background: #0f0f0f;
-  color: #fff;
-  font-size: 14px;
-}
-
-.edit-form textarea {
-  min-height: 120px;
-  resize: vertical;
-  margin-bottom: 20px;
-}
-
-/* ================= IMAGES ================= */
-.images-section h3 {
-  margin: 20px 0 10px;
-}
-
-.drop-zone {
-  border: 2px dashed #444;
-  border-radius: 18px;
-  padding: 30px;
-  text-align: center;
-  cursor: pointer;
-  margin-bottom: 16px;
-  background: #0b0b0b;
-}
-
-.drop-zone.hover {
-  border-color: #ff0000;
-}
-
-.drop-zone input {
-  display: none;
 }
 
 .images-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 120px);
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, 140px);
+  gap: 14px;
 }
 
 .image-thumb {
   position: relative;
+  cursor: grab;
 }
 
 .image-thumb img {
-  width: 120px;
-  height: 80px;
+  width: 140px;
+  height: 90px;
   object-fit: cover;
   border-radius: 12px;
 }
@@ -193,155 +35,11 @@ button {
   position: absolute;
   top: 6px;
   right: 6px;
-  border: none;
   background: rgba(0,0,0,0.7);
+  border: none;
   color: #fff;
   border-radius: 50%;
   width: 22px;
   height: 22px;
   cursor: pointer;
 }
-
-/* ================= SAVE ================= */
-.save-btn {
-  margin-top: 30px;
-  padding: 14px;
-  width: 100%;
-  border-radius: 16px;
-  border: none;
-  background: linear-gradient(135deg, #c30000, #ff0000);
-  color: #fff;
-  font-weight: 800;
-}
-
-/* ================= MOBILE ================= */
-@media (max-width: 900px) {
-  .edit-form .row {
-    grid-template-columns: 1fr;
-  }
-
-  #carList {
-    grid-template-columns: 1fr;
-  }
-}
-
-const form = document.getElementById("carForm");
-const title = document.getElementById("formTitle");
-const imageInput = document.getElementById("imageInput");
-const addImageBtn = document.getElementById("addImage");
-const imagesList = document.getElementById("imagesList");
-
-const params = new URLSearchParams(location.search);
-const editId = params.get("id");
-
-let images = [];
-let dragIndex = null;
-
-title.textContent = editId
-  ? "Редактирование автомобиля"
-  : "Добавление автомобиля";
-
-/* ================= LOAD ================= */
-
-async function loadCar() {
-  if (!editId) return;
-
-  try {
-    const res = await fetch("/api/cars");
-    const cars = await res.json();
-    const car = cars.find(c => String(c.id) === String(editId));
-    if (!car) throw new Error();
-
-    form.brand.value = car.brand || "";
-    form.model.value = car.model || "";
-    form.year.value = car.year || "";
-    form.price.value = car.price || "";
-    form.mileage.value = car.mileage || "";
-    form.gearbox.value = car.gearbox || "";
-    form.description.value = car.description || "";
-
-    images = car.images || [];
-    renderImages();
-  } catch {
-    alert("Ошибка загрузки автомобиля");
-  }
-}
-
-loadCar();
-
-/* ================= IMAGES ================= */
-
-addImageBtn.onclick = () => {
-  const url = imageInput.value.trim();
-  if (!url) return;
-
-  images.push(url);
-  imageInput.value = "";
-  renderImages();
-};
-
-function renderImages() {
-  imagesList.innerHTML = "";
-
-  images.forEach((src, index) => {
-    const div = document.createElement("div");
-    div.className = "image-thumb";
-    div.draggable = true;
-
-    div.innerHTML = `
-      <img src="${src}">
-      <button type="button">✕</button>
-    `;
-
-    div.ondragstart = () => dragIndex = index;
-
-    div.ondragover = e => e.preventDefault();
-
-    div.ondrop = () => {
-      if (dragIndex === null || dragIndex === index) return;
-      const moved = images.splice(dragIndex, 1)[0];
-      images.splice(index, 0, moved);
-      dragIndex = null;
-      renderImages();
-    };
-
-    div.querySelector("button").onclick = () => {
-      images.splice(index, 1);
-      renderImages();
-    };
-
-    imagesList.appendChild(div);
-  });
-}
-
-/* ================= SAVE ================= */
-
-form.onsubmit = async e => {
-  e.preventDefault();
-
-  const data = {
-    brand: form.brand.value.trim(),
-    model: form.model.value.trim(),
-    year: Number(form.year.value),
-    price: Number(form.price.value),
-    mileage: Number(form.mileage.value),
-    gearbox: form.gearbox.value,
-    description: form.description.value.trim(),
-    images // ⚠️ только URL, без base64
-  };
-
-  try {
-    const res = await fetch(`/api/admin/cars/${editId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
-
-    if (!res.ok) throw new Error();
-
-    location.href = "/admin/";
-  } catch {
-    alert("Ошибка сохранения");
-  }
-};
-
