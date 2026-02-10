@@ -180,24 +180,23 @@
 }
 
 /* ================= META ================= */
-
 .car-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 10px;
-  margin-bottom: 24px;
+  gap: 6px 10px;
+  margin-bottom: 22px;
 }
 
 .car-meta div {
-  padding: 4px 10px;           /* ⬅️ уже */
-  border-radius: 999px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.12);
-  font-size: 13px;             /* ⬅️ меньше */
-  line-height: 1.2;
-  color: #e0e0e0;
+  padding: 2px 8px;                 /* ⬅️ МИНИМАЛЬНАЯ ВЫСОТА */
+  border-radius: 6px;               /* ⬅️ НЕ pill, а аккуратный прямоугольник */
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.18);
+  font-size: 13px;
+  line-height: 1.3;
+  color: #e6e6e6;
+  white-space: nowrap;
 }
-
 
 /* ================= DESCRIPTION ================= */
 
