@@ -341,3 +341,36 @@
   color: #e6e6e6;
 }
 
+/* ===== FORCE COMPACT SPEC ROWS (TOP LIST) ===== */
+
+/* контейнер со строками */
+.car-info > div > div {
+  align-self: flex-start !important;
+}
+
+/* сами строки (2017, 213 344 км и т.п.) */
+.car-info div div {
+  width: fit-content !important;
+  max-width: max-content !important;
+  display: inline-flex !important;
+}
+
+/* если это li */
+.car-info li {
+  width: fit-content !important;
+  max-width: max-content !important;
+  display: inline-flex !important;
+  align-self: flex-start !important;
+}
+
+/* внешний вид — компактный */
+.car-info div div,
+.car-info li {
+  padding: 2px 8px !important;
+  border-radius: 6px !important;
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.18) !important;
+  font-size: 13px !important;
+  line-height: 1.3 !important;
+}
+
