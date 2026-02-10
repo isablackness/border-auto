@@ -311,3 +311,33 @@
     font-size: 28px;
   }
 }
+
+/* ===== FIX: compact spec lines (year, mileage, engine etc.) ===== */
+
+/* контейнер со строками */
+.car-info .car-specs,
+.car-info .spec-list,
+.car-info .params,
+.car-info .info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* сами строки */
+.car-info .car-specs > div,
+.car-info .spec-list > div,
+.car-info .params > div,
+.car-info .info-list > div {
+  display: inline-flex !important;   /* ⬅️ КЛЮЧ */
+  width: fit-content !important;     /* ⬅️ КЛЮЧ */
+  max-width: max-content !important;
+  padding: 2px 10px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.18);
+  font-size: 13px;
+  line-height: 1.3;
+  color: #e6e6e6;
+}
+
